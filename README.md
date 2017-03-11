@@ -1,5 +1,5 @@
 # GeoplanoSocial
-============
+
 
 ![GeoplanoSocial](header.png)
 
