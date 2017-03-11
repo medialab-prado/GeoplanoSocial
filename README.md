@@ -5,13 +5,15 @@
 
 Autores
 ------------
- Josué Iglesias y Elena Sevilla
+ * Josué Iglesias
+ * Elena Sevilla
+ 
  
 Colaboradores
 ------------
 
 
-Introducción
+Descripción
 ------------
 
 
