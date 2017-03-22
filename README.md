@@ -11,7 +11,7 @@ Autores
  
 Colaboradores
 ------------
-
+* Guzman Bermejo Rodríguez
 
 Descripción
 ------------
