@@ -35,4 +35,5 @@ Los mentores nos quieren juntar a todos los implicados en Juegos Reunidos un dí
 Y nada más. Que lo dicho: el próximo lunes estaremos por el Medialab y ... que ya hay ganar de que la cosa arranque.
 
 ¡Saludos!
+
 geoplanoSOCIAL
