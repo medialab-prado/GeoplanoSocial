@@ -20,7 +20,7 @@ Proponemos un sencillo juego en el que la interacción entre personas es clave. 
 
 BLOG (provisional)
 ------------
-[DÍA 0]
+[DÍA 0. 22/03/2017]
 
 Hoy hemos tenido la 1ª reunión formal después de las jornadas de inauguración de Juegos Reunidos. Realmente hoy no nos hemos puesto manos a la obra con geoplanoSOCIAL, sólo nos hemos juntado para conocer a todos los interesados en participar y que los mentores nos muestren un poco por dónde empezar.
 
@@ -37,3 +37,7 @@ Y nada más. Que lo dicho: el próximo lunes estaremos por el Medialab y ... que
 ¡Saludos!
 
 geoplanoSOCIAL
+
+[DÍA 1. 27/03/2017]
+
+* https://quickdraw.withgoogle.com
