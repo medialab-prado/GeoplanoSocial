@@ -1,6 +1,6 @@
 /**
- * World 2 - Meeting
- * Level C 
+ * World 1 - Loneliness
+ * Level C - (queso) fundido
  */
 
 /***********
@@ -17,19 +17,26 @@ static final int SCREEN_SCALE=4;
 static final int SCREEN_WIDTH=192 * SCREEN_SCALE;
 static final int SCREEN_HEIGHT=125 * SCREEN_SCALE;
 
+//Nodes that represent the player will be of this size
+static final float PLAYER_SIZE=20 * SCREEN_SCALE;
+
 
 //Handy colors, preventing magic numbers
 static final int COLOR_WHITE=255;
-
-//Energy to be shared among players
-static final float PLAYERS_ENERGY = 100.0f;
+static final int COLOR_BLACK=0;
+static final int COLOR_GRAY=100;
 
 //Background related
+static final int BG_MODE=2;
 static PGraphics BG;
 
-//Players
-static Player p1;
-static Player p2;
+//latest mouse/player position
+static float mouseX_prev;
+static float mouseY_prev;
+
+// moving mouse/player coloring
+static int dynamicPlayerColor = COLOR_WHITE;
+static final int DEGRADE_RATE = 1;
 
 /**********************
  *PROCESSING FUNCTIONS*
@@ -44,76 +51,47 @@ void settings() {
 void setup() {
   //Parameters
   frameRate(FPS);
-
+  noStroke();
   noCursor();//Ugly
 
-  //Generate background
-  BG=generateBackgroundFromImage("frame.png", width, height);
-
-  //Generate players
-  p1 = new Player(PLAYERS_ENERGY, COLOR_WHITE, true);
-  p2 = new Player(0, COLOR_WHITE, false);
+  BG=generateBackground(BG_MODE, width, height);
 }
 
 void draw() {
   //long startTime = System.nanoTime();
 
-  //Make a clone of bg
-  PGraphics pg = cloneGraphics(BG);
-
-  //Update elements
-  update();
-
-  //Draw bg and elements
-  drawBackground(pg);
-  drawPlayers(pg);
+  drawBackground();
+  drawPlayer();
 
   //println("Duration\t"+ (System.nanoTime() - startTime));
 
-  //saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1.gif
+  // saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1.gif
 }
 
 
 /***************
  *OWN FUNCTIONS*
  ***************/
-
-
-/*LOOP FUNCTIONS*/
-
-void update() {
-  p1.move(mouseX, mouseY);
-  p2.move(width-mouseX, height-mouseY);//Mirroring for simulation
-
-  //Energy transference
-  p1.checkTransference(p2);
-}
-
-void drawBackground(PGraphics pg) {
-  //Draw the pg
-  image(pg, 0, 0);
-}
-
-void drawPlayers(PGraphics pg) {
-  p1.draw(pg);
-  p2.draw(pg);
-  drawLights(pg);
-}
-
-/*UTILITY FUNCTIONS*/
-
-PGraphics generateBackgroundFromImage(String fileName, int _width, int _height) {
-
-  //Load image and resize it
-  PImage img = loadImage(fileName);
-  img.resize(_width, _height);
+PGraphics generateBackground(int index, int _width, int _height) {
 
   //Generate the graphics buffer and initialize it
   PGraphics pg = createGraphics(_width, _height);
   pg.beginDraw();
 
   //Draw the corresponding background on the buffer
-  pg.image(img, 0, 0);
+  switch(index) {
+  case 0:
+    generateBackground0(pg);
+    break;
+  case 1:
+  case 2:
+    generateBackground2(pg);
+    break;
+  default:
+    generateBackground1(pg);
+    break;
+
+  }
 
   //End rendering on graphics buffer
   pg.endDraw();
@@ -121,71 +99,84 @@ PGraphics generateBackgroundFromImage(String fileName, int _width, int _height) 
   return pg;
 }
 
-PGraphics cloneGraphics(PGraphics src) {
 
-  //Create a new PG and initialize it
-  PGraphics dest = createGraphics(src.width, src.height);
-  dest.beginDraw();
-  dest.endDraw();
+void generateBackground0(PGraphics pg) {
 
-  //Copy pixels
-  src.loadPixels();
-  dest.loadPixels();
-  arrayCopy(src.pixels, dest.pixels);
-  dest.updatePixels();
+  //Set plain background
+  pg.background(COLOR_WHITE); 
 
-  return dest;
-}
+  //Set dots
 
+  //Basic dots rows and cols
+  float radius=PLAYER_SIZE/2.0f;
+  pg.fill(COLOR_BLACK);
 
-/*DRAW FUNCTIONS*/
-
-public void drawLights(PGraphics pg){
-  
-  loadPixels();
-  for (int x = 0; x < pg.width; x++) {
-    for (int y = 0; y < pg.height; y++)
-    {
-      int index = x + y * pg.width;
-
-      float r = red(pg.pixels[index]);
-      float g = green(pg.pixels[index]);
-      float b = blue(pg.pixels[index]);
-
-      float energyP1 = p1.getEnergy();
-      float energyP2 = p2.getEnergy();
-
-      PVector coordinatesP1 = p1.getCoordinates();
-      PVector coordinatesP2 = p2.getCoordinates();
-
-      float d1 = dist(x, y, coordinatesP1.x, coordinatesP1.y);
-      float d2 = dist(x, y, coordinatesP2.x, coordinatesP2.y);
-
-      float brightnessP1 = 255 * (energyP1 - d1) / energyP1;
-      float brightnessP2 = 255 * (energyP2 - d2) / energyP2;
-
-      float maxBrightness = max(brightnessP1, brightnessP2);
-      maxBrightness=constrain(maxBrightness, -255, 255);
-
-      r += maxBrightness;
-      g += maxBrightness;
-      b += maxBrightness;
-
-
-
-      r=constrain(r, 0, 255);
-      g=constrain(g, 0, 255);
-      b=constrain(b, 0, 255);
-
-      int c = color(r, g, b);
-
-      if (maxBrightness>-255) {
-        if (brightnessP1>brightnessP2)c = color(r, g, 255*maxBrightness/255);
-        else c = color(255*maxBrightness/255, g, b);
-      }
-
-      pixels[index] = c;
+  for (float x=0; x<width+PLAYER_SIZE; x+=PLAYER_SIZE) {
+    for (float y=radius; y<height+PLAYER_SIZE; y+=PLAYER_SIZE) {
+      pg.ellipse(x, y, PLAYER_SIZE, PLAYER_SIZE);
     }
   }
-  updatePixels();
+}
+
+void generateBackground1(PGraphics pg) {
+
+  //Set plain background
+  pg.background(COLOR_WHITE); 
+
+  //Set dots
+  //Dots rows and cols symmetric and alternating
+  pg.fill(COLOR_BLACK);
+
+  float radius=PLAYER_SIZE/2.0f;
+
+  float excessX=width%PLAYER_SIZE;
+  float excessY=height%PLAYER_SIZE;
+
+  float offsetX=excessX/2.0f;
+  float offsetY=excessY/2.0f;
+
+  for (float x=offsetX; x<width+PLAYER_SIZE; x+=PLAYER_SIZE) {
+    for (float y=offsetY; y<height+PLAYER_SIZE; y+=PLAYER_SIZE) {
+
+      float offsetedX=x;
+      //Shift odd rows
+      if (((int)(y/PLAYER_SIZE))%2==1) {
+        offsetedX-=radius;
+      }
+
+      pg.ellipse(offsetedX, y, PLAYER_SIZE, PLAYER_SIZE);
+    }
+  }
+}
+
+void generateBackground2(PGraphics pg) {
+
+  //Set plain background
+  pg.background(COLOR_GRAY); 
+
+
+
+}
+
+void drawBackground() {
+  //Draw the bg image buffer
+  image(BG, 0, 0);
+}
+
+void drawPlayer() {
+  if ((mouseX_prev == mouseX) && (mouseX_prev == mouseX)) {
+    dynamicPlayerColor = dynamicPlayerColor - DEGRADE_RATE;
+    if (dynamicPlayerColor < COLOR_GRAY)
+      dynamicPlayerColor = COLOR_GRAY;
+  }
+  else {
+    dynamicPlayerColor = dynamicPlayerColor + DEGRADE_RATE;
+    if (dynamicPlayerColor > COLOR_WHITE)
+      dynamicPlayerColor = COLOR_WHITE;
+  }
+  
+  fill(dynamicPlayerColor);
+  ellipse(mouseX, mouseY, PLAYER_SIZE, PLAYER_SIZE);
+  mouseX_prev = mouseX;
+  mouseY_prev = mouseY;
 }
