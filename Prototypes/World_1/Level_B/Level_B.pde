@@ -24,7 +24,8 @@ void draw() {
 
   drawPlayer();
 
-  //saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1.gif
+  
+//saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1.gif
 
 
  
