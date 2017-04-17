@@ -6,12 +6,8 @@
 Autores
 ------------
  * Josué Iglesias
+ * Guzman Bermejo Rodríguez
  * Elena Sevilla
- 
- 
-Colaboradores
-------------
-* Guzman Bermejo Rodríguez
 
 Descripción
 ------------
