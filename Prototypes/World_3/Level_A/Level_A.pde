@@ -19,6 +19,7 @@ static final int SCREEN_HEIGHT=125 * SCREEN_SCALE;
 
 
 //Handy colors, preventing magic numbers
+static final int COLOR_BLACK=0;
 static final int COLOR_WHITE=255;
 static final int COLOR_LIGHT_GREY=170;// 2/3
 final int COLOR_RED=color(255, 0, 0);
@@ -36,6 +37,9 @@ static PGraphics BG;
 //Players
 static Node [] players;
 
+//Intersection
+static PGraphics pgIntersection;
+
 /**********************
  *PROCESSING FUNCTIONS*
  **********************/
@@ -44,6 +48,7 @@ static Node [] players;
 //XXX: Maybe needed to change renderer in the future
 void settings() {
   size(SCREEN_WIDTH, SCREEN_HEIGHT);
+  smooth(8);
 }
 
 void setup() {
@@ -60,6 +65,9 @@ void setup() {
   players=new Node[PLAYERS_NUMBER];
   for (int i=0; i<players.length; i++)
     players[i] = new Node(PLAYERS_RADIUS, PLAYERS_COLORS[i]);
+
+  //Generate graphic holding intersections
+  pgIntersection = createGraphics(width, height);
 }
 
 void draw() {
@@ -72,9 +80,9 @@ void draw() {
   update();
 
   //Draw bg and elements
-  drawPlayers(pg);
-  drawIntersection(pg);
-  drawScene(pg);
+  drawBackground(pg);
+  drawPlayers();
+  drawIntersection(pgIntersection);
 
   //println("Duration\t"+ (System.nanoTime() - startTime));
 
@@ -91,25 +99,34 @@ void draw() {
 
 void update() {
   players[0].move(mouseX, mouseY);
-  //players[1].move(width-mouseX, height-mouseY);
   players[1].move(width-mouseX, mouseY);//Mirroring for simulation
   players[2].move(width/2, height-mouseY);//Mirroring for simulation
 }
 
-void drawScene(PGraphics pg) {
+void drawBackground(PGraphics pg) {
   //Draw the pg
   image(pg, 0, 0);
 }
 
-void drawPlayers(PGraphics pg) {
-  for (int i=0; i<players.length; i++)
-    players[i].draw(pg);
+void drawPlayers() {
+  for (int i=0; i<players.length; i++) {
+    //Draw nodes on screen
+    image(players[i].getPG(), 0, 0);
+  }
 }
 void drawIntersection(PGraphics pg) {
 
-  for (int i=0; i<players.length; i++)
-    for (int j=i+1; j<players.length; j++)
-      drawIntersection(pg, players[i], players[j]);
+
+  //Clear intersection PGraphics
+  pg.beginDraw();
+  pg.background(0.0f, 1.0f);
+  pg.endDraw();
+
+  //Draw intersection in pgraphics
+  drawIntersections(pg, players, false);
+
+  //Draw it on screen
+  image(pg, 0, 0);
 }
 
 /*UTILITY FUNCTIONS*/
