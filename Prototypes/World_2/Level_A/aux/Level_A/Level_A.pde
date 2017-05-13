@@ -64,7 +64,7 @@ void setup() {
   //Generate players
   players=new Node[PLAYERS_NUMBER];
   for (int i=0; i<players.length; i++)
-    players[i] = new Node(PLAYERS_COLORS[i]);
+    players[i] = new Node(PLAYERS_RADIUS, PLAYERS_COLORS[i]);
 
   //Generate graphic holding intersections
   pgIntersection = createGraphics(width, height);
@@ -82,10 +82,11 @@ void draw() {
   //Draw bg and elements
   drawBackground(pg);
   drawPlayers();
+  drawIntersection(pgIntersection);
 
   //println("Duration\t"+ (System.nanoTime() - startTime));
 
-  // saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1A.gif
+  //saveFrame();//Imagemagick -> convert -delay 60,1000  -loop 0 *.tif World1.gif
 }
 
 
@@ -97,14 +98,8 @@ void draw() {
 /*LOOP FUNCTIONS*/
 
 void update() {
-  PVector p0Coord = new PVector(mouseX, mouseY);
-  PVector p1Coord = new PVector(width-mouseX, height-mouseY);
-  
-
-  players[0].move(mouseX, mouseY, p1Coord);
-  players[1].move(width-mouseX, height-mouseY, p0Coord);//Mirroring for simulation
-  
-  
+  players[0].move(mouseX, mouseY);
+  players[1].move(width-mouseX, mouseY);//Mirroring for simulation
 }
 
 void drawBackground(PGraphics pg) {
@@ -118,7 +113,20 @@ void drawPlayers() {
     image(players[i].getPG(), 0, 0);
   }
 }
+void drawIntersection(PGraphics pg) {
 
+
+  //Clear intersection PGraphics
+  pg.beginDraw();
+  pg.background(0.0f, 1.0f);
+  pg.endDraw();
+
+  //Draw intersection in pgraphics
+  drawIntersections(pg, players, false);
+
+  //Draw it on screen
+  image(pg, 0, 0);
+}
 
 /*UTILITY FUNCTIONS*/
 
