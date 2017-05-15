@@ -9,7 +9,7 @@ import processing.core.PGraphics;
 import processing.core.PShape;
 
 import static es.geoplanosocial.util.Color.BLACK;
-import static es.geoplanosocial.util.Color.WHITE;
+import static es.geoplanosocial.util.Color.MAGENTA;
 import static processing.core.PConstants.*;
 
 /**
@@ -18,14 +18,14 @@ import static processing.core.PConstants.*;
  */
 class Cube {
 
-    private final PApplet parent;
+    private final PApplet processing;
 
     private final PGraphics pg;
     private final PGraphics thumbnailPg;
 
-    private final PShape cube;
+    private PShape cube;
 
-    private final int[] worldColors;//MUST BE OF SIZE 3 (A, B and C level bg color)
+    private int[] worldColors = new int[]{BLACK, BLACK, BLACK};//MUST BE OF SIZE 3 (A, B and C level bg color)
 
     private boolean onRotation;
     private Axis rotationAxis;
@@ -60,15 +60,12 @@ class Cube {
 
 
     //Constructor
-    Cube(PApplet parent, int width, int height, int[] worldColors) {
+    Cube(PApplet processing, int width, int height) {
 
-        if (worldColors.length != 3)
-            worldColors = new int[]{BLACK, BLACK, BLACK};//BLACK should determine that something is not right.
+        this.processing = processing;
+        this.pg = processing.createGraphics(width, height, P3D);
+        this.thumbnailPg = processing.createGraphics(Math.round(width * THUMBNAIL_SCALE), Math.round(height * THUMBNAIL_SCALE), P3D);
 
-        this.parent = parent;
-        this.pg = parent.createGraphics(width, height, P3D);
-        this.thumbnailPg = parent.createGraphics(Math.round(width * THUMBNAIL_SCALE), Math.round(height * THUMBNAIL_SCALE), P3D);
-        this.worldColors = worldColors;
 
 
         MAIN_TRANSLATE_X = pg.width / MAIN_TRANSLATE_COEFF;
@@ -83,14 +80,11 @@ class Cube {
 
         resetRotation();
 
-        cube = createCube();
-
-        this.draw();//Initial state
     }
 
     //Create an OpenGL cube
     private PShape createCube() {
-        PShape cube = parent.createShape();
+        PShape cube = processing.createShape();
 
         cube.beginShape(PConstants.QUADS);
 
@@ -274,6 +268,16 @@ class Cube {
     }
 
 
+    public void setWorldColors(int[] worldColors) {
+        if (worldColors.length != 3)//FIXME if 6 levels per cube
+            worldColors = new int[]{MAGENTA, MAGENTA, MAGENTA};//MAGENTA should determine that something is not right.
+        this.worldColors = worldColors;
+
+        //Refresh cube
+        this.cube = createCube();
+        this.draw();
+    }
+
     //Getters and setters
     PGraphics getMainGraphics() {
         return pg;
@@ -285,5 +289,9 @@ class Cube {
 
     Level getCurrentLevel() {
         return front;
+    }
+
+    public boolean isOnRotation() {
+        return onRotation;
     }
 }

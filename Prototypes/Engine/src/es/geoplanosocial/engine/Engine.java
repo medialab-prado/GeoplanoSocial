@@ -1,15 +1,26 @@
 package es.geoplanosocial.engine;
 
+import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.players.Player;
+import es.geoplanosocial.simulation.MouseProvider;
+import es.geoplanosocial.tracker.BlobsProvider;
+import es.geoplanosocial.tracker.Tracker;
+import es.geoplanosocial.tracker.TrackerCallback;
+import es.geoplanosocial.util.Utils;
 import processing.core.*;
+
+import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Utils.getLevel;
+import static es.geoplanosocial.util.Utils.getWorldColors;
 
 /**
  * World engine
  * Created by gbermejo on 19/04/17.
  */
-public class Engine extends PApplet {
+public class Engine extends PApplet implements TrackerCallback {
 
     //Can be changed
     private static final boolean DRAW_FACADE_OUTLINE = true;
@@ -19,6 +30,18 @@ public class Engine extends PApplet {
 
     //Cube
     private static Cube worldCube;
+
+    //Players
+    private static final ArrayList<Player> players=new ArrayList<>();
+
+    //BlobsProvider
+    private static BlobsProvider blobsProvider;
+
+    //Tracker
+    private static final Tracker tracker=Tracker.getInstance();
+
+    //Current Level
+    private static Level currentLevel;
 
     /**********************
      *PROCESSING FUNCTIONS*
@@ -38,7 +61,19 @@ public class Engine extends PApplet {
 
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
 
-        worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT, new int[]{RED, GREEN, BLUE});
+        worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT);
+
+
+
+        if(DEBUG){
+            blobsProvider=new MouseProvider(this,1,10);
+        }
+
+        tracker.init(players,this,blobsProvider);
+
+        Level.init(players,this);
+
+        setWorld();
 
     }
 
@@ -52,10 +87,14 @@ public class Engine extends PApplet {
         //Draw elements
 
         drawBackground(BG);//Background
+
         drawWorld();//Draw the world
-        drawLevel();
-        drawExtra();
-        drawDebug();
+
+        drawTopInfo();
+
+        if (DEBUG) {
+            drawDebug();
+        }
 
         //println("Duration\t" + (System.nanoTime() - startTime));
 
@@ -65,6 +104,7 @@ public class Engine extends PApplet {
     public void keyPressed() {
         if (key == CODED) {
             worldCube.move(keyCode);
+            setLevel();
         }
     }
 
@@ -77,8 +117,14 @@ public class Engine extends PApplet {
 
     //Updates elements and properties
     private void update() {
+        //Get CV info
+        tracker.update();
 
-        worldCube.update();//Rotation animation of the current world
+        //Rotation animation of the current world
+        worldCube.update();
+
+        //Update elements of the current world
+        currentLevel.update();
 
     }
 
@@ -88,16 +134,20 @@ public class Engine extends PApplet {
     }
 
     private void drawWorld() {
-        //Draw the world in the pg
-        //Updates copy
-        image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
+
+        if(worldCube.isOnRotation()){
+            image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
+        }else{
+            drawLevel();
+        }
+
     }
 
     private void drawLevel() {
-        //TODO
+        currentLevel.draw();
     }
 
-    private void drawExtra() {
+    private void drawTopInfo() {
 
         //Draw thumbnail of world
         image(worldCube.getThumbnailGraphics(), START_THUMBNAIL_X, START_THUMBNAIL_Y);
@@ -107,9 +157,29 @@ public class Engine extends PApplet {
     private void drawDebug() {
         textSize(32);
         textAlign(LEFT, TOP);
-        text("Level: " + worldCube.getCurrentLevel().name(), 0, 0);
+        text(currentLevel.getId()+"("+currentLevel.getTitle()+")", 0, 0);
     }
 
+    /*OTHER FUNCTIONS*/
+
+    private void setWorld() {
+
+        worldCube.setWorldColors(getWorldColors(players.size()));
+        setLevel();
+    }
+
+    private void setLevel() {
+
+        Level l=getLevel(players.size(), worldCube.getCurrentLevel());
+        if(l!=null){
+            currentLevel=l;
+            Utils.log("Init: "+currentLevel.getId());
+        }else{
+            Utils.log("Error setting new level");
+        }
+
+
+    }
 
     /*DRAW FUNCTIONS*/
 
@@ -184,4 +254,22 @@ public class Engine extends PApplet {
         pg.line(195, 72, 231, 72);
     }
 
+
+
+    /*******************
+     *TRACKER FUNCTIONS*
+     *******************/
+
+
+    @Override
+    public void morePlayers() {
+        Utils.log("Added players: "+players.size());
+        setWorld();
+    }
+
+    @Override
+    public void lessPlayers() {
+        Utils.log("Removed players: "+players.size());
+        setWorld();
+    }
 }

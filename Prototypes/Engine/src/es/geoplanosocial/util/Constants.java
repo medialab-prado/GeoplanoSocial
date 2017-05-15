@@ -1,5 +1,6 @@
 package es.geoplanosocial.util;
 
+import es.geoplanosocial.levels.world1.a.Level1A;
 import processing.core.PConstants;
 
 /**
@@ -7,6 +8,10 @@ import processing.core.PConstants;
  * Created by gbermejo on 19/04/17.
  */
 public class Constants {
+
+    //Customizable parameters
+    public static boolean DEBUG = true;
+
 
     //Global engine parameters
     //Should not be changed
@@ -17,6 +22,10 @@ public class Constants {
     public static final String SCREEN_RENDERER = PConstants.P3D;
     public static final int FPS = 60;
     public static final int ANTI_ALIASING_LEVEL = 8;
+
+    //Levels settings
+    public static final String LEVEL_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.levels.world%d.%s.Level%d%s";
+    public static final Class DEAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
 
     //Facade sizes and positions
     public static final int LEVEL_WIDTH = 192;
