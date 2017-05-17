@@ -27,7 +27,7 @@ public class Level1B extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(new Node(Color.GREY,p));
+            players.add(new Node(Color.BLACK,p));
         }
         refreshPlayers(players);
     }
