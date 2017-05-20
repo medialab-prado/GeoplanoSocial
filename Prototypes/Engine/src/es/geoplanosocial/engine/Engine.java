@@ -6,6 +6,7 @@ import es.geoplanosocial.simulation.MouseProvider;
 import es.geoplanosocial.tracker.BlobsProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
+import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
 
@@ -69,7 +70,7 @@ public class Engine extends PApplet implements TrackerCallback {
             blobsProvider=new MouseProvider(this,1,10);
         }
 
-        tracker.init(players,this,blobsProvider);
+        Tracker.init(players,this,blobsProvider);
 
         Level.init(players,this);
 
@@ -101,9 +102,30 @@ public class Engine extends PApplet implements TrackerCallback {
         //saveFrame("./frames/frame-######.png");//Imagemagick -> convert -delay 60,1000  -loop 0 *.png World1.gif
     }
 
+    //FIXME remove on release
     public void keyPressed() {
-        if (key == CODED) {
-            worldCube.move(keyCode);
+        if (key == CODED && DEBUG) {
+
+            Types.Direction d;
+
+            switch (keyCode) {
+                case UP:
+                    d = Types.Direction.UP;
+                    break;
+                case DOWN:
+                    d = Types.Direction.DOWN;
+                    break;
+                case LEFT:
+                    d = Types.Direction.LEFT;
+                    break;
+                case RIGHT:
+                    d = Types.Direction.RIGHT;
+                    break;
+                default:
+                    d = Types.Direction.RIGHT;
+            }
+
+            worldCube.move(d);
             setLevel();
         }
     }
@@ -271,5 +293,11 @@ public class Engine extends PApplet implements TrackerCallback {
     public void lessPlayers() {
         Utils.log("Removed players: "+players.size());
         setWorld();
+    }
+
+    @Override
+    public void changeLevel(Types.Direction direction) {
+        worldCube.move(direction);
+        setLevel();
     }
 }

@@ -7,7 +7,6 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.*;
-import static es.geoplanosocial.util.Constants.START_WORLD_Y;
 
 /**
  * Abstract generic level
@@ -15,17 +14,17 @@ import static es.geoplanosocial.util.Constants.START_WORLD_Y;
  */
 public abstract class Level {
 
-    private String id;
-    private String title;
-    private int mainColor;
+    private final String id;
+    private final String title;
+    private final int mainColor;
 
-    protected PGraphics pg;
-    protected long startTime = System.nanoTime();
+    protected final PGraphics pg;
+    protected final long startTime;
 
     private boolean doFrameClear =true;
     private boolean doDrawPlayers=true;
 
-    public Level(String title, int mainColor) {
+    protected Level(String title, int mainColor) {
         this.id = getClass().getSimpleName();
         this.title = title;
         this.mainColor = mainColor;

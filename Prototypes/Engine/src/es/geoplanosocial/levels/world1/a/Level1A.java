@@ -2,7 +2,6 @@ package es.geoplanosocial.levels.world1.a;
 
 import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.levels.Level;
-import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Types;

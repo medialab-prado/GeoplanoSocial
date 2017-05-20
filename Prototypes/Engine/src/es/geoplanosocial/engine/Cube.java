@@ -1,5 +1,6 @@
 package es.geoplanosocial.engine;
 
+import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Types.Level;
 import es.geoplanosocial.util.Types.Axis;
 
@@ -10,7 +11,7 @@ import processing.core.PShape;
 
 import static es.geoplanosocial.util.Color.BLACK;
 import static es.geoplanosocial.util.Color.MAGENTA;
-import static processing.core.PConstants.*;
+import static processing.core.PConstants.P3D;
 
 /**
  * 3D cube representing the world
@@ -144,20 +145,19 @@ class Cube {
 
 
     //Moves cube
-    void move(int inputKey) {
+    void move(Types.Direction direction) {
         if (!onRotation) {
             rotationDirection = 1;
-            switch (inputKey) {
-                case PConstants.UP:
-                    rotationDirection = -1;
+            switch (direction) {
                 case DOWN:
+                    rotationDirection = -1;
+                case UP:
                     rotationAxis = Axis.X;
                     onRotation = true;
                     break;
                 case LEFT:
                     rotationDirection = -1;
                 case RIGHT:
-                    //cube.rotateY(HALF_PI*dir);
                     rotationAxis = Axis.Y;
                     onRotation = true;
                     break;

@@ -2,17 +2,24 @@ package es.geoplanosocial.tracker;
 
 import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.players.Player;
-import processing.core.PGraphics;
+import es.geoplanosocial.util.Types;
 
+import java.awt.*;
 import java.util.ArrayList;
 
+import static es.geoplanosocial.util.Constants.*;
+
+
 /**
+ * Layer between the game and the points provider.
+ * Translates blobs into players.
+ * Takes decisions on when level and world changes.
  * Created by gbermejo on 14/05/17.
  */
 public class Tracker {
 
     //Singleton
-    private static Tracker ourInstance = new Tracker();
+    private static final Tracker ourInstance = new Tracker();
 
     public static Tracker getInstance() {
         return ourInstance;
@@ -25,6 +32,9 @@ public class Tracker {
     private static ArrayList<Player> players;
     private static TrackerCallback trackerCallback;
     private static BlobsProvider blobsProvider;
+
+    private static final Rectangle playArea = new Rectangle(PLAY_AREA_OFFSET,PLAY_AREA_OFFSET,LEVEL_WIDTH-2*PLAY_AREA_OFFSET,LEVEL_HEIGHT-2*PLAY_AREA_OFFSET);
+
 
     public static void init(ArrayList<Player> players, TrackerCallback trackerCallback, BlobsProvider blobsProvider) {
         Tracker.players = players;
@@ -92,6 +102,91 @@ public class Tracker {
             trackerCallback.lessPlayers();
         }
 
+        //Check if there is a change of level
+        checkLevelChange();
+
     }
 
+    private void checkLevelChange(){
+        System.currentTimeMillis();
+
+        int wantToChange=0;
+
+        long minTimestamp=System.currentTimeMillis();
+
+        for (Player p : players){
+            if (!playArea.contains(p.getLocation())){
+                wantToChange++;
+                long outTime=p.getOutTime();
+                if(outTime==0)p.setOutTime();//Start timer
+                else minTimestamp=outTime<minTimestamp?outTime:minTimestamp;//Get longest waiting player
+            }else{
+                if(p.getOutTime()!=0)p.resetOutTime();
+            }
+        }
+
+        long maxWaiting=System.currentTimeMillis()-minTimestamp;//Longest waiting time
+
+        //Utils.log("Level swap in: "+ (PLAY_AREA_TIMER-maxWaiting));
+
+        float percentageChange= wantToChange/players.size();
+
+        //Initial conditions for change of level
+        if(percentageChange>=PLAY_AREA_MIN_PERCENTAGE && maxWaiting>=PLAY_AREA_TIMER*wantToChange){
+
+            int[] directionCounter=new int[Types.Direction.values().length];
+
+            //Players aiming each direction
+            for (Player p : players){
+                directionCounter[closestDirection(p).getNumber()]++;
+            }
+
+            boolean tie = false;
+            int min =0;
+            Types.Direction changeDirection=null;
+
+            //Compute global maximum
+            for(int i=0;i<directionCounter.length;i++){
+                if(directionCounter[i]==min){
+                    tie=true;
+                }else if(directionCounter[i]>min){
+                    changeDirection=Types.Direction.values()[i];
+                    min=directionCounter[i];
+                    tie=false;//Reset
+                }
+            }
+
+            if(!tie){//There is a unique global maximum so change in that direction
+                trackerCallback.changeLevel(changeDirection);
+            }
+        }
+
+
+
+    }
+
+    private Types.Direction closestDirection(Player player){
+
+        Point location = player.getLocation();
+
+        Point[] playAreaPoints = new Point[]{
+                new Point(location.x,0),//UP
+                new Point(location.x,LEVEL_HEIGHT),//DOWN
+                new Point(0,location.y),//LEFT
+                new Point(LEVEL_WIDTH,location.y)//RIGHT
+        };
+
+        double minDistance = Double.MAX_VALUE;
+        Types.Direction direction = Types.Direction.RIGHT;
+
+        for (int i =0; i<playAreaPoints.length;i++){
+            Point reference = playAreaPoints[i];
+            double tempDistance = reference.distance(location);
+            if(tempDistance<minDistance){
+                minDistance=tempDistance;
+                direction= Types.Direction.values()[i];
+            }
+        }
+        return direction;
+    }
 }

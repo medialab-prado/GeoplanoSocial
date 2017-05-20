@@ -6,10 +6,11 @@ import java.awt.*;
 
 
 /**
+ * A circular representation of a player.
  * Created by gbermejo on 15/05/17.
  */
 public class Node extends Player {
-    int color;
+    private int color;
 
     public Node(int color, Player player) {
         super(player.getId(), player.getBoundingBox());

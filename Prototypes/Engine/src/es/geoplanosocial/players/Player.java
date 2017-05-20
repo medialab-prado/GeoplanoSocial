@@ -3,7 +3,7 @@ package es.geoplanosocial.players;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * Abstract generic player
@@ -14,9 +14,12 @@ public abstract class Player {
     private String id;
     private Rectangle boundingBox;
 
+    private long outTime;
+
     public Player(String id, Rectangle position) {
         setId(id);
         setBoundingBox(position);
+        resetOutTime();
     }
 
     public String getId() {
@@ -34,6 +37,23 @@ public abstract class Player {
     private void setBoundingBox(Rectangle boundingBox) {
         this.boundingBox = boundingBox;
     }
+
+    public long getOutTime() {
+        return outTime;
+    }
+
+    public void setOutTime() {
+        this.outTime = System.currentTimeMillis();
+    }
+
+    public void resetOutTime() {
+        this.outTime = 0;
+    }
+
+    public Point getLocation() {
+        return boundingBox.getLocation();
+    }
+
 
     public void update(Rectangle current){
         setBoundingBox(current);

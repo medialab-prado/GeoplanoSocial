@@ -6,7 +6,6 @@ import es.geoplanosocial.tracker.BlobsProvider;
 import processing.core.PApplet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.LEVEL_HEIGHT;
 import static es.geoplanosocial.util.Constants.LEVEL_WIDTH;
@@ -20,7 +19,7 @@ public class MouseProvider implements BlobsProvider{
     private int numberOfPlayers = 0;
     private int sizeOfPlayers = 0;
 
-    private PApplet processing;
+    private final PApplet processing;
 
     public MouseProvider(PApplet processing, int numberOfPlayers, int sizeOfPlayers) {
         this.processing = processing;

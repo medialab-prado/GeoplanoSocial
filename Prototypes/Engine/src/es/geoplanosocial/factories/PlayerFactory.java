@@ -8,6 +8,7 @@ import es.geoplanosocial.util.Types;
 import processing.core.PGraphics;
 
 /**
+ * Factory for generating players.
  * Created by gbermejo on 20/05/17.
  */
 public class PlayerFactory {
@@ -22,7 +23,7 @@ public class PlayerFactory {
 
     public static Player getPlayer(Types.Player type, int color, Player player){
 
-        Player p=null;
+        Player p;
 
         switch (type){
             case NODE:

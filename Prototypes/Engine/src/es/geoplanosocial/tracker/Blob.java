@@ -7,8 +7,8 @@ import java.awt.Rectangle;
  * Created by gbermejo on 14/05/17.
  */
 public class Blob {
-    private String id;
-    private Rectangle boundingBox;
+    private final String id;
+    private final Rectangle boundingBox;
 
     public Blob(String id, Rectangle boundingBox) {
         this.id = id;

@@ -3,7 +3,7 @@ package es.geoplanosocial.factories;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.util.Types;
 
-import static es.geoplanosocial.util.Constants.DEAULT_LEVEL_CLASS;
+import static es.geoplanosocial.util.Constants.DEFAULT_LEVEL_CLASS;
 import static es.geoplanosocial.util.Constants.LEVEL_CLASS_FULLY_QUALIFIED_FORMAT;
 
 /**
@@ -27,7 +27,7 @@ public class LevelFactory {
             levelClass = Class.forName(getLevelClassName(players, level));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            levelClass = DEAULT_LEVEL_CLASS;
+            levelClass = DEFAULT_LEVEL_CLASS;
         }
 
         return levelClass;
@@ -40,9 +40,7 @@ public class LevelFactory {
 
         try {
             l=(Level)levelClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 

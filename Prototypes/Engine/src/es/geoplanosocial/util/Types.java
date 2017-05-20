@@ -18,4 +18,21 @@ public class Types {
     public enum Player {
         NODE
     }
+
+    public enum Direction {
+        UP(0),
+        DOWN(1),
+        LEFT(2),
+        RIGHT(3);
+
+        private final int number;
+
+        Direction(int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+    }
 }

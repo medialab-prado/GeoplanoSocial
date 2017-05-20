@@ -10,7 +10,7 @@ import processing.core.PConstants;
 public class Constants {
 
     //Customizable parameters
-    public static boolean DEBUG = true;
+    public static final boolean DEBUG = true;
 
 
     //Global engine parameters
@@ -25,7 +25,7 @@ public class Constants {
 
     //Levels settings
     public static final String LEVEL_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.levels.world%d.%s.Level%d%s";
-    public static final Class DEAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
+    public static final Class DEFAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
 
     //Facade sizes and positions
     public static final int LEVEL_WIDTH = 192;
@@ -34,5 +34,11 @@ public class Constants {
     public static final int START_WORLD_Y = 72;
     public static final int START_THUMBNAIL_X = 122;
     public static final int START_THUMBNAIL_Y = 48;
+
+
+    //Play area
+    public static final int PLAY_AREA_OFFSET = 15;
+    public static final int PLAY_AREA_TIMER = 5 * 1000;//In milliseconds
+    public static final float PLAY_AREA_MIN_PERCENTAGE = 0.5f;
 
 }
