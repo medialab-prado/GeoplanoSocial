@@ -1,5 +1,6 @@
 package es.geoplanosocial.tracker;
 
+import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.players.Player;
 import processing.core.PGraphics;
 
@@ -78,12 +79,7 @@ public class Tracker {
         //Add players
         for(Blob b : elementsTracked){
             if(b!=null) {
-                players.add(new Player(b.getId(), b.getBoundingBox()) {
-                    @Override
-                    public void draw(PGraphics pg) {
-
-                    }
-                });
+                players.add(PlayerFactory.getPlayer(b));
                 addedPlayers=true;
             }
         }

@@ -1,9 +1,11 @@
 package es.geoplanosocial.levels.world1.c;
 
+import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
+import es.geoplanosocial.util.Types;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class Level1C extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(new Node(Color.WHITE,p));
+            players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.WHITE, p));
         }
         refreshPlayers(players);
     }

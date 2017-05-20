@@ -11,9 +11,9 @@ import processing.core.*;
 
 import java.util.ArrayList;
 
+import static es.geoplanosocial.factories.LevelFactory.getLevel;
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
-import static es.geoplanosocial.util.Utils.getLevel;
 import static es.geoplanosocial.util.Utils.getWorldColors;
 
 /**

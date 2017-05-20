@@ -15,4 +15,7 @@ public class Types {
         B,
         C
     }
+    public enum Player {
+        NODE
+    }
 }
