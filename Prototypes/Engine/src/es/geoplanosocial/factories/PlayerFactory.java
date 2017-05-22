@@ -1,6 +1,7 @@
 package es.geoplanosocial.factories;
 
 import es.geoplanosocial.players.Node;
+import es.geoplanosocial.players.Node1C;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.tracker.Blob;
 
@@ -28,6 +29,10 @@ public class PlayerFactory {
         switch (type){
             case NODE:
                 p=new Node(color,player);
+                break;
+
+            case NODE1A:
+                p=new Node1C(color,player);
                 break;
             default:
                 p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
