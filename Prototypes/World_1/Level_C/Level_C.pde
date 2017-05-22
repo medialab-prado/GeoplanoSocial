@@ -164,7 +164,7 @@ void drawBackground() {
 }
 
 void drawPlayer() {
-  if ((mouseX_prev == mouseX) && (mouseX_prev == mouseX)) {
+  if ((mouseX_prev == mouseX) && (mouseY_prev == mouseY)) {
     dynamicPlayerColor = dynamicPlayerColor - DEGRADE_RATE;
     if (dynamicPlayerColor < COLOR_GRAY)
       dynamicPlayerColor = COLOR_GRAY;
