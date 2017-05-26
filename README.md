@@ -16,6 +16,6 @@ Proponemos un sencillo juego en el que la interacción entre personas es clave. 
 
 Redes
 -----
- * Fotos  --> https://www.tumblr.com/dashboard/blog/geoplanosocial
+ * Fotos  --> https://geoplanosocial.tumblr.com
  * Tareas --> https://trello.com/geoplanosocial
  * Blog   --> https://juegosreunidosblog.wordpress.com
