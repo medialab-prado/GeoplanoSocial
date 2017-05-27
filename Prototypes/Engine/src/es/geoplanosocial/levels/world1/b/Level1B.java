@@ -33,7 +33,7 @@ public class Level1B extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            Player node = Player.Factory.getPlayer(Types.Player.NODE, Color.BLACK, p);
+            Player node = Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, p);
             node.setState(p.getState());
             players.add(node);
         }
@@ -57,7 +57,7 @@ public class Level1B extends Level {
     @Override
     public void addPlayers(ArrayList<Player> newPlayers) {
         for (Player p : newPlayers){
-            Level.players.add(Player.Factory.getPlayer(Types.Player.NODE, Color.RED_ALPHA, p));
+            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.RED_ALPHA, p));
         }
     }
 }

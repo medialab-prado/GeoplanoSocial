@@ -1,8 +1,7 @@
 package es.geoplanosocial.engine;
 
+import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.util.Types;
-import es.geoplanosocial.util.Types.Level;
-import es.geoplanosocial.util.Types.Axis;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -19,6 +18,13 @@ import static processing.core.PConstants.P3D;
  */
 class Cube {
 
+    private enum Axis {
+        X,
+        Y,
+        Z
+    }
+
+
     private final PApplet processing;
 
     private final PGraphics pg;
@@ -34,9 +40,9 @@ class Cube {
     private float rotationCurrent;
 
 
-    private Level front = Level.A;//The current level
-    private Level right = Level.B;//Level at right and left
-    private Level top = Level.C;//Level at top and bottom
+    private Level.Type front = Level.Type.A;//The current level
+    private Level.Type right = Level.Type.B;//Level at right and left
+    private Level.Type top = Level.Type.C;//Level at top and bottom
 
     private static final float THUMBNAIL_SCALE = 1 / 7.0f;
     private static final float ROTATION_LIMIT = PConstants.HALF_PI; //90 degrees
@@ -168,7 +174,7 @@ class Cube {
 
     //Set variables to indicate the current level and adjacent ones
     private void computeLevel() {
-        Level temp;
+        Level.Type temp;
         switch (rotationAxis) {
             case X:
                 temp = front;
@@ -287,7 +293,7 @@ class Cube {
         return thumbnailPg;
     }
 
-    Level getCurrentLevel() {
+    Level.Type getCurrentLevel() {
         return front;
     }
 

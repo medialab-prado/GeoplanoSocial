@@ -14,6 +14,11 @@ import java.awt.*;
  */
 public abstract class Player {
 
+    public enum Type {
+        NODE,
+        NODE1C
+    }
+
     public enum State {
         GHOST,
         PLAYING,
@@ -136,7 +141,7 @@ public abstract class Player {
             };
         }
 
-        public static Player getPlayer(Types.Player type, int color, Player player){
+        public static Player getPlayer(Player.Type type, int color, Player player){
 
             Player p;
 

@@ -34,7 +34,7 @@ public class Level1C extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            Player node1c = Player.Factory.getPlayer(Types.Player.NODE1C, Color.WHITE, p);
+            Player node1c = Player.Factory.getPlayer(Player.Type.NODE1C, Color.WHITE, p);
             node1c.setState(p.getState());
             players.add(node1c);
         }

@@ -16,6 +16,13 @@ import static es.geoplanosocial.util.Constants.*;
  */
 public abstract class Level {
 
+    public enum Type {
+        A,
+        B,
+        C
+    }
+
+
     private final String id;
     private final String title;
     private final int mainColor;
@@ -101,7 +108,7 @@ public abstract class Level {
     public void addPlayers(ArrayList<Player> newPlayers){
         //Default implementation
         for (Player p : newPlayers){
-            Level.players.add(Player.Factory.getPlayer(Types.Player.NODE, Color.WHITE_ALPHA, p));
+            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE_ALPHA, p));
         }
     }
 
@@ -120,14 +127,14 @@ public abstract class Level {
      */
     public static class Factory {
 
-        private static String getLevelClassName(int players, Types.Level level){
+        private static String getLevelClassName(int players, Level.Type level){
 
             String levelName = level.name();
 
             return String.format(LEVEL_CLASS_FULLY_QUALIFIED_FORMAT,players,levelName.toLowerCase(),players,levelName);
         }
 
-        private static Class getLevelClass(int players, Types.Level level){
+        private static Class getLevelClass(int players, Level.Type level){
 
             Class levelClass;
 
@@ -141,7 +148,7 @@ public abstract class Level {
             return levelClass;
         }
 
-        public static Level getLevel(int players, Types.Level level){
+        public static Level getLevel(int players, Level.Type level){
 
             Class levelClass= getLevelClass(players,level);
             Level l=null;

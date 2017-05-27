@@ -38,10 +38,10 @@ public class Utils {
 
 
     public static int[] getWorldColors(int players){
-        int[] worldColors=new int[Types.Level.values().length];
+        int[] worldColors=new int[Level.Type.values().length];
 
         int index=0;
-        for (Types.Level level : Types.Level.values()) {
+        for (Level.Type level : Level.Type.values()) {
 
             Level l=Level.Factory.getLevel(players, level);
             if(l!=null){

@@ -5,20 +5,7 @@ package es.geoplanosocial.util;
  * Created by gbermejo on 19/04/17.
  */
 public class Types {
-    public enum Axis {
-        X,
-        Y,
-        Z
-    }
-    public enum Level {
-        A,
-        B,
-        C
-    }
-    public enum Player {
-        NODE,
-        NODE1C
-    }
+
 
     public enum Direction {
         UP(0),
