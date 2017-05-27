@@ -27,4 +27,26 @@ public class Color {
     public static final int WHITE_ALPHA = Utils.color(255, 255, 255, 127);
     public static final int RED_ALPHA = Utils.color(255, 0, 0, 127);
 
+
+    /*********
+     *World 3*
+     *********/
+    //A
+    public static final int LIGHTBLUE_A700 = Utils.color(0, 145, 234);
+    //B
+    public static final int LIGHTBLUE_A400 = Utils.color(0, 176, 255);
+    //C
+    public static final int LIGHTBLUE_A200 = Utils.color(64, 196, 255);
+
+
+    /*********
+     *World 4*
+     *********/
+    //A
+    public static final int RED_A700 = Utils.color(213, 0, 0);
+    //B
+    public static final int RED_A400 = Utils.color(255, 23, 68);
+    //C
+    public static final int RED_A200 = Utils.color(255, 82, 82);
+
 }

@@ -17,9 +17,18 @@ import static es.geoplanosocial.util.Constants.*;
 public abstract class Level {
 
     public enum Type {
-        A,
-        B,
-        C
+        A(0),
+        B(1),
+        C(2);
+        private final int number;
+
+        Type(int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
     }
 
 

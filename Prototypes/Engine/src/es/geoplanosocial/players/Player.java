@@ -156,6 +156,7 @@ public abstract class Player {
                 default:
                     p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
             }
+            p.setState(player.getState());
             return p;
         }
     }

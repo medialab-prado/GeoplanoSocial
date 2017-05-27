@@ -1,41 +1,40 @@
-package es.geoplanosocial.levels.world1.a;
+package es.geoplanosocial.levels.world2.a;
 
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
-import es.geoplanosocial.util.Types;
 
 import java.util.ArrayList;
 
 /**
- * World 1
+ * World 2
  * Level A
- * Created by gbermejo on 15/05/17.
+ * Created by gbermejo on 27/05/17.
  */
-public class Level1A extends Level {
+public class Level2A extends Level {
 
-    private static final String TITLE="Huella";
-    private static final int MAIN_COLOR= Color.BLACK;
+    private static final String TITLE="Los amantes de Teruel";
+    private static final int MAIN_COLOR= Color.DARK_GREY;
 
-    public Level1A() {
+    public Level2A() {
         super(TITLE, MAIN_COLOR);
     }
 
 
     @Override
     protected void setupLevel() {
-        //Level specific setup
+        //TODO Level specific setup
     }
 
     @Override
     protected ArrayList<Player> setupPlayers() {
 
-        //Init specific players
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE, p));
+            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, p));
         }
+
         return players;
     }
 
@@ -43,14 +42,14 @@ public class Level1A extends Level {
 
     @Override
     public void update() {
-        //Update level elements
+        //TODO Update level elements
 
     }
 
 
     @Override
     protected void drawLevel() {
-        //Draw level elements
+        //TODO Draw level elements
     }
 
 

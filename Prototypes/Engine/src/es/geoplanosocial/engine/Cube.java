@@ -277,7 +277,14 @@ class Cube {
     public void setWorldColors(int[] worldColors) {
         if (worldColors.length != 3)//FIXME if 6 levels per cube
             worldColors = new int[]{MAGENTA, MAGENTA, MAGENTA};//MAGENTA should determine that something is not right.
-        this.worldColors = worldColors;
+
+        //Rotate colors accordingly
+        int[]correctedColors = new int[3];
+        correctedColors[0]=worldColors[front.getNumber()];
+        correctedColors[1]=worldColors[right.getNumber()];
+        correctedColors[2]=worldColors[top.getNumber()];
+
+        this.worldColors = correctedColors;
 
         //Refresh cube
         this.cube = createCube();

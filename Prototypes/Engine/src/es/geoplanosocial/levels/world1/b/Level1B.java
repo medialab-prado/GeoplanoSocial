@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class Level1B extends Level {
 
     private static final String TITLE="Rastro";
-    private static final int MAIN_COLOR= Color.GREEN;
+    private static final int MAIN_COLOR= Color.WHITE;
 
     public Level1B() {
-        super(Level1B.TITLE, Level1B.MAIN_COLOR);
+        super(TITLE, MAIN_COLOR);
     }
 
     @Override
@@ -33,9 +33,7 @@ public class Level1B extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            Player node = Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, p);
-            node.setState(p.getState());
-            players.add(node);
+            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, p));
         }
         return players;
     }
