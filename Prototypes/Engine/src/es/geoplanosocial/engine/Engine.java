@@ -36,7 +36,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private static final ArrayList<Player> players=new ArrayList<>();
 
     //BlobsProvider
-    private static BlobsProvider blobsProvider;
+    private static MouseProvider blobsProvider;
 
     //Tracker
     private static final Tracker tracker=Tracker.getInstance();
@@ -104,29 +104,42 @@ public class Engine extends PApplet implements TrackerCallback {
 
     //FIXME remove on release
     public void keyPressed() {
-        if (key == CODED && DEBUG) {
 
-            Types.Direction d;
+        if(DEBUG) {
+            if (key == CODED) {
+                Types.Direction d;
 
-            switch (keyCode) {
-                case UP:
-                    d = Types.Direction.UP;
-                    break;
-                case DOWN:
-                    d = Types.Direction.DOWN;
-                    break;
-                case LEFT:
-                    d = Types.Direction.LEFT;
-                    break;
-                case RIGHT:
-                    d = Types.Direction.RIGHT;
-                    break;
-                default:
-                    d = Types.Direction.RIGHT;
+                switch (keyCode) {
+                    case UP:
+                        d = Types.Direction.UP;
+                        break;
+                    case DOWN:
+                        d = Types.Direction.DOWN;
+                        break;
+                    case LEFT:
+                        d = Types.Direction.LEFT;
+                        break;
+                    case RIGHT:
+                        d = Types.Direction.RIGHT;
+                        break;
+                    default:
+                        d = Types.Direction.RIGHT;
+                }
+
+                worldCube.move(d);
+                setLevel();
+            }else{
+                switch (key) {
+                    case '+':
+                        blobsProvider.setNumberOfPlayers(blobsProvider.getNumberOfPlayers()+1);
+                        break;
+                    case '-':
+                        blobsProvider.setNumberOfPlayers(blobsProvider.getNumberOfPlayers()-1);
+                        break;
+                    default:
+                }
+                Utils.log("Players: "+blobsProvider.getNumberOfPlayers());
             }
-
-            worldCube.move(d);
-            setLevel();
         }
     }
 
