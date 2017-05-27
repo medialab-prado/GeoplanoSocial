@@ -11,15 +11,28 @@ import java.awt.*;
  */
 public abstract class Player {
 
+    public enum State {
+        GHOST,
+        PLAYING,
+        MISSING
+    }
+
     private String id;
     private Rectangle boundingBox;
 
-    private long outTime;
+    private State state;
+
+    private long boundaryTime;//On boundaries of play area
+    private long outTime;//Out of play area
 
     public Player(String id, Rectangle position) {
         setId(id);
         setBoundingBox(position);
+
+        resetBoundaryTime();
         resetOutTime();
+
+        state=State.GHOST;
     }
 
     public String getId() {
@@ -38,6 +51,20 @@ public abstract class Player {
         this.boundingBox = boundingBox;
     }
 
+
+    public long getBoundaryTime() {
+        return boundaryTime;
+    }
+
+    public void setBoundaryTime() {
+        this.boundaryTime = System.currentTimeMillis();
+    }
+
+    public void resetBoundaryTime() {
+        this.boundaryTime = 0;
+    }
+
+
     public long getOutTime() {
         return outTime;
     }
@@ -48,6 +75,19 @@ public abstract class Player {
 
     public void resetOutTime() {
         this.outTime = 0;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+
+    public boolean isVisible(){
+        return this.state==State.GHOST || this.state==State.PLAYING;
     }
 
     public Point getLocation() {

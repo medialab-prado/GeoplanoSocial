@@ -33,6 +33,7 @@ public class Tracker {
     private static TrackerCallback trackerCallback;
     private static BlobsProvider blobsProvider;
 
+
     private static final Rectangle playArea = new Rectangle(PLAY_AREA_OFFSET,PLAY_AREA_OFFSET,LEVEL_WIDTH-2*PLAY_AREA_OFFSET,LEVEL_HEIGHT-2*PLAY_AREA_OFFSET);
 
 
@@ -40,11 +41,20 @@ public class Tracker {
         Tracker.players = players;
         Tracker.trackerCallback = trackerCallback;
         Tracker.blobsProvider = blobsProvider;
+
     }
 
     public void update(){
 
+        //Check if there is a change of players
+        checkPlayersChange();
 
+        //Check if there is a change of level
+        checkLevelChange();
+
+    }
+
+    private void checkPlayersChange() {
         //Get current elements
         Blob[] elementsTracked = blobsProvider.fetchPositions();
 
@@ -101,11 +111,9 @@ public class Tracker {
         }else if(removedPlayers){
             trackerCallback.lessPlayers();
         }
-
-        //Check if there is a change of level
-        checkLevelChange();
-
     }
+
+
 
     private void checkLevelChange(){
         System.currentTimeMillis();
@@ -117,11 +125,11 @@ public class Tracker {
         for (Player p : players){
             if (!playArea.contains(p.getLocation())){
                 wantToChange++;
-                long outTime=p.getOutTime();
-                if(outTime==0)p.setOutTime();//Start timer
-                else minTimestamp=outTime<minTimestamp?outTime:minTimestamp;//Get longest waiting player
+                long boundaryTime=p.getBoundaryTime();
+                if(boundaryTime==0)p.setBoundaryTime();//Start timer
+                else minTimestamp=boundaryTime<minTimestamp?boundaryTime:minTimestamp;//Get longest waiting player
             }else{
-                if(p.getOutTime()!=0)p.resetOutTime();
+                if(p.getBoundaryTime()!=0)p.resetBoundaryTime();
             }
         }
 

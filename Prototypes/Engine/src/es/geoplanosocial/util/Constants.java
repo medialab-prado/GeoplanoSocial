@@ -36,9 +36,12 @@ public class Constants {
     public static final int START_THUMBNAIL_Y = 48;
 
 
-    //Play area
+    //Level change
     public static final int PLAY_AREA_OFFSET = 15;
     public static final int PLAY_AREA_TIMER = 5 * 1000;//In milliseconds
     public static final float PLAY_AREA_MIN_PERCENTAGE = 0.5f;
+
+    //World change
+    public static final int WORLD_CHANGE_TIMER = 5 * 1000;//In milliseconds
 
 }

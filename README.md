@@ -6,7 +6,7 @@
 Autores
 ------------
  * Josué Iglesias
- * Guzman Bermejo
+ * Guzmán Bermejo
  * Elena Sevilla
 
 Descripción
