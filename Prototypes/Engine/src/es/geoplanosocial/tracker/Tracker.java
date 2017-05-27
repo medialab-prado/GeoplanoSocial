@@ -2,6 +2,7 @@ package es.geoplanosocial.tracker;
 
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Types;
+import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class Tracker {
 
         //Updates existing ones
         //FIXME maybe hashmap but nested iteration of small lists.
-        for (int i = 0;i<players.size(); i++){
+        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
 
             Player p = players.get(i);
             boolean present = false;
@@ -83,7 +84,7 @@ public class Tracker {
 
                 Blob b=elementsTracked[j];
 
-                if (b!=null && b.getId().equals(p.getId())){//Target player
+                if (b!=null && b.getId().equals(p.getId()) && p.isVisible()){//Target player
 
                     //Update player
                     p.update(b.getBoundingBox());
@@ -99,9 +100,16 @@ public class Tracker {
             }
 
             //Player disappeared
-            if(!present && p.isVisible()){
-                p.setState(Player.State.MISSING);
-                p.setOutTime();
+            if(!present){
+                switch (p.getState()){
+                    case PLAYING:
+                        p.setState(Player.State.MISSING);
+                        p.setOutTime();
+                        break;
+                    case GHOST:
+                        players.remove(p);
+                        break;
+                }
             }
         }
     }
@@ -124,6 +132,11 @@ public class Tracker {
         //If missing one and one ghost, swap them
         swapMissingPlayers();
 
+        /*for (Player p : players){
+            System.out.print("["+p.getId()+"] "+ p.getState() +"\t|");
+        }
+        System.out.println();*/
+
         //FIXME maybe detect additions OR not AND deletions
 
         //Check ghost timers
@@ -139,8 +152,7 @@ public class Tracker {
         for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
             Player missingPlayer = players.get(i);
             if(missingPlayer.getState()==Player.State.MISSING){
-                for(int j=0;j<i;j++){
-                    Player ghostPlayer = players.get(j);
+                for(Player ghostPlayer : players){
                     if(ghostPlayer.getState()==Player.State.GHOST){
                         //Perform the swap
                         players.remove(ghostPlayer);
@@ -171,6 +183,7 @@ public class Tracker {
         long maxWaiting=System.currentTimeMillis()-minTimestamp;//Longest waiting time
 
         if(maxWaiting>=WORLD_CHANGE_TIMER_IN){
+            Utils.log("More players");
             changeWorld();
         }
 
@@ -194,6 +207,7 @@ public class Tracker {
         }
 
         if(shouldChange){
+            Utils.log("Less players");
             changeWorld();
         }
 
