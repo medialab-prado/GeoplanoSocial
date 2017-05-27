@@ -22,12 +22,15 @@ public abstract class Player {
 
     private State state;
 
+    private long creationTime;
     private long boundaryTime;//On boundaries of play area
     private long outTime;//Out of play area
 
     public Player(String id, Rectangle position) {
         setId(id);
         setBoundingBox(position);
+
+        this.creationTime = System.currentTimeMillis();
 
         resetBoundaryTime();
         resetOutTime();
@@ -39,7 +42,7 @@ public abstract class Player {
         return id;
     }
 
-    private void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,8 +50,12 @@ public abstract class Player {
         return boundingBox;
     }
 
-    private void setBoundingBox(Rectangle boundingBox) {
+    public void setBoundingBox(Rectangle boundingBox) {
         this.boundingBox = boundingBox;
+    }
+
+    public long getCreationTime() {
+        return creationTime;
     }
 
 

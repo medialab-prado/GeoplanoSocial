@@ -22,4 +22,9 @@ public class Color {
     public static final int MAGENTA = Utils.color(255, 0, 255);
     public static final int YELLOW = Utils.color(255, 255, 0);
     public static final int CYAN = Utils.color(0, 255, 255);
+
+
+    public static final int WHITE_ALPHA = Utils.color(255, 255, 255, 127);
+    public static final int RED_ALPHA = Utils.color(255, 0, 0, 127);
+
 }

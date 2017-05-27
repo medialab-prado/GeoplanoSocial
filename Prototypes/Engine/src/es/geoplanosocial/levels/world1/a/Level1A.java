@@ -22,16 +22,28 @@ public class Level1A extends Level {
         super(Level1A.TITLE, Level1A.MAIN_COLOR);
     }
 
+
     @Override
-    protected void setup() {
+    protected void setupLevel() {
+        //Level specific setup
+    }
+
+    @Override
+    protected ArrayList<Player> setupPlayers() {
+
         //Init specific players
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.GREY, p));
+            Player node = PlayerFactory.getPlayer(Types.Player.NODE, Color.GREY, p);
+            node.setState(p.getState());
+            players.add(node);
+
         }
-        refreshPlayers(players);
+        return players;
     }
+
+
 
     @Override
     public void update() {
@@ -44,4 +56,6 @@ public class Level1A extends Level {
     protected void drawLevel() {
         //Draw level elements
     }
+
+
 }

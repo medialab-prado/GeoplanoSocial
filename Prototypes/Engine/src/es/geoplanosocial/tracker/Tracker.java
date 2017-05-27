@@ -46,23 +46,36 @@ public class Tracker {
 
     public void update(){
 
-        //Check if there is a change of players
-        checkPlayersChange();
+        //Update players
+        updatePlayers();
+
+        //Check if there is a change of world
+        checkWorldChange();
 
         //Check if there is a change of level
         checkLevelChange();
 
     }
 
-    private void checkPlayersChange() {
+
+    private void updatePlayers() {
         //Get current elements
         Blob[] elementsTracked = blobsProvider.fetchPositions();
 
-        boolean addedPlayers=false;
-        boolean removedPlayers=false;
+        //Update locations and spot missing players
+        updateLocations(elementsTracked);
+
+        //Add new players as ghosts
+        addPlayers(elementsTracked);
+
+
+    }
+
+    private void updateLocations(Blob[] elementsTracked) {
 
         //Updates existing ones
-        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
+        //FIXME maybe hashmap but nested iteration of small lists.
+        for (int i = 0;i<players.size(); i++){
 
             Player p = players.get(i);
             boolean present = false;
@@ -86,37 +99,132 @@ public class Tracker {
                 }
             }
 
-
             //Player disappeared
-            if(!present){
-                players.remove(p);
-                removedPlayers=true;
+            if(!present && p.isVisible()){
+                p.setState(Player.State.MISSING);
+                p.setOutTime();
             }
         }
+    }
 
+    private void addPlayers(Blob[] elementsTracked) {
 
-
+        ArrayList<Player> newPlayers= new ArrayList<>();
         //Add players
         for(Blob b : elementsTracked){
             if(b!=null) {
-                players.add(PlayerFactory.getPlayer(b));
-                addedPlayers=true;
+                newPlayers.add(PlayerFactory.getPlayer(b));
             }
         }
+        trackerCallback.newPlayers(newPlayers);
+    }
 
-        //Check if players changed
-        //FIXME maybe detect additions AND not OR deletions
-        if(addedPlayers){
-            trackerCallback.morePlayers();
-        }else if(removedPlayers){
-            trackerCallback.lessPlayers();
+
+    private void checkWorldChange(){
+
+        //If missing one and one ghost, swap them
+        swapMissingPlayers();
+
+        //FIXME maybe detect additions OR not AND deletions
+
+        //Check ghost timers
+        checkGhostPlayers();
+
+        //Check out timers
+        checkMissingPlayers();
+
+    }
+
+
+    private void swapMissingPlayers(){
+        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
+            Player missingPlayer = players.get(i);
+            if(missingPlayer.getState()==Player.State.MISSING){
+                for(int j=0;j<i;j++){
+                    Player ghostPlayer = players.get(j);
+                    if(ghostPlayer.getState()==Player.State.GHOST){
+                        //Perform the swap
+                        players.remove(ghostPlayer);
+                        missingPlayer.setId(ghostPlayer.getId());
+                        missingPlayer.setBoundingBox(ghostPlayer.getBoundingBox());
+                        missingPlayer.resetBoundaryTime();
+                        missingPlayer.resetOutTime();
+                        missingPlayer.setState(Player.State.PLAYING);
+                        break;
+                    }
+                }
+            }
         }
     }
 
 
+    private void checkGhostPlayers(){
+        long minTimestamp=System.currentTimeMillis();
+
+        for (int i = 0;i<players.size(); i++){
+            Player p = players.get(i);
+            if(p.getState()==Player.State.GHOST){
+                long creationTime=p.getCreationTime();
+                minTimestamp=creationTime<minTimestamp?creationTime:minTimestamp;//Get longest ghost player
+            }
+        }
+
+        long maxWaiting=System.currentTimeMillis()-minTimestamp;//Longest waiting time
+
+        if(maxWaiting>=WORLD_CHANGE_TIMER_IN){
+            changeWorld();
+        }
+
+    }
+
+
+    private void checkMissingPlayers(){
+        long now = System.currentTimeMillis();
+
+        boolean shouldChange = false;
+        for (int i = 0;i<players.size(); i++){
+            Player p = players.get(i);
+            if(p.getState()==Player.State.MISSING){
+                long outTime=p.getOutTime();
+                if(now-outTime>=WORLD_CHANGE_TIMER_OUT){
+                    //Just one player issues the change
+                    shouldChange = true;
+                    break;
+                }
+            }
+        }
+
+        if(shouldChange){
+            changeWorld();
+        }
+
+    }
+
+    private void changeWorld(){
+
+        //Cleanup players
+        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
+            Player p = players.get(i);
+
+            //Set all ghosts as playing
+            if(p.getState()==Player.State.GHOST){
+                p.setState(Player.State.PLAYING);
+            }
+
+            //Remove all missing
+            if(p.getState()==Player.State.MISSING){
+                players.remove(p);
+            }
+        }
+
+
+        trackerCallback.changeWorld();
+    }
+
+
+
 
     private void checkLevelChange(){
-        System.currentTimeMillis();
 
         int wantToChange=0;
 

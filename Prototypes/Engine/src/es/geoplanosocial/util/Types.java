@@ -17,7 +17,7 @@ public class Types {
     }
     public enum Player {
         NODE,
-        NODE1A
+        NODE1C
     }
 
     public enum Direction {

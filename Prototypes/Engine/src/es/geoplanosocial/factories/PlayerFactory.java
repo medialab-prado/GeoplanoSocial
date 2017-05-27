@@ -31,7 +31,7 @@ public class PlayerFactory {
                 p=new Node(color,player);
                 break;
 
-            case NODE1A:
+            case NODE1C:
                 p=new Node1C(color,player);
                 break;
             default:

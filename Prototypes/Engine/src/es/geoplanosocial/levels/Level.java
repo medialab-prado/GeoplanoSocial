@@ -1,6 +1,9 @@
 package es.geoplanosocial.levels;
 
+import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.util.Color;
+import es.geoplanosocial.util.Types;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
@@ -55,17 +58,24 @@ public abstract class Level {
         if(doDrawPlayers) {
             //Draw players
             for(Player p : players){
-                p.draw(pg);
+                if(p.isVisible())p.draw(pg);
             }
         }
         drawLevel();
         processing.image(pg, START_WORLD_X, START_WORLD_Y);
     }
 
+    private void setup(){
+        setupLevel();
+        refreshPlayers(setupPlayers());
+    }
+
     public abstract void update();
 
     protected abstract void drawLevel();
-    protected abstract void setup();
+
+    protected abstract void setupLevel();
+    protected abstract ArrayList<Player> setupPlayers();
 
 
     public void setDoFrameClear(boolean doFrameClear) {
@@ -88,7 +98,16 @@ public abstract class Level {
         return mainColor;
     }
 
-    protected static void refreshPlayers(ArrayList<Player> players) {
+
+    public void addPlayers(ArrayList<Player> newPlayers){
+        //Default implementation
+        for (Player p : newPlayers){
+            Level.players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.WHITE_ALPHA, p));
+        }
+    }
+
+
+    private static void refreshPlayers(ArrayList<Player> players) {
         Level.players.clear();
         Level.players.addAll(players);
     }

@@ -291,22 +291,24 @@ public class Engine extends PApplet implements TrackerCallback {
 
 
 
+
     /*******************
      *TRACKER FUNCTIONS*
      *******************/
 
+    @Override
+    public void newPlayers(ArrayList<Player> newPlayers) {
+        currentLevel.addPlayers(newPlayers);
+    }
+
 
     @Override
-    public void morePlayers() {
-        Utils.log("Added players: "+players.size());
+    public void changeWorld() {
+        Utils.log("Change world! Players: "+players.size());
         setWorld();
     }
 
-    @Override
-    public void lessPlayers() {
-        Utils.log("Removed players: "+players.size());
-        setWorld();
-    }
+
 
     @Override
     public void changeLevel(Types.Direction direction) {

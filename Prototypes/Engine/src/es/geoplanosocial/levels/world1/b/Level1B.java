@@ -23,24 +23,42 @@ public class Level1B extends Level {
     }
 
     @Override
-    protected void setup() {
+    protected void setupLevel() {
+        //Level specific setup
+    }
+
+    @Override
+    protected ArrayList<Player> setupPlayers() {
+
         //Init specific players
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.BLACK, p));
+            Player node = PlayerFactory.getPlayer(Types.Player.NODE, Color.BLACK, p);
+            node.setState(p.getState());
+            players.add(node);
         }
-        refreshPlayers(players);
+        return players;
     }
+
+
 
     @Override
     public void update() {
         //Update level elements
+
     }
 
 
     @Override
     protected void drawLevel() {
         //Draw level elements
+    }
+
+    @Override
+    public void addPlayers(ArrayList<Player> newPlayers) {
+        for (Player p : newPlayers){
+            Level.players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.RED_ALPHA, p));
+        }
     }
 }

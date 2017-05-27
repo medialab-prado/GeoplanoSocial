@@ -42,6 +42,8 @@ public class Constants {
     public static final float PLAY_AREA_MIN_PERCENTAGE = 0.5f;
 
     //World change
-    public static final int WORLD_CHANGE_TIMER = 5 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_IN = 5 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_OUT = 5 * 1000;//In milliseconds
+
 
 }
