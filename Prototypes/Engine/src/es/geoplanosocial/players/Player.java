@@ -1,5 +1,8 @@
 package es.geoplanosocial.players;
 
+import es.geoplanosocial.levels.world1.c.Node1C;
+import es.geoplanosocial.tracker.Blob;
+import es.geoplanosocial.util.Types;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
@@ -118,4 +121,37 @@ public abstract class Player {
 
     public abstract void draw(PGraphics pg);
 
+
+    /**
+     * Factory for generating players.
+     * Created by gbermejo on 20/05/17.
+     */
+    public static class Factory{
+        public static Player getPlayer(Blob blob){
+            return new Player(blob.getId(), blob.getBoundingBox()) {
+                @Override
+                public void draw(PGraphics pg) {
+
+                }
+            };
+        }
+
+        public static Player getPlayer(Types.Player type, int color, Player player){
+
+            Player p;
+
+            switch (type){
+                case NODE:
+                    p=new Node(color,player);
+                    break;
+
+                case NODE1C:
+                    p=new Node1C(color,player);
+                    break;
+                default:
+                    p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
+            }
+            return p;
+        }
+    }
 }

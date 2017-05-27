@@ -1,6 +1,5 @@
 package es.geoplanosocial.tracker;
 
-import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Types;
 
@@ -113,7 +112,7 @@ public class Tracker {
         //Add players
         for(Blob b : elementsTracked){
             if(b!=null) {
-                newPlayers.add(PlayerFactory.getPlayer(b));
+                newPlayers.add(Player.Factory.getPlayer(b));
             }
         }
         trackerCallback.newPlayers(newPlayers);

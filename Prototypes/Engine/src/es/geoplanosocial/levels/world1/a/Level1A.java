@@ -1,6 +1,5 @@
 package es.geoplanosocial.levels.world1.a;
 
-import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
@@ -35,7 +34,7 @@ public class Level1A extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            Player node = PlayerFactory.getPlayer(Types.Player.NODE, Color.GREY, p);
+            Player node = Player.Factory.getPlayer(Types.Player.NODE, Color.GREY, p);
             node.setState(p.getState());
             players.add(node);
 

@@ -12,7 +12,6 @@ import processing.core.*;
 
 import java.util.ArrayList;
 
-import static es.geoplanosocial.factories.LevelFactory.getLevel;
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
 import static es.geoplanosocial.util.Utils.getWorldColors;
@@ -205,7 +204,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private void setLevel() {
 
-        Level l=getLevel(players.size(), worldCube.getCurrentLevel());
+        Level l= Level.Factory.getLevel(players.size(), worldCube.getCurrentLevel());
         if(l!=null){
             currentLevel=l;
             Utils.log("Init: "+currentLevel.getId());

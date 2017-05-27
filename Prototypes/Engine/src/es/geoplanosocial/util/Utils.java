@@ -4,7 +4,6 @@ import es.geoplanosocial.levels.Level;
 
 import java.text.SimpleDateFormat;
 
-import static es.geoplanosocial.factories.LevelFactory.getLevel;
 
 /**
  * Utility methods
@@ -44,7 +43,7 @@ public class Utils {
         int index=0;
         for (Types.Level level : Types.Level.values()) {
 
-            Level l=getLevel(players, level);
+            Level l=Level.Factory.getLevel(players, level);
             if(l!=null){
                 worldColors[index++]=l.getMainColor();
             }else{

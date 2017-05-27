@@ -1,6 +1,5 @@
 package es.geoplanosocial.levels;
 
-import es.geoplanosocial.factories.PlayerFactory;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Types;
@@ -102,7 +101,7 @@ public abstract class Level {
     public void addPlayers(ArrayList<Player> newPlayers){
         //Default implementation
         for (Player p : newPlayers){
-            Level.players.add(PlayerFactory.getPlayer(Types.Player.NODE, Color.WHITE_ALPHA, p));
+            Level.players.add(Player.Factory.getPlayer(Types.Player.NODE, Color.WHITE_ALPHA, p));
         }
     }
 
@@ -112,4 +111,48 @@ public abstract class Level {
         Level.players.addAll(players);
     }
 
+
+
+
+    /**
+     * Factory for creating levels.
+     * Created by gbermejo on 20/05/17.
+     */
+    public static class Factory {
+
+        private static String getLevelClassName(int players, Types.Level level){
+
+            String levelName = level.name();
+
+            return String.format(LEVEL_CLASS_FULLY_QUALIFIED_FORMAT,players,levelName.toLowerCase(),players,levelName);
+        }
+
+        private static Class getLevelClass(int players, Types.Level level){
+
+            Class levelClass;
+
+            try {
+                levelClass = Class.forName(getLevelClassName(players, level));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                levelClass = DEFAULT_LEVEL_CLASS;
+            }
+
+            return levelClass;
+        }
+
+        public static Level getLevel(int players, Types.Level level){
+
+            Class levelClass= getLevelClass(players,level);
+            Level l=null;
+
+            try {
+                l=(Level)levelClass.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            return l;
+        }
+    }
 }
