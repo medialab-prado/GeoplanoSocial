@@ -1,7 +1,7 @@
 package es.geoplanosocial.factories;
 
 import es.geoplanosocial.players.Node;
-import es.geoplanosocial.players.Node1C;
+import es.geoplanosocial.levels.world1.c.Node1C;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.tracker.Blob;
 

@@ -1,5 +1,6 @@
-package es.geoplanosocial.players;
+package es.geoplanosocial.levels.world1.c;
 
+import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Utils;
 import processing.core.PGraphics;
 

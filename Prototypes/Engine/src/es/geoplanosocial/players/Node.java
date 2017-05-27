@@ -21,6 +21,7 @@ public class Node extends Player {
     public void draw(PGraphics pg) {
         Rectangle bb = getBoundingBox();
         pg.beginDraw();
+        pg.noStroke();
         pg.fill(color);
         pg.ellipse(bb.x, bb.y, bb.width, bb.height);
         pg.endDraw();
