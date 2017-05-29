@@ -51,7 +51,6 @@ public class Node1C extends Player {
         // fixme change "Color.BLUE" and take this color directly from Level1C class
         // color = lerpColor(originalColor, Color.BLUE,  stopCounter, 1);
 
-        Utils.log(" hola " + r);
 
 
 

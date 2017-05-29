@@ -1,6 +1,7 @@
 package es.geoplanosocial.players;
 
 import es.geoplanosocial.levels.world1.c.Node1C;
+import es.geoplanosocial.levels.world2.b.Node2B;
 import es.geoplanosocial.tracker.Blob;
 import es.geoplanosocial.util.Types;
 import processing.core.PConstants;
@@ -16,8 +17,9 @@ public abstract class Player {
 
     public enum Type {
         NODE,
-        NODE1C
-    }
+        NODE1C,
+        NODE2B
+        }
 
     public enum State {
         GHOST,
@@ -153,6 +155,11 @@ public abstract class Player {
                 case NODE1C:
                     p=new Node1C(color,player);
                     break;
+
+                case NODE2B:
+                    p=new Node2B(color,player);
+                    break;
+
                 default:
                     p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
             }

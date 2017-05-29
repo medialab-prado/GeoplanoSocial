@@ -3,9 +3,14 @@ package es.geoplanosocial.levels.world2.b;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
+import es.geoplanosocial.util.Constants;
 import es.geoplanosocial.util.Utils;
 
 import java.util.ArrayList;
+
+import static processing.core.PApplet.constrain;
+import static processing.core.PApplet.dist;
+import static processing.core.PApplet.map;
 
 /**
  * World 2
@@ -16,6 +21,9 @@ public class Level2B extends Level {
 
     private static final String TITLE="Sinergia";
     private static final int MAIN_COLOR= Color.GREY;
+    private static final float STROKEWEIGHT_LEVEL2B = 10;
+
+    private float ancho;
 
     public Level2B() {
         super(TITLE, MAIN_COLOR);
@@ -41,7 +49,7 @@ public class Level2B extends Level {
                 nodeColor=Color.WHITE;
             }
 
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, nodeColor, p));
+            players.add(Player.Factory.getPlayer(Player.Type.NODE2B, nodeColor, p));
         }
 
         return players;
@@ -51,14 +59,27 @@ public class Level2B extends Level {
 
     @Override
     public void update() {
-        //TODO Update level elements
-
+        float x1 = (float)players.get(0).getLocation().getX();
+        float y1 = (float)players.get(0).getLocation().getY();
+        float x2 = (float)players.get(1).getLocation().getX();
+        float y2 = (float)players.get(1).getLocation().getY();
+        float distancia = dist(x1, y1, x2, y2);
+        ancho = map(distancia, 0, Constants.LEVEL_WIDTH, 0, STROKEWEIGHT_LEVEL2B);
+        ancho = constrain(ancho, 0, STROKEWEIGHT_LEVEL2B);
     }
 
 
     @Override
     protected void drawLevel() {
-        //TODO Draw level elements
+        pg.beginDraw();
+        pg.strokeWeight(STROKEWEIGHT_LEVEL2B - ancho);
+        pg.stroke(Color.WHITE);
+        // pg.line(x1, y1, x2, y2);
+        pg.line((float)players.get(0).getLocation().getX(),
+                (float)players.get(0).getLocation().getY(),
+                (float)players.get(1).getLocation().getX(),
+                (float)players.get(1).getLocation().getY());
+        pg.endDraw();
     }
 
 
