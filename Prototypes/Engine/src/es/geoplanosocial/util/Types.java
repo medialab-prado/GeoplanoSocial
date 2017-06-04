@@ -1,5 +1,7 @@
 package es.geoplanosocial.util;
 
+import static es.geoplanosocial.util.Utils.randomInt;
+
 /**
  * Global Enums
  * Created by gbermejo on 19/04/17.
@@ -22,5 +24,10 @@ public class Types {
         public int getNumber() {
             return number;
         }
+
+        public static Direction getRandom() {
+            return values()[randomInt(0, values().length-1)];
+        }
+
     }
 }
