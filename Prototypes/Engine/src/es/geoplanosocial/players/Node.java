@@ -17,6 +17,10 @@ public class Node extends Player {
         this.color=color;
     }
 
+    public int getColor() {
+        return color;
+    }
+
     @Override
     public void draw(PGraphics pg) {
         Rectangle bb = getBoundingBox();
