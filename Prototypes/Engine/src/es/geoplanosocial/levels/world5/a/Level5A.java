@@ -35,6 +35,7 @@ public class Level5A extends Level {
         players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.MAGENTA, Level.players.get(1)));
         players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.YELLOW, Level.players.get(2)));
         players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(4)));
 
         return players;
     }
