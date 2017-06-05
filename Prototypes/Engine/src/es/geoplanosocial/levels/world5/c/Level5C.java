@@ -1,4 +1,4 @@
-package es.geoplanosocial.levels.world4.c;
+package es.geoplanosocial.levels.world5.c;
 
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
@@ -16,9 +16,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * Level C
  * Created by gbermejo on 27/05/17.
  */
-public class Level4C extends Level {
+public class Level5C extends Level {
 
-    private static final String TITLE = "Q-mimic";
+    private static final String TITLE = "Desemaraña-cíclico";
     private static final int MAIN_COLOR = Color.RED_A200;
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;
@@ -30,7 +30,7 @@ public class Level4C extends Level {
     private ArrayList<Point> intersectionPoints;
     private int counter = COUNTER_INITIAL_VALUE;
 
-    public Level4C() {
+    public Level5C() {
         super(TITLE, MAIN_COLOR);
     }
 

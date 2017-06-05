@@ -49,11 +49,21 @@ public class MouseProvider implements BlobsProvider{
     public Blob[] fetchPositions() {
         Blob[] positions = new Blob[numberOfPlayers];
         switch (numberOfPlayers){
+            case 5:
+                positions[0]=createBlob(1, processing.mouseX, processing.mouseY);
+                positions[1]=createBlob(2, 20, 20);
+                positions[2]=createBlob(3, 20, 100);//Mirror x axis
+                positions[3]=createBlob(4,100, 100);//Mirror y axis
+                positions[4]=createBlob(4,50, 50);//Mirror y axis
             case 4:
                 positions[0]=createBlob(1, processing.mouseX, processing.mouseY);
-                positions[1]=createBlob(2,LEVEL_WIDTH- processing.mouseX,LEVEL_HEIGHT- processing.mouseY);//Mirror both axes
-                positions[2]=createBlob(3, processing.mouseX,LEVEL_HEIGHT- processing.mouseY);//Mirror x axis
-                positions[3]=createBlob(4,LEVEL_WIDTH- processing.mouseX, processing.mouseY);//Mirror y axis
+                positions[1]=createBlob(2, 20, 20);
+                positions[2]=createBlob(3, 20, 100);//Mirror x axis
+                positions[3]=createBlob(4,100, 100);//Mirror y axis
+
+//                positions[1]=createBlob(2,LEVEL_WIDTH- processing.mouseX,LEVEL_HEIGHT- processing.mouseY);//Mirror both axes
+//                positions[2]=createBlob(3, processing.mouseX,LEVEL_HEIGHT- processing.mouseY);//Mirror x axis
+//                positions[3]=createBlob(4,LEVEL_WIDTH- processing.mouseX, processing.mouseY);//Mirror y axis
                 break;
             case 3:
                 positions[0]=createBlob(1, processing.mouseX, processing.mouseY);
