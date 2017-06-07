@@ -8,8 +8,7 @@ import es.geoplanosocial.util.Utils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 /**
  * World 4
@@ -23,12 +22,11 @@ public class Level5C extends Level {
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
-    private static final int COUNTER_INITIAL_VALUE = 10;
-
-    private int[] randomLinearPlayers = {0, 1, 2, 3};
+    private final int MAX_INTERVAL = 3000;//In milliseconds
+    private long timer = System.currentTimeMillis();
+    private int[] randomLinearPlayers;
 
     private ArrayList<Point> intersectionPoints;
-    private int counter = COUNTER_INITIAL_VALUE;
 
     public Level5C() {
         super(TITLE, MAIN_COLOR);
@@ -37,7 +35,7 @@ public class Level5C extends Level {
 
     @Override
     protected void setupLevel() {
-        // marañaLineal();
+        marañaLineal();
     }
 
 
@@ -60,11 +58,10 @@ public class Level5C extends Level {
     public void update() {
 
         intersectionPoints = calculateIntersections();
-        if (intersectionPoints.isEmpty()){
-            counter--;
-            if (counter == 0) {
+        if (intersectionPoints.isEmpty()) {
+            if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
-                counter = COUNTER_INITIAL_VALUE;
+                timer = System.currentTimeMillis();
             }
         }
 
@@ -101,7 +98,7 @@ public class Level5C extends Level {
 
     private void marañaLineal() {
         do {
-            randomLinearPlayers = Utils.shuffleArray(new int[]{0, 1, 2, 3});
+            randomLinearPlayers = Utils.shuffleArray(new int[]{0, 1, 2, 3, 4});
             calculateIntersections();
         } while (intersectionPoints.isEmpty());
     }

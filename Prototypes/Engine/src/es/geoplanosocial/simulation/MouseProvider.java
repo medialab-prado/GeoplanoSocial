@@ -52,9 +52,9 @@ public class MouseProvider implements BlobsProvider{
             case 5:
                 positions[0]=createBlob(1, processing.mouseX, processing.mouseY);
                 positions[1]=createBlob(2, 20, 20);
-                positions[2]=createBlob(3, 20, 100);//Mirror x axis
-                positions[3]=createBlob(4,100, 100);//Mirror y axis
-                positions[4]=createBlob(4,50, 50);//Mirror y axis
+                positions[2]=createBlob(3, 30, 100);//Mirror x axis
+                positions[3]=createBlob(4,170, 110);//Mirror y axis
+                positions[4]=createBlob(5,50, 80);//Mirror y axis
             case 4:
                 positions[0]=createBlob(1, processing.mouseX, processing.mouseY);
                 positions[1]=createBlob(2, 20, 20);
