@@ -2,7 +2,9 @@ package es.geoplanosocial.util;
 
 import es.geoplanosocial.levels.Level;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,23 +35,23 @@ public class Utils {
     private static SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
 
 
-    public static void log(String text){
+    public static void log(String text) {
         if (Constants.DEBUG)
-            System.out.println("["+formatter.format(System.currentTimeMillis())+"]"+text);
+            System.out.println("[" + formatter.format(System.currentTimeMillis()) + "]" + text);
     }
 
 
-    public static int[] getWorldColors(int players){
-        int[] worldColors=new int[Level.Type.values().length];
+    public static int[] getWorldColors(int players) {
+        int[] worldColors = new int[Level.Type.values().length];
 
-        int index=0;
+        int index = 0;
         for (Level.Type level : Level.Type.values()) {
 
-            Level l=Level.Factory.getLevel(players, level);
-            if(l!=null){
-                worldColors[index++]=l.getMainColor();
-            }else{
-                worldColors[index++]=Color.MAGENTA;
+            Level l = Level.Factory.getLevel(players, level);
+            if (l != null) {
+                worldColors[index++] = l.getMainColor();
+            } else {
+                worldColors[index++] = Color.MAGENTA;
             }
         }
 
@@ -63,12 +65,10 @@ public class Utils {
     }
 
     // Implementing Fisher–Yates shuffle
-    public static int[] shuffleArray(int[] ar)
-    {
+    public static int[] shuffleArray(int[] ar) {
         // If running on Java 6 or older, use `new Random()` on RHS here
         Random rnd = ThreadLocalRandom.current();
-        for (int i = ar.length - 1; i > 0; i--)
-        {
+        for (int i = ar.length - 1; i > 0; i--) {
             int index = rnd.nextInt(i + 1);
             // Simple swap
             int a = ar[index];
@@ -76,5 +76,15 @@ public class Utils {
             ar[i] = a;
         }
         return ar;
+    }
+
+    public static ArrayList<Point> createRandomShape(int vertexNumber) {
+        ArrayList<Point> shapeVertex = new ArrayList<>();
+
+        for (int i = 0; i < vertexNumber; i++) {
+            shapeVertex.add(new Point(Utils.randomInt(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT), Utils.randomInt(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT)));
+        }
+
+        return(shapeVertex);
     }
 }
