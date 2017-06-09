@@ -2,11 +2,11 @@ package es.geoplanosocial.util;
 
 import es.geoplanosocial.levels.Level;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.Set;
+import java.util.HashSet;
 
 
 /**
@@ -78,13 +78,15 @@ public class Utils {
         return ar;
     }
 
-    public static ArrayList<Point> createRandomShape(int vertexNumber) {
-        ArrayList<Point> shapeVertex = new ArrayList<>();
 
-        for (int i = 0; i < vertexNumber; i++) {
-            shapeVertex.add(new Point(Utils.randomInt(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT), Utils.randomInt(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT)));
+    public static boolean distinctIntArrayValues(int[] arr){
+        Set<Integer> foundNumbers = new HashSet<Integer>();
+        for (int num : arr) {
+            if(foundNumbers.contains(num)){
+                return false;
+            }
+            foundNumbers.add(num);
         }
-
-        return(shapeVertex);
+        return true;
     }
 }
