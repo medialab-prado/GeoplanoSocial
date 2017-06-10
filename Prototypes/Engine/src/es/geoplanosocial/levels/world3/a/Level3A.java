@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level3A extends Level {
 
     private static final String TITLE="Mimic";
-    private static final int MAIN_COLOR= Color.LIGHTBLUE_A700;
+    private static final int MAIN_COLOR= Color.W3_A_BG;
 
     private RandomShape triangle;
 
@@ -35,9 +35,9 @@ public class Level3A extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.RED, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.GREEN, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLUE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_RED_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_GREEN_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_BLUE_NODE, Level.players.get(2)));
 
         return players;
     }

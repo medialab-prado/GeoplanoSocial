@@ -5,6 +5,7 @@ import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Utils;
 
+import javax.rmi.CORBA.Util;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class Level4B extends Level {
 
     private static final String TITLE="Acorralado";
-    private static final int MAIN_COLOR= Color.RED_A400;
+    private static final int MAIN_COLOR= Color.W4_B_BG;
 
     private Player surroundedPlayer = null;
 
@@ -35,10 +36,10 @@ public class Level4B extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.CYAN, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.MAGENTA, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.YELLOW, Level.players.get(2)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLACK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_YELLOW_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_RED_NODE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLUE_NODE, Level.players.get(3)));
 
         return players;
     }

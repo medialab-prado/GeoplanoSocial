@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Level5A extends Level {
 
     private static final String TITLE="Imita-y-voltea";
-    private static final int MAIN_COLOR= Color.RED_A700;
+    private static final int MAIN_COLOR= Color.W5_A_BG;
 
     private RandomShape poli;
 
@@ -37,11 +37,11 @@ public class Level5A extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.RED, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.GREEN, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLUE, Level.players.get(2)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(4)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_BLUE_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_YELLOW_NODE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_RED_NODE, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_GREEN_NODE, Level.players.get(4)));
 
         return players;
     }

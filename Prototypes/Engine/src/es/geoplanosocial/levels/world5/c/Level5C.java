@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class Level5C extends Level {
 
     private static final String TITLE = "Desemaraña-cíclico";
-    private static final int MAIN_COLOR = Color.RED_A200;
+    private static final int MAIN_COLOR = Color.W5_C_BG;
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
@@ -44,11 +44,11 @@ public class Level5C extends Level {
 
         ArrayList<Player> players = new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.CYAN, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.MAGENTA, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.YELLOW, Level.players.get(2)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(4)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_BLUE_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_YELLOW_NODE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_RED_NODE, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_GREEN_NODE, Level.players.get(4)));
 
         return players;
     }

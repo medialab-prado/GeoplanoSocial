@@ -15,11 +15,11 @@ import java.util.HashSet;
  */
 public class Utils {
 
-    public static int color(int r, int g, int b) {
+    static int color(int r, int g, int b) {
         return color(r, g, b, 255);
     }
 
-    public static int color(int r, int g, int b, int a) {
+    static int color(int r, int g, int b, int a) {
         if (r > 255) r = 255;
         else if (r < 0) r = 0;
         if (g > 255) g = 255;

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level2C extends Level {
 
     private static final String TITLE="P2P";
-    private static final int MAIN_COLOR= Color.LIGHT_GREY;
+    private static final int MAIN_COLOR= Color.W2_B_BG;
 
     public Level2C() {
         super(TITLE, MAIN_COLOR);
@@ -31,9 +31,8 @@ public class Level2C extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE, p));
-        }
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W2_BLACK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W2_WHITE_NODE, Level.players.get(1)));
 
         return players;
     }

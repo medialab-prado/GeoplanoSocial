@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level2A extends Level {
 
     private static final String TITLE="Los amantes de Teruel";
-    private static final int MAIN_COLOR= Color.DARK_GREY;
+    private static final int MAIN_COLOR= Color.W2_A_BG;
 
     public Level2A() {
         super(TITLE, MAIN_COLOR);
@@ -32,7 +32,7 @@ public class Level2A extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, p));
+            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W2_BLACK_NODE, p));
         }
 
         return players;

@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Level4C extends Level {
 
     private static final String TITLE = "Q-mimic";
-    private static final int MAIN_COLOR = Color.RED_A200;
+    private static final int MAIN_COLOR = Color.W4_C_BG;
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;

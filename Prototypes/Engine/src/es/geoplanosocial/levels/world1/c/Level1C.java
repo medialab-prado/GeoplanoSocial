@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Level1C extends Level {
 
     private static final String TITLE="Desaparecer";
-    private static final int MAIN_COLOR= Color.GREY;
+    private static final int MAIN_COLOR= Color.W1_A_BG;
 
     public Level1C() {
         super(TITLE, MAIN_COLOR);
@@ -34,7 +34,7 @@ public class Level1C extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE1C, Color.WHITE, p));
+            players.add(Player.Factory.getPlayer(Player.Type.NODE1C, Color.W1_BLACK_NODE, p));
         }
         return players;
     }
