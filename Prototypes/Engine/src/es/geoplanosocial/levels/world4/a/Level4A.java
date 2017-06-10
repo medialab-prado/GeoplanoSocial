@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Level4A extends Level {
 
-    private static final String TITLE="Acorralado";
+    private static final String TITLE="Imita";
     private static final int MAIN_COLOR= Color.RED_A700;
 
     private RandomShape square;

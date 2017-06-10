@@ -5,6 +5,7 @@ import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Utils;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +15,10 @@ import java.util.ArrayList;
  */
 public class Level4B extends Level {
 
-    private static final String TITLE="Enmarañado";
+    private static final String TITLE="Acorralado";
     private static final int MAIN_COLOR= Color.RED_A400;
+
+    private Player surroundedPlayer = null;
 
     public Level4B() {
         super(TITLE, MAIN_COLOR);
@@ -44,14 +47,48 @@ public class Level4B extends Level {
 
     @Override
     public void update() {
-        //TODO Update level elements
 
+        surroundedPlayer = null;
+        //Check if any player is surrounded
+        for(Player target: players){
+            if(target.isVisible()){
+                if(isSurrounded(target)){
+                    surroundedPlayer = target;
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean isSurrounded(Player target) {
+        Polygon enclosure = new Polygon();
+        for(Player p: players){
+            if(p.isVisible() && p!=target){
+                enclosure.addPoint(p.getBoundingBox().x, p.getBoundingBox().y);
+            }
+        }
+        return enclosure.contains(target.getBoundingBox());
     }
 
 
     @Override
     protected void drawLevel() {
-        //TODO Draw level elements
+        //Utils.log("Surrounded: "+surroundedPlayer);
+
+        if(surroundedPlayer!=null) {
+            pg.beginDraw();
+            pg.noStroke();
+            pg.fill(Color.WHITE_ALPHA);
+            pg.beginShape();
+
+            for (Player p : players) {
+                if (p.isVisible() && p != surroundedPlayer) {
+                    pg.vertex(p.getBoundingBox().x, p.getBoundingBox().y);
+                }
+            }
+            pg.endShape(pg.CLOSE);
+            pg.endDraw();
+        }
     }
 
 
