@@ -3,6 +3,7 @@ package es.geoplanosocial.engine;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseProvider;
+import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.BlobsProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
@@ -35,7 +36,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private static final ArrayList<Player> players=new ArrayList<>();
 
     //BlobsProvider
-    private static MouseProvider blobsProvider;
+    private static MouseSelectionProvider blobsProvider;
 
     //Tracker
     private static final Tracker tracker=Tracker.getInstance();
@@ -66,7 +67,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
 
         if(DEBUG){
-            blobsProvider=new MouseProvider(this,1,10);
+            blobsProvider=new MouseSelectionProvider(this,1,10);
         }
 
         Tracker.init(players,this,blobsProvider);
@@ -134,6 +135,18 @@ public class Engine extends PApplet implements TrackerCallback {
                         break;
                     case '-':
                         blobsProvider.setNumberOfPlayers(blobsProvider.getNumberOfPlayers()-1);
+                        break;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                        blobsProvider.setSelectedPlayer(Character.getNumericValue(key));
                         break;
                     default:
                 }
