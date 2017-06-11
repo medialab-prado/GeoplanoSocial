@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level3A extends Level {
 
     private static final String TITLE="Mimic";
-    private static final int MAIN_COLOR= Color.W3_A_BG;
+    public static final int MAIN_COLOR= Color.W3_A_BG;
 
     private RandomShape triangle;
 

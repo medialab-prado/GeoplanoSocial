@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Level1C extends Level {
 
     private static final String TITLE="Desaparecer";
-    private static final int MAIN_COLOR= Color.W1_A_BG;
+    public static final int MAIN_COLOR= Color.W1_A_BG;
 
     public Level1C() {
         super(TITLE, MAIN_COLOR);

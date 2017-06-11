@@ -1,24 +1,23 @@
 package es.geoplanosocial.players;
 
 import es.geoplanosocial.levels.world1.c.Node1C;
-import es.geoplanosocial.levels.world2.b.Node2B;
 import es.geoplanosocial.tracker.Blob;
-import es.geoplanosocial.util.Types;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
- * Abstract generic player
+ * Generic player
  * Created by gbermejo on 14/05/17.
  */
-public abstract class Player {
+public class Player {
 
     public enum Type {
         NODE,
-        NODE1C,
-        NODE2B
+        SQUARE,
+        NODE1C
         }
 
     public enum State {
@@ -107,6 +106,21 @@ public abstract class Player {
         return this.state==State.GHOST || this.state==State.PLAYING;
     }
 
+    public boolean isPlaying(){
+        return this.state==State.PLAYING;
+    }
+
+    public boolean isSurrounded( ArrayList<Player> players) {
+        Polygon enclosure = new Polygon();
+        for(Player p: players){
+            if(p.isVisible() && p!=this){
+                enclosure.addPoint(p.getBoundingBox().x, p.getBoundingBox().y);
+            }
+        }
+        return enclosure.contains(this.getBoundingBox());
+    }
+
+
     public Point getLocation() {
         return boundingBox.getLocation();
     }
@@ -126,7 +140,6 @@ public abstract class Player {
         return pg;
     }
 
-    public abstract void draw(PGraphics pg);
 
 
     /**
@@ -135,12 +148,7 @@ public abstract class Player {
      */
     public static class Factory{
         public static Player getPlayer(Blob blob){
-            return new Player(blob.getId(), blob.getBoundingBox()) {
-                @Override
-                public void draw(PGraphics pg) {
-
-                }
-            };
+            return new Player(blob.getId(), blob.getBoundingBox());
         }
 
         public static Player getPlayer(Player.Type type, int color, Player player){
@@ -151,15 +159,12 @@ public abstract class Player {
                 case NODE:
                     p=new Node(color,player);
                     break;
-
+                case SQUARE:
+                    p=new Square(color,player);
+                    break;
                 case NODE1C:
                     p=new Node1C(color,player);
                     break;
-
-                case NODE2B:
-                    p=new Node2B(color,player);
-                    break;
-
                 default:
                     p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
             }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level2C extends Level {
 
     private static final String TITLE="P2P";
-    private static final int MAIN_COLOR= Color.W2_B_BG;
+    public static final int MAIN_COLOR= Color.W2_B_BG;
 
     public Level2C() {
         super(TITLE, MAIN_COLOR);

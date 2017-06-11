@@ -23,7 +23,7 @@ import static es.geoplanosocial.util.Utils.randomInt;
 public class Level1A extends Level {
 
     private static final String TITLE="Huella";
-    private static final int MAIN_COLOR= Color.W1_B_BG;
+    public static final int MAIN_COLOR= Color.W1_B_BG;
 
     private final int MAX_INTERVAL = 250;//In milliseconds
     private final Rectangle[] DUMMIES = new Rectangle[50];

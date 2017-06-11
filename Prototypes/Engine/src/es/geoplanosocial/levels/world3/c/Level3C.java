@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level3C extends Level {
 
     private static final String TITLE="Iron triangle";
-    private static final int MAIN_COLOR= Color.W3_C_BG;
+    public static final int MAIN_COLOR= Color.W3_C_BG;
 
     public Level3C() {
         super(TITLE, MAIN_COLOR);

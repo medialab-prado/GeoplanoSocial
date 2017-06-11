@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level2A extends Level {
 
     private static final String TITLE="Los amantes de Teruel";
-    private static final int MAIN_COLOR= Color.W2_A_BG;
+    public static final int MAIN_COLOR= Color.W2_A_BG;
 
     public Level2A() {
         super(TITLE, MAIN_COLOR);

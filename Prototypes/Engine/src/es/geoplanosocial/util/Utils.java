@@ -15,11 +15,11 @@ import java.util.HashSet;
  */
 public class Utils {
 
-    static int color(int r, int g, int b) {
+    public static int color(int r, int g, int b) {
         return color(r, g, b, 255);
     }
 
-    static int color(int r, int g, int b, int a) {
+    public static int color(int r, int g, int b, int a) {
         if (r > 255) r = 255;
         else if (r < 0) r = 0;
         if (g > 255) g = 255;
@@ -46,11 +46,12 @@ public class Utils {
 
         int index = 0;
         for (Level.Type level : Level.Type.values()) {
-
-            Level l = Level.Factory.getLevel(players, level);
-            if (l != null) {
-                worldColors[index++] = l.getMainColor();
-            } else {
+            
+            Class l = Level.Factory.getLevelClass(players, level);
+            try {
+                worldColors[index++] = l.getDeclaredField("MAIN_COLOR").getInt(null);
+            } catch (IllegalAccessException | NoSuchFieldException e) {
+                e.printStackTrace();
                 worldColors[index++] = Color.MAGENTA;
             }
         }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Level3B extends Level {
 
     private static final String TITLE="Light";
-    private static final int MAIN_COLOR= Color.W3_B_BG;
+    public static final int MAIN_COLOR= Color.W3_B_BG;
 
     public Level3B() {
         super(TITLE, MAIN_COLOR);

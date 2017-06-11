@@ -1,6 +1,7 @@
 package es.geoplanosocial.levels;
 
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Types;
 import processing.core.PApplet;
@@ -35,6 +36,7 @@ public abstract class Level {
     private final String id;
     private final String title;
     private final int mainColor;
+
 
     protected final PGraphics pg;
     protected final long startTime;
@@ -73,7 +75,7 @@ public abstract class Level {
         if(doDrawPlayers) {
             //Draw players
             for(Player p : players){
-                if(p.isVisible())p.draw(pg);
+                if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
             }
         }
         drawLevel();
@@ -81,8 +83,8 @@ public abstract class Level {
     }
 
     private void setup(){
-        setupLevel();
         refreshPlayers(setupPlayers());
+        setupLevel();
     }
 
     public abstract void update();
@@ -122,7 +124,7 @@ public abstract class Level {
     }
 
 
-    private static void refreshPlayers(ArrayList<Player> players) {
+    protected static void refreshPlayers(ArrayList<Player> players) {
         Level.players.clear();
         Level.players.addAll(players);
     }
@@ -143,7 +145,7 @@ public abstract class Level {
             return String.format(LEVEL_CLASS_FULLY_QUALIFIED_FORMAT,players,levelName.toLowerCase(),players,levelName);
         }
 
-        private static Class getLevelClass(int players, Level.Type level){
+        public static Class getLevelClass(int players, Level.Type level){
 
             Class levelClass;
 

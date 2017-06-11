@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Level4B extends Level {
 
     private static final String TITLE="Acorralado";
-    private static final int MAIN_COLOR= Color.W4_B_BG;
+    public static final int MAIN_COLOR= Color.W4_B_BG;
 
     private Player surroundedPlayer = null;
 
@@ -52,24 +52,13 @@ public class Level4B extends Level {
         surroundedPlayer = null;
         //Check if any player is surrounded
         for(Player target: players){
-            if(target.isVisible()){
-                if(isSurrounded(target)){
-                    surroundedPlayer = target;
-                    break;
-                }
+            if(target.isPlaying() && target.isSurrounded(players)){
+                surroundedPlayer = target;
+                break;
             }
         }
     }
 
-    private boolean isSurrounded(Player target) {
-        Polygon enclosure = new Polygon();
-        for(Player p: players){
-            if(p.isVisible() && p!=target){
-                enclosure.addPoint(p.getBoundingBox().x, p.getBoundingBox().y);
-            }
-        }
-        return enclosure.contains(target.getBoundingBox());
-    }
 
 
     @Override
@@ -83,7 +72,7 @@ public class Level4B extends Level {
             pg.beginShape();
 
             for (Player p : players) {
-                if (p.isVisible() && p != surroundedPlayer) {
+                if (p.isPlaying() && p != surroundedPlayer) {
                     pg.vertex(p.getBoundingBox().x, p.getBoundingBox().y);
                 }
             }

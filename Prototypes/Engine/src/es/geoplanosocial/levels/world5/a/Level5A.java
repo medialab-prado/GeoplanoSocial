@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Level5A extends Level {
 
     private static final String TITLE="Imita-y-voltea";
-    private static final int MAIN_COLOR= Color.W5_A_BG;
+    public static final int MAIN_COLOR= Color.W5_A_BG;
 
     private RandomShape poli;
 

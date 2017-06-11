@@ -20,7 +20,7 @@ import static processing.core.PApplet.map;
 public class Level2B extends Level {
 
     private static final String TITLE="Sinergia";
-    private static final int MAIN_COLOR= Color.W2_C_BG;
+    public static final int MAIN_COLOR= Color.W2_C_BG;
     private static final float STROKEWEIGHT_LEVEL2B = 10;
 
     private float ancho;

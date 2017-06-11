@@ -1,5 +1,6 @@
 package es.geoplanosocial.util;
 
+import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.levels.world1.a.Level1A;
 import processing.core.PConstants;
 
@@ -26,6 +27,8 @@ public class Constants {
     //Levels settings
     public static final String LEVEL_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.levels.world%d.%s.Level%d%s";
     public static final Class DEFAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
+    public static final Class ROOT_LEVEL_CLASS = Level.class;
+
 
     //Facade sizes and positions
     public static final int LEVEL_WIDTH = 192;

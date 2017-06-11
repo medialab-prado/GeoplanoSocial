@@ -21,7 +21,7 @@ import static es.geoplanosocial.util.Utils.randomInt;
 public class Level1B extends Level {
 
     private static final String TITLE="Rastro";
-    private static final int MAIN_COLOR= Color.W1_C_BG;
+    public static final int MAIN_COLOR= Color.W1_C_BG;
 
 
     private final int MAX_INTERVAL = 150;//In milliseconds
