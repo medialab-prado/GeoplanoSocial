@@ -123,7 +123,8 @@ public class Tracker {
                 newPlayers.add(Player.Factory.getPlayer(b));
             }
         }
-        trackerCallback.newPlayers(newPlayers);
+        if(newPlayers.size() >0)
+            trackerCallback.newPlayers(newPlayers);
     }
 
 

@@ -25,7 +25,7 @@ public class Color {
 
 
     public static final int WHITE_ALPHA = Utils.color(255, 255, 255, 127);
-    public static final int RED_ALPHA = Utils.color(255, 0, 0, 127);
+    public static final int BLACK_ALPHA = Utils.color(0, 0, 0, 127);
 
 
     /*********

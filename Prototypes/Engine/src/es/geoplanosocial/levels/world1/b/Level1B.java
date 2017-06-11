@@ -88,13 +88,6 @@ public class Level1B extends Level {
         pg.endDraw();
     }
 
-    @Override
-    public void addPlayers(ArrayList<Player> newPlayers) {
-        for (Player p : newPlayers){
-            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.RED_ALPHA, p));
-        }
-    }
-
 
     //Generates a line
     private Line generateLine(){

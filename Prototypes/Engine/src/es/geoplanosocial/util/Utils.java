@@ -46,7 +46,7 @@ public class Utils {
 
         int index = 0;
         for (Level.Type level : Level.Type.values()) {
-            
+
             Class l = Level.Factory.getLevelClass(players, level);
             try {
                 worldColors[index++] = l.getDeclaredField("MAIN_COLOR").getInt(null);

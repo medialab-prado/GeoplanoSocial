@@ -4,6 +4,7 @@ import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Types;
+import es.geoplanosocial.util.Utils;
 
 import java.util.ArrayList;
 
@@ -53,5 +54,11 @@ public class Level1C extends Level {
         //Draw level elements
     }
 
+    @Override
+    public void addPlayers(ArrayList<Player> newPlayers) {
+        for (Player p : newPlayers){
+            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK_ALPHA, p));
+        }
+    }
 
 }
