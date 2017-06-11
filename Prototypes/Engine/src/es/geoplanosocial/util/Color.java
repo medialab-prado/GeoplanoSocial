@@ -76,11 +76,11 @@ public class Color {
     public static final int W4_BLUE_NODE = Utils.color(49, 141, 200);
     public static final int W4_RED_NODE = Utils.color(235, 105, 107);
     //A
-    public static final int W4_A_BG = Utils.color(230, 184, 184);
+    public static final int W4_A_BG = Utils.color(234, 212, 211);
     //B
-    public static final int W4_B_BG = Utils.color(230, 115, 125);
+    public static final int W4_B_BG = Utils.color(234, 161, 159);
     //C
-    public static final int W4_C_BG = Utils.color(230, 68, 70);
+    public static final int W4_C_BG = Utils.color(234, 68, 70);
 
 
     /*********
