@@ -28,8 +28,7 @@ public class Node1C extends Node {
     @Override
     public void draw(PGraphics pg) {
         Rectangle bb = getBoundingBox();
-        bb.width = 20;
-        bb.height = 20;
+        
 
         if ((mouseX_prev == bb.x) && (mouseY_prev == bb.y)) {
             // Utils.log(" hola " + stopCounter);

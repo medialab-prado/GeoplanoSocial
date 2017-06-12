@@ -80,8 +80,8 @@ public class MouseSelectionProvider implements BlobsProvider {
     public Blob[] fetchPositions() {
 
         //Update position of selected
-        players.get(selectedPlayer).getBoundingBox().x=processing.mouseX;
-        players.get(selectedPlayer).getBoundingBox().y=processing.mouseY;
+        players.get(selectedPlayer).getBoundingBox().x=PApplet.constrain(processing.mouseX, 0, LEVEL_WIDTH);
+        players.get(selectedPlayer).getBoundingBox().y=PApplet.constrain(processing.mouseY, 0, LEVEL_HEIGHT);
 
         //Return array with previous positions
         return players.toArray(new Blob[players.size()]);
