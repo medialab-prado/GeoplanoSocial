@@ -2,6 +2,7 @@ package es.geoplanosocial.levels.world3.a;
 
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.RandomShape;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Level3A extends Level {
     @Override
     protected void setupLevel() {
         triangle = new RandomShape(3);
+        this.setDoDrawPlayers(false);
     }
 
     @Override
@@ -65,6 +67,10 @@ public class Level3A extends Level {
             pg.vertex(triangle.getVertex(i).x, triangle.getVertex(i).y);
         }
         pg.endShape();
+        //Draw players
+        for (Player p : players) {
+            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
+        }
         pg.endDraw();
     }
 }

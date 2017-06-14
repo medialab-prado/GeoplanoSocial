@@ -2,6 +2,7 @@ package es.geoplanosocial.levels.world5.a;
 
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.RandomShape;
 
@@ -30,6 +31,8 @@ public class Level5A extends Level {
     @Override
     protected void setupLevel() {
         poli = new RandomShape(5);
+        this.setDoDrawPlayers(false);
+
     }
 
     @Override
@@ -69,6 +72,9 @@ public class Level5A extends Level {
             pg.vertex(poli.getVertex(i).x, poli.getVertex(i).y);
         }
         pg.endShape();
+        for (Player p : players) {
+            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
+        }
         pg.endDraw();
     }
 
