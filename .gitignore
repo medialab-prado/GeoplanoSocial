@@ -1,3 +1,4 @@
 # Temporal Processing files #
 
 *.tmp
+.DS_Store
