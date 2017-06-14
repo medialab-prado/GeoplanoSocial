@@ -3,8 +3,10 @@ package es.geoplanosocial.levels.world4.a;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.RandomShape;
+import processing.core.PGraphics;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,6 +34,7 @@ public class Level4A extends Level {
     @Override
     protected void setupLevel() {
         square = new RandomShape(4);
+        this.setDoDrawPlayers(false);
     }
 
     @Override
@@ -67,13 +70,14 @@ public class Level4A extends Level {
         pg.fill(Color.WHITE);
         pg.beginShape();
         for (int i = 0; i < square.getVertexNumber(); i++) {
-            if (i == 0) pg.fill(Color.GREEN);
-            if (i == 1) pg.fill(Color.GREY);
-            if (i == 2) pg.fill(Color.YELLOW);
-            if (i == 3) pg.fill(Color.BLUE);
+            // TODO en lugar de "i" sería un nº aleatorio de 0 a vertexNumber (sin repeticiones)
+            pg.fill(((Node)players.get(i)).getColor());
             pg.vertex(square.getVertex(i).x, square.getVertex(i).y);
         }
         pg.endShape();
+        for (Player p : players) {
+            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
+        }
         pg.endDraw();
     }
 

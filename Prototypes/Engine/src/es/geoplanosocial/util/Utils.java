@@ -2,6 +2,7 @@ package es.geoplanosocial.util;
 
 import es.geoplanosocial.levels.Level;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -79,7 +80,6 @@ public class Utils {
         return ar;
     }
 
-
     public static boolean distinctIntArrayValues(int[] arr){
         Set<Integer> foundNumbers = new HashSet<Integer>();
         for (int num : arr) {
@@ -89,5 +89,30 @@ public class Utils {
             foundNumbers.add(num);
         }
         return true;
+    }
+
+    // from http://mindprod.com/jgloss/polar.html
+    public static double[] cartesian2polar(Point p) {
+        double[] x = new double[2];
+        Point auxP = new Point(p.x - (Constants.LEVEL_WIDTH / 2), p.y - (Constants.LEVEL_HEIGHT / 2));
+
+        // Cartesian to polar
+        double radius = Math.sqrt( auxP.x * auxP.x + auxP.y * auxP.y );
+        double angleInRadians = Math.acos( auxP.x / radius );
+
+        x[1] = radius;
+        x[2] = angleInRadians;
+
+        return x;
+    }
+
+    // from http://mindprod.com/jgloss/polar.html
+    public static Point polar2cartesian(double[] x) {
+        Point p = new Point();
+
+        // polar to Cartesian
+        p.setLocation(Math.cos( x[2] ) * x[1], Math.sin( x[2] ) * x[1]);
+
+        return p;
     }
 }

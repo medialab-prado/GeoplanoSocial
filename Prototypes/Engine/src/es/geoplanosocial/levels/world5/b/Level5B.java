@@ -163,11 +163,9 @@ public class Level5B extends Level {
             pg.noStroke();
             pg.fill(Color.WHITE_ALPHA);
             pg.beginShape();
-
             for (Player p : surrounderers) {
                 pg.vertex(p.getBoundingBox().x, p.getBoundingBox().y);
             }
-
             pg.endShape(pg.CLOSE);
             pg.endDraw();
         }

@@ -3,8 +3,11 @@ package es.geoplanosocial.util;
 import es.geoplanosocial.players.Player;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import static es.geoplanosocial.util.Constants.*;
 import static processing.core.PApplet.dist;
+import static processing.core.PConstants.MAX_INT;
 
 /**
  * Random shape to imitate methods
@@ -50,6 +53,7 @@ public class RandomShape {
     // TODO (para >4) no controlo que la forma sea "continua" (mirar)
     public void updateRamdomShape() {
         shapeVertex.clear();
+
         for (int i = 0; i < vertexNumber; i++) {
             shapeVertex.add(new Point(Utils.randomInt(1, Constants.LEVEL_HEIGHT), Utils.randomInt(1, Constants.LEVEL_HEIGHT)));
         }
@@ -73,6 +77,34 @@ public class RandomShape {
                 default:
             }
         }
+
+        // shapeVertex = sortToGetClosedShape();
+    }
+
+    private ArrayList<Point> sortToGetClosedShape() {
+        ArrayList<Point> auxShapeVertex = new ArrayList<>();;
+        double[] r = new double[vertexNumber];
+
+        for (int i = 0; i < vertexNumber; i++) {
+            r[i] = Utils.cartesian2polar(shapeVertex.get(i))[1];
+        }
+
+
+        //sort the array intio a new array
+        double[] y  = r;
+        Arrays.sort(y); //sort ascending
+
+        //final array of indexes
+        int index_array[] = new int[7];
+
+        //iteretate on x arrat
+        for(int i=0; i<vertexNumber; i++) {
+            //search the position of a value of the original x array into the sorted y array, store the position in the index array
+            index_array[i] = Arrays.binarySearch(r, y[i]);
+
+            auxShapeVertex.add(new Point(shapeVertex.get(index_array[i]).x, shapeVertex.get(index_array[i]).x));
+        }
+        return auxShapeVertex;
     }
 
     // TODO A veces falla cuando 2 vértices están muy cerca (creo que se hace "lío" con el concepto de minPoint)
