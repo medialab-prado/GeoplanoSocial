@@ -49,4 +49,7 @@ public class Constants {
     public static final int WORLD_CHANGE_TIMER_OUT = 5 * 1000;//In milliseconds
 
 
+    //Player simulation
+    public static final int PLAYER_SIZE = 15;
+
 }

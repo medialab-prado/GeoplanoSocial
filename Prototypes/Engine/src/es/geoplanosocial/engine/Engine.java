@@ -67,7 +67,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
 
         if(DEBUG){
-            blobsProvider=new MouseSelectionProvider(this,1,10);
+            blobsProvider=new MouseSelectionProvider(this,1,PLAYER_SIZE);
         }
 
         Tracker.init(players,this,blobsProvider);
