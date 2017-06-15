@@ -92,16 +92,19 @@ public class Utils {
     }
 
     // from http://mindprod.com/jgloss/polar.html
-    public static double[] cartesian2polar(Point p) {
+    public static double[] cartesian2polar(Point p, Point centroid) {
         double[] x = new double[2];
-        Point auxP = new Point(p.x - (Constants.LEVEL_WIDTH / 2), p.y - (Constants.LEVEL_HEIGHT / 2));
+        Point auxP = new Point(p.x - centroid.x, p.y - centroid.y);
 
         // Cartesian to polar
-        double radius = Math.sqrt( auxP.x * auxP.x + auxP.y * auxP.y );
-        double angleInRadians = Math.acos( auxP.x / radius );
+        // double radius = Math.sqrt( auxP.x * auxP.x + auxP.y * auxP.y );
+        // double angleInRadians = Math.acos( auxP.x / radius );
 
-        x[1] = radius;
-        x[2] = angleInRadians;
+        double radius     = Math.sqrt(auxP.x * auxP.x + auxP.y * auxP.y);
+        double angleInRadians = Math.atan2(auxP.y, auxP.x);
+
+        x[0] = radius;
+        x[1] = angleInRadians;
 
         return x;
     }

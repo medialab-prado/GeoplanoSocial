@@ -75,6 +75,11 @@ public class Level4A extends Level {
             pg.vertex(square.getVertex(i).x, square.getVertex(i).y);
         }
         pg.endShape();
+
+        // todo just for debugging (for drawing centroid)
+        pg.fill(Color.LIGHT_GREY);
+        pg.ellipse(square.centroid.x, square.centroid.y, 10, 10);
+
         for (Player p : players) {
             if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
         }

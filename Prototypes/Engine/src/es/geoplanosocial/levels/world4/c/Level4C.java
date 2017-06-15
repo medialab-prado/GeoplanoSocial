@@ -88,7 +88,6 @@ public class Level4C extends Level {
         // Utils.log("adios " + x + " - " + y);
         for (int i = 0; i < intersectionPoints.size(); i++) {
             pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
-
         }
         pg.endDraw();
     }
