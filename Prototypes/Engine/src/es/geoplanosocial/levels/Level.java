@@ -43,7 +43,7 @@ public abstract class Level {
 
     private boolean doFrameClear =true;
     private boolean doDrawPlayers=true;
-    private boolean drawPlayersFront=true;
+    private boolean drawPlayersFront=false;
 
 
     protected Level(String title, int mainColor) {
@@ -75,13 +75,13 @@ public abstract class Level {
             pg.endDraw();
         }
 
-        if(doDrawPlayers && drawPlayersFront) {
+        if(doDrawPlayers && !drawPlayersFront) {
             drawPlayers();
         }
 
         drawLevel();
 
-        if(doDrawPlayers && !drawPlayersFront) {
+        if(doDrawPlayers && drawPlayersFront) {
             drawPlayers();
         }
 

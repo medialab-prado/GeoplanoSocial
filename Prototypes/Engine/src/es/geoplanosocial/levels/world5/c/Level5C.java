@@ -35,7 +35,7 @@ public class Level5C extends Level {
 
     @Override
     protected void setupLevel() {
-        setDrawPlayersFront(false);
+        setDrawPlayersFront(true);
         marañaLineal();
     }
 

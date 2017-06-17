@@ -34,7 +34,7 @@ public class Level4A extends Level {
     @Override
     protected void setupLevel() {
         square = new RandomShape(4);
-        setDrawPlayersFront(false);
+        setDrawPlayersFront(true);
     }
 
     @Override

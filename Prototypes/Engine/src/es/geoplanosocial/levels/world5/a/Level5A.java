@@ -31,7 +31,7 @@ public class Level5A extends Level {
     @Override
     protected void setupLevel() {
         poli = new RandomShape(5);
-        setDrawPlayersFront(false);
+        setDrawPlayersFront(true);
     }
 
     @Override

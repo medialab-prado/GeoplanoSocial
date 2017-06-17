@@ -29,7 +29,7 @@ public class Level3A extends Level {
     @Override
     protected void setupLevel() {
         triangle = new RandomShape(3);
-        setDrawPlayersFront(false);
+        setDrawPlayersFront(true);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Level3A extends Level {
         // todo just for debugging (for drawing centroid)
         pg.fill(Color.LIGHT_GREY);
         pg.ellipse(triangle.centroid.x, triangle.centroid.y, 10, 10);
-        
+
         pg.endDraw();
     }
 }
