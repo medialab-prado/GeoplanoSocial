@@ -34,7 +34,7 @@ public class Level4A extends Level {
     @Override
     protected void setupLevel() {
         square = new RandomShape(4);
-        this.setDoDrawPlayers(false);
+        setDrawPlayersFront(false);
     }
 
     @Override
@@ -80,9 +80,6 @@ public class Level4A extends Level {
         pg.fill(Color.LIGHT_GREY);
         pg.ellipse(square.centroid.x, square.centroid.y, 10, 10);
 
-        for (Player p : players) {
-            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
-        }
         pg.endDraw();
     }
 

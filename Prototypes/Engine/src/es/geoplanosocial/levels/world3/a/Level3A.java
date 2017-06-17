@@ -29,7 +29,7 @@ public class Level3A extends Level {
     @Override
     protected void setupLevel() {
         triangle = new RandomShape(3);
-        this.setDoDrawPlayers(false);
+        setDrawPlayersFront(false);
     }
 
     @Override
@@ -71,11 +71,7 @@ public class Level3A extends Level {
         // todo just for debugging (for drawing centroid)
         pg.fill(Color.LIGHT_GREY);
         pg.ellipse(triangle.centroid.x, triangle.centroid.y, 10, 10);
-
-        //Draw players
-        for (Player p : players) {
-            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
-        }
+        
         pg.endDraw();
     }
 }

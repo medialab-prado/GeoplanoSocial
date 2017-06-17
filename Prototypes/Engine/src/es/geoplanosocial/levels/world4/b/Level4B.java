@@ -28,7 +28,7 @@ public class Level4B extends Level {
 
     @Override
     protected void setupLevel() {
-        //TODO Level specific setup
+        setDrawPlayersFront(false);
     }
 
     @Override

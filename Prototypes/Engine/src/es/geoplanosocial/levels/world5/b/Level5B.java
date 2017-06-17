@@ -37,7 +37,7 @@ public class Level5B extends Level {
 
     @Override
     protected void setupLevel() {
-        //TODO Level specific setup
+        setDrawPlayersFront(false);
         shuffleRoles();
     }
 

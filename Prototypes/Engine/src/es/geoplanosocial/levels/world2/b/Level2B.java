@@ -32,7 +32,7 @@ public class Level2B extends Level {
 
     @Override
     protected void setupLevel() {
-        //TODO Level specific setup
+        setDrawPlayersFront(false);
     }
 
     @Override

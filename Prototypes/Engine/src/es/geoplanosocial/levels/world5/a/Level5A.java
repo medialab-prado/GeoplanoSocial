@@ -31,8 +31,7 @@ public class Level5A extends Level {
     @Override
     protected void setupLevel() {
         poli = new RandomShape(5);
-        this.setDoDrawPlayers(false);
-
+        setDrawPlayersFront(false);
     }
 
     @Override
@@ -77,9 +76,6 @@ public class Level5A extends Level {
         pg.fill(Color.LIGHT_GREY);
         pg.ellipse(poli.centroid.x, poli.centroid.y, 10, 10);
 
-        for (Player p : players) {
-            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
-        }
         pg.endDraw();
     }
 

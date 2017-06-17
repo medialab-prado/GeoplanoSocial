@@ -39,6 +39,7 @@ public class Level4C extends Level {
 
     @Override
     protected void setupLevel() {
+        setDrawPlayersFront(false);
         makeGroups();
         activeGroup = 0;
         middle =  new Point();

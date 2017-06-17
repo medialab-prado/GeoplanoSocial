@@ -3,8 +3,6 @@ package es.geoplanosocial.levels.world2.c;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Utils;
-import processing.core.PApplet;
-import processing.core.PVector;
 
 /**
  * Node with an energy component

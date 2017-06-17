@@ -43,6 +43,8 @@ public abstract class Level {
 
     private boolean doFrameClear =true;
     private boolean doDrawPlayers=true;
+    private boolean drawPlayersFront=true;
+
 
     protected Level(String title, int mainColor) {
         this.id = getClass().getSimpleName();
@@ -72,14 +74,25 @@ public abstract class Level {
             pg.background(mainColor);
             pg.endDraw();
         }
-        if(doDrawPlayers) {
-            //Draw players
-            for(Player p : players){
-                if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
-            }
+
+        if(doDrawPlayers && drawPlayersFront) {
+            drawPlayers();
         }
+
         drawLevel();
+
+        if(doDrawPlayers && !drawPlayersFront) {
+            drawPlayers();
+        }
+
         processing.image(pg, START_WORLD_X, START_WORLD_Y);
+    }
+
+
+    private void drawPlayers(){
+        for(Player p : players){
+            if(p.isVisible() && p instanceof VisiblePlayer)((VisiblePlayer) p).draw(pg);
+        }
     }
 
     private void setup(){
@@ -101,6 +114,10 @@ public abstract class Level {
 
     public void setDoDrawPlayers(boolean doDrawPlayers) {
         this.doDrawPlayers = doDrawPlayers;
+    }
+
+    public void setDrawPlayersFront(boolean drawPlayersFront) {
+        this.drawPlayersFront = drawPlayersFront;
     }
 
     public String getId() {
