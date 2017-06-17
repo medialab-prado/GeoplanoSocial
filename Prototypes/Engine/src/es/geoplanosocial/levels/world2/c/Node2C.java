@@ -2,6 +2,7 @@ package es.geoplanosocial.levels.world2.c;
 
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.util.Utils;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -28,8 +29,7 @@ public class Node2C extends Node{
 
     //Checks and transfers energy if needed
     public void checkTransference(Node2C p) {
-        float distance = PApplet.dist(p.getBoundingBox().x, p.getBoundingBox().y, this.getBoundingBox().x, this.getBoundingBox().y);
-        if (distance < p.getEnergy() + energy) {//Collision between nodes
+        if(Utils.isCircleCollision(p.getLocation(),p.energy,this.getLocation(),energy)){//Collision between nodes
             transfer();
             p.transfer();
             if (energy <= MIN_ENERGY) {
