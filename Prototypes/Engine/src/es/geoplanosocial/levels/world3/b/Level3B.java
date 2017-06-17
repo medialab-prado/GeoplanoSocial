@@ -26,9 +26,8 @@ public class Level3B extends Level {
     private static final String TITLE="Light";
     public static final int MAIN_COLOR= Color.W3_B_BG;
 
-    private static PGraphics pgIntersection;
-
-    private static PGraphics pgTemp;
+    private  PGraphics pgIntersection;
+    private  PGraphics pgTemp;
 
 
     public Level3B() {

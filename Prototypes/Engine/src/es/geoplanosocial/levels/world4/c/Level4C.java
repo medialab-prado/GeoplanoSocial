@@ -7,9 +7,8 @@ import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Collections;
+
 
 /**
  * World 4
@@ -18,17 +17,20 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Level4C extends Level {
 
-    private static final String TITLE = "Q-mimic";
+    private static final String TITLE = "Rompelíneas";
     public static final int MAIN_COLOR = Color.W4_C_BG;
 
-    private static final float STROKEWEIGHT_LEVEL4C = 2;
-    private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
-    private static final int COUNTER_INITIAL_VALUE = 10;
+    private int[][] groups;
+    private int activeGroup;
 
-    private int[] randomLinearPlayers = {0, 1, 2, 3};
+    private final int LINE_COLOR = Color.WHITE;
+    private final int LINE_WIDTH = 2;
 
-    private ArrayList<Point> intersectionPoints;
-    private int counter = COUNTER_INITIAL_VALUE;
+    private final int MIDDLE_RADIUS = 10;
+    private final int MIDDLE_FILL_COLOR = Color.WHITE;
+    private final int MIDDLE_STROKE_COLOR = Color.BLACK;
+
+    private Point middle;
 
     public Level4C() {
         super(TITLE, MAIN_COLOR);
@@ -37,7 +39,26 @@ public class Level4C extends Level {
 
     @Override
     protected void setupLevel() {
-        // marañaLineal();
+        makeGroups();
+        activeGroup = 0;
+        middle =  new Point();
+    }
+
+    private void makeGroups() {
+        groups = new int[2][2];
+
+        ArrayList<Integer> temp = new ArrayList<>(4);
+        for(int i=0;i<4;i++){
+            temp.add(i);
+        }
+        Collections.shuffle(temp);
+
+        //Convert to 2d array
+        for(int i=0;i<2;i++){
+            for(int j=0;j<2;j++) {
+                groups [i][j] = temp.get(i*2+j);
+            }
+        }
     }
 
 
@@ -46,10 +67,10 @@ public class Level4C extends Level {
 
         ArrayList<Player> players = new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.CYAN, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.MAGENTA, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.YELLOW, Level.players.get(2)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLACK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_YELLOW_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_RED_NODE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLUE_NODE, Level.players.get(3)));
 
         return players;
     }
@@ -57,161 +78,61 @@ public class Level4C extends Level {
 
     @Override
     public void update() {
+        int passiveGroup = (activeGroup+1)%2;
 
-        intersectionPoints = calculateIntersections();
-        if (intersectionPoints.isEmpty()){
-            counter--;
-            if (counter == 0) {
-                marañaLineal();
-                counter = COUNTER_INITIAL_VALUE;
+        //Initial node
+        Point p1 = Level.players.get(groups[passiveGroup][0]).getLocation();
+
+        //Ending node
+        Point p2 = Level.players.get(groups[passiveGroup][1]).getLocation();
+
+
+        //Middle point
+        //middle.move(Math.abs(p2.x-p1.x)/2 + Math.min(p1.x,p2.x),Math.abs(p2.y-p1.y)/2 + Math.min(p1.y,p2.y));
+        middle.move((p2.x+p1.x)/2 ,(p2.y+p1.y)/2);
+
+
+        //Check collision
+        for(int i = 0;i<groups[activeGroup].length;i++){
+            Point p = Level.players.get(groups[activeGroup][i]).getLocation();
+            float r = Level.players.get(groups[activeGroup][i]).getBoundingBox().width/2.0f;
+
+            if(Utils.isCircleCollision(p, r, middle, MIDDLE_RADIUS)){
+                changeActiveGroup();
             }
         }
 
+
     }
 
-
+    private void changeActiveGroup() {
+        activeGroup = (activeGroup+1)%2;
+    }
 
 
     @Override
     protected void drawLevel() {
+
+        int passiveGroup = (activeGroup+1)%2;
+
+        //Initial node
+        Point p1 = Level.players.get(groups[passiveGroup][0]).getLocation();
+
+        //Ending node
+        Point p2 = Level.players.get(groups[passiveGroup][1]).getLocation();
+
+
+        //Draw line between nodes
         pg.beginDraw();
-        pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
-        pg.stroke(Color.WHITE);
-        for (int i = 0; i < randomLinearPlayers.length - 1; i++) {
-            pg.line((float) players.get(randomLinearPlayers[i]).getLocation().getX(),
-                    (float) players.get(randomLinearPlayers[i]).getLocation().getY(),
-                    (float) players.get(randomLinearPlayers[i + 1]).getLocation().getX(),
-                    (float) players.get(randomLinearPlayers[i + 1]).getLocation().getY());
-        }
-        pg.noStroke();
-        pg.fill(0, 0, 255);
-        // Utils.log("adios " + x + " - " + y);
-        for (int i = 0; i < intersectionPoints.size(); i++) {
-            pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
-        }
+        pg.stroke(LINE_COLOR);
+        pg.strokeWeight(LINE_WIDTH);
+
+        pg.line(p1.x,p1.y,p2.x,p2.y);
+
+        pg.fill(MIDDLE_FILL_COLOR);
+        pg.stroke(MIDDLE_STROKE_COLOR);
+        pg.ellipse(middle.x, middle.y, MIDDLE_RADIUS, MIDDLE_RADIUS);
+
         pg.endDraw();
     }
-
-    private boolean enmarañados() {
-        return true;
-    }
-
-
-    private void marañaLineal() {
-        do {
-            randomLinearPlayers = Utils.shuffleArray(new int[]{0, 1, 2, 3});
-            calculateIntersections();
-        } while (intersectionPoints.isEmpty());
-    }
-
-    private ArrayList<Point> calculateIntersections() {
-
-        intersectionPoints = new ArrayList<>();
-
-        for (int i = 0; i < randomLinearPlayers.length - 1; i++) {
-            for (int j = i + 2; j < randomLinearPlayers.length - 1; j++) {
-                // linea a comprar intersección 1/2
-                float x1 = (float) players.get(randomLinearPlayers[i]).getLocation().getX();
-                float y1 = (float) players.get(randomLinearPlayers[i]).getLocation().getY();
-                float x2 = (float) players.get(randomLinearPlayers[i + 1]).getLocation().getX();
-                float y2 = (float) players.get(randomLinearPlayers[i + 1]).getLocation().getY();
-
-                // linea a comprar intersección 2/2
-                float x3 = (float) players.get(randomLinearPlayers[j]).getLocation().getX();
-                float y3 = (float) players.get(randomLinearPlayers[j]).getLocation().getY();
-                float x4 = (float) players.get(randomLinearPlayers[j + 1]).getLocation().getX();
-                float y4 = (float) players.get(randomLinearPlayers[j + 1]).getLocation().getY();
-
-                Utils.log("hola " + Arrays.toString(randomLinearPlayers));
-
-                Point pAux = intersect(x1, y1, x2, y2, x3, y3, x4, y4);
-
-                if (pAux != null) {
-                    intersectionPoints.add(pAux);
-                    Utils.log("intersección " + Arrays.toString(randomLinearPlayers));
-                }
-            }
-        }
-        return intersectionPoints;
-    }
-
-    // from http://processingjs.org/learning/custom/intersect/
-    private Point intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-
-        float a1, a2, b1, b2, c1, c2;
-        float r1, r2, r3, r4;
-        float denom, offset, num;
-        float x, y;
-
-        // Compute a1, b1, c1, where line joining points 1 and 2
-        // is "a1 x + b1 y + c1 = 0".
-        a1 = y2 - y1;
-        b1 = x1 - x2;
-        c1 = (x2 * y1) - (x1 * y2);
-
-        // Compute r3 and r4.
-        r3 = ((a1 * x3) + (b1 * y3) + c1);
-        r4 = ((a1 * x4) + (b1 * y4) + c1);
-
-        // Check signs of r3 and r4. If both point 3 and point 4 lie on
-        // same side of line 1, the line segments do not intersect.
-        if ((r3 != 0) && (r4 != 0) && same_sign(r3, r4)) {
-            return null;
-        }
-
-        // Compute a2, b2, c2
-        a2 = y4 - y3;
-        b2 = x3 - x4;
-        c2 = (x4 * y3) - (x3 * y4);
-
-        // Compute r1 and r2
-        r1 = (a2 * x1) + (b2 * y1) + c2;
-        r2 = (a2 * x2) + (b2 * y2) + c2;
-
-        // Check signs of r1 and r2. If both point 1 and point 2 lie
-        // on same side of second line segment, the line segments do
-        // not intersect.
-        if ((r1 != 0) && (r2 != 0) && (same_sign(r1, r2))) {
-            return null;
-        }
-
-        //Line segments intersect: compute intersection point.
-        denom = (a1 * b2) - (a2 * b1);
-
-        if (denom == 0) {
-            return null;
-        }
-
-        if (denom < 0) {
-            offset = -denom / 2;
-        } else {
-            offset = denom / 2;
-        }
-
-        // The denom/2 is to get rounding instead of truncating. It
-        // is added or subtracted to the numerator, depending upon the
-        // sign of the numerator.
-        num = (b1 * c2) - (b2 * c1);
-        if (num < 0) {
-            x = (num - offset) / denom;
-        } else {
-            x = (num + offset) / denom;
-        }
-
-        num = (a2 * c1) - (a1 * c2);
-        if (num < 0) {
-            y = (num - offset) / denom;
-        } else {
-            y = (num + offset) / denom;
-        }
-
-        // lines_intersect
-        return new Point((int) x, (int) y);
-    }
-
-    private boolean same_sign(float a, float b) {
-
-        return ((a * b) >= 0);
-    }
-
 }

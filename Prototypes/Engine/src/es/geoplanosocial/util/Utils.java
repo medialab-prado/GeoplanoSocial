@@ -1,6 +1,7 @@
 package es.geoplanosocial.util;
 
 import es.geoplanosocial.levels.Level;
+import processing.core.PApplet;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -117,5 +118,14 @@ public class Utils {
         p.setLocation(Math.cos( x[2] ) * x[1], Math.sin( x[2] ) * x[1]);
 
         return p;
+    }
+
+    public static boolean isCircleCollision(Point c1, float r1, Point c2, float r2){
+        float distance = PApplet.dist(c1.x, c1.y, c2.x, c2.y);
+        if (distance <= r1+r2) {//Collision between nodes
+            return true;
+        }else {
+            return false;
+        }
     }
 }
