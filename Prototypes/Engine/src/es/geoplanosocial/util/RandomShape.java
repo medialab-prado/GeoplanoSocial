@@ -50,16 +50,6 @@ public class RandomShape {
                 Utils.log(shapeVertex.get(i).x + " " + shapeVertex.get(i).y);
             }
 
-/*
-             if (vertexNumber == 5) {
-                shapeVertex.clear();
-                shapeVertex.add(new Point(83, 124));
-                 shapeVertex.add(new Point(12, 63));
-                 shapeVertex.add(new Point(76, 87));
-                shapeVertex.add(new Point(36, 33));
-                shapeVertex.add(new Point(39, 121));
-            }*/
-
             Utils.log("---------");
 
             sortVertexToGetClosedShape();
