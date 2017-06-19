@@ -50,16 +50,16 @@ public class Node2A extends Node {
         coordinates.y = locY;
 
         generateRadiusPoints();
-        Utils.log(String.valueOf(radiusPoint));
+        //Utils.log(String.valueOf(radiusPoint));
 
         pg.translate(locX, locY);
 
         if (turnTowardsObject(targetPos, coordinates, pg)) {
-            Utils.log("faced");
+            //Utils.log("faced");
         }
-        else {
+        /*else {
             Utils.log("NO faced");
-        }
+        }*/
 
         pg.fill(color);
         pg.noStroke();
@@ -81,7 +81,7 @@ public class Node2A extends Node {
     private   void generateRadiusPoints() {
         for (int j=0; j<numberOfPoints; j++) {
             float r = map(distance, 0, Constants.LEVEL_WIDTH, (float) 0.1, -10);
-            Utils.log("map:" + r);
+            //Utils.log("map:" + r);
             controlValueArray[0] = r;
             radiusPoint[j] = (int) (outerRing-controlValueArray[j]*spaceBetween);
         }
@@ -109,7 +109,7 @@ public class Node2A extends Node {
             }
         }
 
-        Utils.log("A: " + angle + " P: " + playerAngle + " D: " + distanciaDirecta + " I: " + distanciaIndirecta);
+        //Utils.log("A: " + angle + " P: " + playerAngle + " D: " + distanciaDirecta + " I: " + distanciaIndirecta);
 
         if (playerAngle > 360) playerAngle -= 360;
         if (playerAngle < 0) playerAngle += 360;

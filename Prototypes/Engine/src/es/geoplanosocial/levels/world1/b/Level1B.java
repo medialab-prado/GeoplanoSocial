@@ -27,7 +27,7 @@ public class Level1B extends Level {
     private final int MAX_INTERVAL = 150;//In milliseconds
     private final Line[] LINES = new Line[50];
     private final int LINE_WEIGHT_MIN = 1;
-    private final int LINE_WEIGHT_MAX = 5;
+    private final int LINE_WEIGHT_MAX = 3;
 
 
     private int index = 0;

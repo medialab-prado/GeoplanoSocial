@@ -57,9 +57,13 @@ public class Color {
     /*********
      *World 3*
      *********/
+    //public static final int W3_RED_NODE = Utils.color(230, 76, 26);
+    //public static final int W3_GREEN_NODE = Utils.color(88, 205, 118);
+    //public static final int W3_BLUE_NODE = Utils.color(104, 194, 240);
+
     public static final int W3_RED_NODE = Utils.color(230, 76, 26);
-    public static final int W3_GREEN_NODE = Utils.color(88, 205, 118);
-    public static final int W3_BLUE_NODE = Utils.color(104, 194, 240);
+    public static final int W3_GREEN_NODE = Utils.color(73, 183, 78);
+    public static final int W3_BLUE_NODE = Utils.color(87, 79, 153);
     //A
     public static final int W3_A_BG = Utils.color(184, 215, 230);
     //B
