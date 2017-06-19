@@ -73,8 +73,8 @@ public class Level5A extends Level {
         pg.endShape();
 
         // todo just for debugging (for drawing centroid)
-        pg.fill(Color.LIGHT_GREY);
-        pg.ellipse(poli.centroid.x, poli.centroid.y, 10, 10);
+        // pg.fill(Color.LIGHT_GREY);
+        // pg.ellipse(poli.centroid.x, poli.centroid.y, 10, 10);
 
         pg.endDraw();
     }
