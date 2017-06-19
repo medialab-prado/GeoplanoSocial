@@ -1,7 +1,10 @@
 package es.geoplanosocial.util;
 
 import es.geoplanosocial.players.Player;
+
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,7 +14,7 @@ import static processing.core.PApplet.dist;
 
 /**
  * Random shape to imitate methods
- * Created by josué on 04/08/17.
+ * Created by josué on 04/06/17.
  */
 public class RandomShape {
 
@@ -21,6 +24,8 @@ public class RandomShape {
     private float DIST_TOLERANCE = 10;
     private float MIN_SHAPE_AREA = 500;
     private float MIN_DIST_VERTEX = 20;
+    private float MIN_DIST_INLINE = 10;
+
 
     // fixme here just for debugging purposes
     public Point centroid;
@@ -45,7 +50,7 @@ public class RandomShape {
         do {
             shapeVertex.clear();
             for (int i = 0; i < vertexNumber; i++) {
-                shapeVertex.add(new Point(Utils.randomInt(1, Constants.LEVEL_HEIGHT), Utils.randomInt(1, Constants.LEVEL_HEIGHT)));
+                shapeVertex.add(new Point(Utils.randomInt(1, Constants.LEVEL_WIDTH), Utils.randomInt(1, Constants.LEVEL_HEIGHT)));
                 Utils.log(shapeVertex.get(i).x + " " + shapeVertex.get(i).y);
             }
 
@@ -53,12 +58,36 @@ public class RandomShape {
 
             sortVertexToGetClosedShape();
         } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
-                (!checkMinDist(shapeVertex)));
+                (!checkMinDist(shapeVertex)) ||
+                !checkNoInLine(shapeVertex));
         // todo checkNoInLine(shapeVertex)
 
 
-
         // shapeVertex = sortToGetClosedShape();
+    }
+
+    private boolean checkNoInLine(ArrayList<Point> shapeVertex) {
+        for (int i = 0; i < vertexNumber - 2; i++) {
+
+            // Utils.log(String.valueOf(dist(shapeVertex.get(i).x, shapeVertex.get(i).y, shapeVertex.get(j).x, shapeVertex.get(j).y)));
+            if (distanceFromPointToLine(new Point(shapeVertex.get(i + 1).x, shapeVertex.get(i + 1).y), new Line2D.Double(shapeVertex.get(i).x, shapeVertex.get(i).y, shapeVertex.get(i + 1).x, shapeVertex.get(i + 2).y)) < MIN_DIST_INLINE) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // adapted from http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
+    public static double distanceFromPointToLine(Point point, Line2D line) {
+        // given a line based on two points, and a point away from the line,
+        // find the perpendicular distance from the point to the line.
+        // see http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
+        // for explanation and defination.
+        Point2D l1 = line.getP1();
+        Point2D l2 = line.getP2();
+
+        return abs((l2.getX() - l1.getX()) * (l1.getY() - point.getY()) - (l1.getX() - point.getX()) * (l2.getY() - l1.getY())) /
+                sqrt(pow(l2.getX() - l1.getX(), 2) + pow(l2.getY() - l1.getY(), 2));
     }
 
     private void sortVertexToGetClosedShape() {
@@ -68,11 +97,11 @@ public class RandomShape {
 
         for (int i = 0; i < vertexNumber; i++) {
             theta[i] = cartesian2polar(shapeVertex.get(i), centroid)[1];
-            if (theta[i] < 0) theta[i] = (2*PI) + theta[i];
+            if (theta[i] < 0) theta[i] = (2 * PI) + theta[i];
         }
         int[] index = getSortedIndices(theta);
 
-        ArrayList<Point> auxVertex = (ArrayList<Point>)shapeVertex.clone();
+        ArrayList<Point> auxVertex = (ArrayList<Point>) shapeVertex.clone();
         for (int i = 0; i < vertexNumber; i++) {
             auxVertex.set(index[i], new Point(shapeVertex.get(i).x, shapeVertex.get(i).y));
 
@@ -91,14 +120,14 @@ public class RandomShape {
             }
         } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
                 (!checkMinDist(shapeVertex)));
-                // todo checkNoInLine(shapeVertex)
+        // todo checkNoInLine(shapeVertex)
 
         // shapeVertex = sortToGetClosedShape();
     }
 
     private boolean checkMinDist(ArrayList<Point> auxPointsArray) {
-        for(int i = 0; i < vertexNumber; i++) {
-            for(int j = 0; j < vertexNumber; j++) {
+        for (int i = 0; i < vertexNumber; i++) {
+            for (int j = 0; j < vertexNumber; j++) {
                 if (i != j) {
                     Utils.log(String.valueOf(dist(auxPointsArray.get(i).x, auxPointsArray.get(i).y, auxPointsArray.get(j).x, auxPointsArray.get(j).y)));
                     if (dist(auxPointsArray.get(i).x, auxPointsArray.get(i).y, auxPointsArray.get(j).x, auxPointsArray.get(j).y) < MIN_DIST_VERTEX) {
@@ -148,8 +177,7 @@ public class RandomShape {
     }
 
     // adapted from http://www.mathopenref.com/coordpolygonarea2.html
-    private float polygonArea(ArrayList<Point> p, int numPoints)
-    {
+    private float polygonArea(ArrayList<Point> p, int numPoints) {
         float area = 0;         // Accumulates area in the loop
         int j = numPoints - 1;  // The last vertex is the 'previous' one to the first
 
@@ -158,23 +186,22 @@ public class RandomShape {
             j = i;  //j is previous vertex to i
         }
 
-        Utils.log(String.valueOf(area/2));
-        return abs(area/2);
+        Utils.log(String.valueOf(area / 2));
+        return abs(area / 2);
     }
 
-    private Point centroid()  {
+    private Point centroid() {
         double centroidX = 0, centroidY = 0;
 
-        for(Point knot : shapeVertex) {
+        for (Point knot : shapeVertex) {
             centroidX += knot.getX();
             centroidY += knot.getY();
         }
-        return new Point((int)round(centroidX / shapeVertex.size()), (int)round(centroidY / shapeVertex.size()));
+        return new Point((int) round(centroidX / shapeVertex.size()), (int) round(centroidY / shapeVertex.size()));
     }
 
     // from https://stackoverflow.com/questions/14186529/java-array-of-sorted-indexes
-    private int[] getSortedIndices(double[] originalArray)
-    {
+    private int[] getSortedIndices(double[] originalArray) {
         int len = originalArray.length;
 
         double[] sortedCopy = originalArray.clone();
