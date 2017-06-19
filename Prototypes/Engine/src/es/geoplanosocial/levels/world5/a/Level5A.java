@@ -1,11 +1,13 @@
 package es.geoplanosocial.levels.world5.a;
 
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.RandomShape;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -71,12 +73,28 @@ public class Level5A extends Level {
             pg.vertex(poli.getVertex(i).x, poli.getVertex(i).y);
         }
         pg.endShape();
+        pg.beginShape();
+        for (int i = 0; i < poli.getVertexNumber(); i++) {
+            pg.fill(((Node)players.get(i)).getColor());
+            pg.vertex(poli.getVertex(i).x, poli.getVertex(i).y);
+            Point[] p = calculateTriangleColorIndicator(new Point(poli.getVertex(i).x, poli.getVertex(i).y));
+            pg.vertex(p[0].x, p[0].y);
+            pg.vertex(p[1].x, p[1].y);
+        }
+        pg.endShape();
 
         // todo just for debugging (for drawing centroid)
         // pg.fill(Color.LIGHT_GREY);
         // pg.ellipse(poli.centroid.x, poli.centroid.y, 10, 10);
 
         pg.endDraw();
+    }
+
+    private Point[] calculateTriangleColorIndicator(Point point) {
+        Point[] p = new Point[2];
+        p[0] = new Point(0,0);
+        p[1] = new Point(0,0);
+        return p;
     }
 
 }
