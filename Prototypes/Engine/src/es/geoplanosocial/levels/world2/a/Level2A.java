@@ -1,6 +1,7 @@
 package es.geoplanosocial.levels.world2.a;
 
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.levels.world2.c.Node2C;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 /**
  * World 2
  * Level A
- * Created by gbermejo on 27/05/17.
+ * Created by josué on 19/06/2017.
  */
 public class Level2A extends Level {
 
@@ -31,10 +32,9 @@ public class Level2A extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W2_BLACK_NODE, p));
-        }
-
+        players.add(Player.Factory.getPlayer(Player.Type.NODE2A, Color.W2_BLACK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE2A, Color.W2_WHITE_NODE, Level.players.get(1)));
+        
         return players;
     }
 
@@ -42,8 +42,8 @@ public class Level2A extends Level {
 
     @Override
     public void update() {
-        //TODO Update level elements
-
+        ((Node2A)players.get(0)).targetPos(players.get(1).getLocation());
+        ((Node2A)players.get(1)).targetPos(players.get(0).getLocation());
     }
 
 

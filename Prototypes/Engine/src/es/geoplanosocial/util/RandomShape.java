@@ -5,7 +5,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static es.geoplanosocial.util.Constants.DEBUG;
 import static es.geoplanosocial.util.Utils.cartesian2polar;
 import static java.lang.Math.*;
 import static processing.core.PApplet.dist;
