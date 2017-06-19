@@ -65,6 +65,9 @@ public class Level5C extends Level {
                 timer = System.currentTimeMillis();
             }
         }
+        else {
+            timer = System.currentTimeMillis();
+        }
 
     }
 
