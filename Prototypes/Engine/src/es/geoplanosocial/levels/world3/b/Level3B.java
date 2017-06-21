@@ -23,12 +23,13 @@ import static processing.core.PConstants.ADD;
  */
 public class Level3B extends Level {
 
-    private static final String TITLE="Light";
+    private static final String TITLE="Venn a mi";
     public static final int MAIN_COLOR= Color.W3_B_BG;
 
     private  PGraphics pgIntersection;
     private  PGraphics pgTemp;
 
+    private final float SIZE_FACTOR = 2.2f;
 
     public Level3B() {
         super(TITLE, MAIN_COLOR);
@@ -50,10 +51,17 @@ public class Level3B extends Level {
     protected ArrayList<Player> setupPlayers() {
 
         ArrayList<Player> players=new ArrayList<>();
+        Player p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_RED_NODE, Level.players.get(0));
+        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        players.add(p);
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_RED_NODE, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_GREEN_NODE, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W3_BLUE_NODE, Level.players.get(2)));
+        p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_GREEN_NODE, Level.players.get(1));
+        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        players.add(p);
+
+        p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_BLUE_NODE, Level.players.get(2));
+        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        players.add(p);
 
         return players;
     }
