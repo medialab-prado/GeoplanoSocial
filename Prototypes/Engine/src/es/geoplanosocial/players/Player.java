@@ -1,6 +1,6 @@
 package es.geoplanosocial.players;
 
-import es.geoplanosocial.levels.world1.c.Node1C;
+import es.geoplanosocial.levels.world1.a.Node1A;
 import es.geoplanosocial.levels.world2.a.Node2A;
 import es.geoplanosocial.levels.world2.c.Node2C;
 import es.geoplanosocial.tracker.Blob;
@@ -19,7 +19,7 @@ public class Player {
     public enum Type {
         NODE,
         SQUARE,
-        NODE1C,
+        NODE1A,
         NODE2A,
         NODE2C
     }
@@ -166,8 +166,8 @@ public class Player {
                 case SQUARE:
                     p=new Square(color,player);
                     break;
-                case NODE1C:
-                    p=new Node1C(color,player);
+                case NODE1A:
+                    p=new Node1A(color,player);
                     break;
                 case NODE2A:
                     p=new Node2A(color, player);

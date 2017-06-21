@@ -33,6 +33,8 @@ public class Color {
      *********/
     public static final int W1_BLACK_NODE = Utils.color(2, 12, 26);
     public static final int W1_WHITE_NODE = Utils.color(250, 253, 255);
+    public static final int W1_WHITE_ALPHA_NODE = WHITE_ALPHA;
+
     //A
     public static final int W1_A_BG = W1_WHITE_NODE;
     //B

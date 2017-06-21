@@ -1,4 +1,4 @@
-package es.geoplanosocial.levels.world1.c;
+package es.geoplanosocial.levels.world1.a;
 
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
@@ -13,7 +13,7 @@ import java.awt.*;
  * A circular representation of a player.
  * Created by josué on 22/05/17.
  */
-public class Node1C extends Node {
+public class Node1A extends Node {
     private Color color;
     private int a = 255;
 
@@ -21,7 +21,7 @@ public class Node1C extends Node {
 
     static private int DEGRADE_RATE = 5;
 
-    public Node1C(int color, Player player) {
+    public Node1A(int color, Player player) {
         super(color, player);
         this.color = new Color(color);
     }
@@ -52,7 +52,7 @@ public class Node1C extends Node {
 
         }
 
-        // fixme change "Color.BLUE" and take this color directly from Level1C class
+        // fixme change "Color.BLUE" and take this color directly from Level1A class
         // color = lerpColor(originalColor, Color.BLUE,  stopCounter, 1);
 
 

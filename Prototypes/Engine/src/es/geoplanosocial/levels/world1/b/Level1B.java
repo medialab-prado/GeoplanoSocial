@@ -4,13 +4,15 @@ import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
-import es.geoplanosocial.util.Types;
+import es.geoplanosocial.util.Utils;
+import processing.core.PVector;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.LEVEL_HEIGHT;
 import static es.geoplanosocial.util.Constants.LEVEL_WIDTH;
+import static es.geoplanosocial.util.Constants.PLAYER_SIZE;
 import static es.geoplanosocial.util.Utils.randomInt;
 
 /**
@@ -20,26 +22,33 @@ import static es.geoplanosocial.util.Utils.randomInt;
  */
 public class Level1B extends Level {
 
-    private static final String TITLE="Rastro";
-    public static final int MAIN_COLOR= Color.W1_C_BG;
+    private static final String TITLE="Rebaño";
+    public static final int MAIN_COLOR= Color.W1_B_BG;
+
+    private final int DUMMIES_NUMBER = 20;
+    private Rectangle[] DUMMIES ;
+
+    private final int DUMMY_SIZE_FACTOR = 2;
+    private int DUMMY_SIZE_MAX;
+    private int DUMMY_SIZE_MIN;
+
+    private final float DUMMY_SPEED = 0.15f;
+    private final int DUMMY_POSITION_OFFSET = 50;
 
 
-    private final int MAX_INTERVAL = 150;//In milliseconds
-    private final Line[] LINES = new Line[50];
-    private final int LINE_WEIGHT_MIN = 1;
-    private final int LINE_WEIGHT_MAX = 3;
-
-
-    private int index = 0;
     private long timer = System.currentTimeMillis();
+
+
+
 
     public Level1B() {
         super(TITLE, MAIN_COLOR);
     }
 
+
     @Override
     protected void setupLevel() {
-        //Level specific setup
+        generateDummies();
     }
 
     @Override
@@ -49,23 +58,59 @@ public class Level1B extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W1_WHITE_NODE, p));
+            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W1_WHITE_ALPHA_NODE, p));
         }
+
         return players;
     }
 
+    private void generateDummies() {
+        //Generate all dummies at random places
+        DUMMIES = new Rectangle[DUMMIES_NUMBER];
+        DUMMY_SIZE_MIN = PLAYER_SIZE/DUMMY_SIZE_FACTOR;
+        DUMMY_SIZE_MAX = PLAYER_SIZE*DUMMY_SIZE_FACTOR;
+        for(int i=0; i<DUMMIES.length;i++){
+            DUMMIES[i] = generateDummy();
+        }
+    }
 
 
     @Override
     public void update() {
         //Update level elements
-        if(System.currentTimeMillis()-timer>=MAX_INTERVAL){
 
-            LINES[index] = generateLine();
+        Player player = players.get(0);
 
-            index = ++index % LINES.length; //Cyclic index
+        if(player!=null){
+            long currentTime = System.currentTimeMillis();
+            long interval = currentTime -timer;
 
-            timer = System.currentTimeMillis();//Reset timer
+            Rectangle playerBB = player.getBoundingBox();
+
+            float distanceInInterval = DUMMY_SPEED * interval;
+
+            //Move dummies towards player position
+            for(int i=0; i<DUMMIES.length;i++){
+
+                PVector v = new PVector(playerBB.x-DUMMIES[i].x+Utils.randomInt(-DUMMY_POSITION_OFFSET,DUMMY_POSITION_OFFSET),
+                        playerBB.y-DUMMIES[i].y+Utils.randomInt(-DUMMY_POSITION_OFFSET,DUMMY_POSITION_OFFSET));
+
+                //TODO maybe Verlet integration and circles collisions?
+                float sizeFactor = (DUMMY_SIZE_MAX-DUMMIES[i].getSize().width + 1.0f)/(DUMMY_SIZE_MAX-DUMMY_SIZE_MIN);
+                float distancePerSize = distanceInInterval * sizeFactor;
+                v.normalize();
+                v.mult(distancePerSize);
+
+                int prevX= DUMMIES[i].x;
+                int prevY= DUMMIES[i].y;
+
+                DUMMIES[i].x += v.x > 0 ? Math.ceil(v.x):Math.floor(v.x);
+                DUMMIES[i].y += v.y > 0 ? Math.ceil(v.y):Math.floor(v.y);
+
+                //if(prevX ==DUMMIES[i].x && prevY ==DUMMIES[i].y) Utils.log(""+v);
+            }
+
+            timer = currentTime;
         }
 
     }
@@ -73,92 +118,38 @@ public class Level1B extends Level {
 
     @Override
     protected void drawLevel() {
-        //Draw lines
-        pg.beginDraw();
-        pg.stroke(((Node)players.get(0)).getColor());
 
-        for(int i=0; i<LINES.length;i++){
-            if(LINES[i]!=null) {
-                pg.strokeWeight(LINES[i].weight);
-                pg.line(LINES[i].p1.x, LINES[i].p1.y, LINES[i].p2.x, LINES[i].p2.y);
-            }
+        //Draw dummies
+        pg.beginDraw();
+        pg.noStroke();
+        pg.fill(((Node)players.get(0)).getColor());
+
+        for(int i=0; i<DUMMIES.length;i++){
+            if(DUMMIES[i]!=null)
+                pg.ellipse(DUMMIES[i].x, DUMMIES[i].y, DUMMIES[i].width, DUMMIES[i].height);
         }
 
-        pg.noStroke();
         pg.endDraw();
     }
 
 
-    //Generates a line
-    private Line generateLine(){
-
-        //Starting point
-        Types.Direction side = Types.Direction.getRandom();
-
-        int startingX=0, startingY=0;
-
-        switch (side) {
-            case UP:
-                startingX = randomInt(0, LEVEL_WIDTH);
-                startingY = 0;
-                break;
-            case DOWN:
-                startingX = randomInt(0, LEVEL_WIDTH);
-                startingY = LEVEL_HEIGHT;
-                break;
-            case LEFT:
-                startingX = 0;
-                startingY = randomInt(0, LEVEL_HEIGHT);
-                break;
-            case RIGHT:
-                startingX = LEVEL_WIDTH;
-                startingY = randomInt(0, LEVEL_HEIGHT);
-                break;
-        }
-
-        Rectangle pBB  = players.get(0).getBoundingBox();
-
-        float m = (pBB.y-startingY)/(pBB.x-startingX+0.0f);
-
-        float n = startingY - m * startingX;
-
-        int endingX=0, endingY=0;
-
-        switch (side) {
-            case UP:
-                endingY = LEVEL_HEIGHT;
-                endingX = (int)((endingY-n)/m);
-                break;
-            case DOWN:
-                endingY = 0;
-                endingX = (int)((endingY-n)/m);
-                break;
-            case LEFT:
-                endingX = LEVEL_WIDTH;
-                endingY = (int) (m*endingX+n);
-                break;
-            case RIGHT:
-                endingX = 0;
-                endingY = (int) (m*endingX+n);
-                break;
-        }
-
-        int weight = randomInt(LINE_WEIGHT_MIN, LINE_WEIGHT_MAX);
-
-        return new Line(new Point(startingX,startingY),
-                new Point(endingX,endingY),
-                weight);
-    }
-
-
-    private class Line{
-        public Point p1, p2;
-        public int weight;
-
-        public Line(Point p1, Point p2, int weight) {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.weight = weight;
+    @Override
+    public void addPlayers(ArrayList<Player> newPlayers) {
+        for (Player p : newPlayers){
+            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK_ALPHA, p));
         }
     }
+
+    //Generates a point adjacent to the player
+    private Rectangle generateDummy(){
+
+        int size = randomInt(DUMMY_SIZE_MIN, DUMMY_SIZE_MAX);
+
+        int x = randomInt(0, LEVEL_WIDTH);
+
+        int y = randomInt(0, LEVEL_HEIGHT);
+
+        return new Rectangle(x, y, size, size);
+    }
+
 }
