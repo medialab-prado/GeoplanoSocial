@@ -216,6 +216,7 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     private void setLevel() {
+        resetPlayerSizes();
 
         Level l= Level.Factory.getLevel(players.size(), worldCube.getCurrentLevel());
         if(l!=null){
@@ -226,6 +227,13 @@ public class Engine extends PApplet implements TrackerCallback {
         }
 
 
+    }
+
+    //FIXME this may disappear when camera attached
+    private void resetPlayerSizes() {
+        for(Player p : players){
+            p.getBoundingBox().setSize(PLAYER_SIZE, PLAYER_SIZE);
+        }
     }
 
     /*DRAW FUNCTIONS*/
@@ -324,7 +332,10 @@ public class Engine extends PApplet implements TrackerCallback {
 
     @Override
     public void changeLevel(Types.Direction direction) {
+        resetPlayerSizes();
         worldCube.move(direction);
         setLevel();
     }
+
+
 }
