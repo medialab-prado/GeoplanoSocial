@@ -18,7 +18,7 @@ import static processing.core.PApplet.map;
  */
 public class Level3C extends Level {
 
-    private static final String TITLE="Iron triangle";
+    private static final String TITLE="P3P";
     public static final int MAIN_COLOR= Color.W3_C_BG;
     private static final float STROKEWEIGHT_LEVEL3B = 10;
 
