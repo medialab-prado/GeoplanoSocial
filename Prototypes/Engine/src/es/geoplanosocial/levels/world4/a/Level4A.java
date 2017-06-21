@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class Level4A extends Level {
 
-    private static final String TITLE="Imita";
+    private static final String TITLE="Mimic fijo";
     public static final int MAIN_COLOR= Color.W4_A_BG;
 
     private RandomShape square;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Level5B extends Level {
 
-    private static final String TITLE="Rodea-la-minoría";
+    private static final String TITLE="Acorrala2";
     public static final int MAIN_COLOR= Color.W5_B_BG;
 
     private boolean surroundedMinority = false;
@@ -131,7 +131,7 @@ public class Level5B extends Level {
     }
 
     private void morphSurrounded(float percentage) {
-        Utils.log("Morphed: "+ percentage*100);
+        //Utils.log("Morphed: "+ percentage*100);
         for(Player p: surrounded){
             Square s = ((Square)p);
             s.setRadiiPercentage(percentage);

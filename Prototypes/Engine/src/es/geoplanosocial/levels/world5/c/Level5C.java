@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class Level5C extends Level {
 
-    private static final String TITLE = "Desemaraña-cíclico";
+    private static final String TITLE = "Origins";
     public static final int MAIN_COLOR = Color.W5_C_BG;
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;

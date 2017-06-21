@@ -17,7 +17,7 @@ import java.util.Collections;
  */
 public class Level4C extends Level {
 
-    private static final String TITLE = "Rompelíneas";
+    private static final String TITLE = "Extremo centro";
     public static final int MAIN_COLOR = Color.W4_C_BG;
 
     private int[][] groups;

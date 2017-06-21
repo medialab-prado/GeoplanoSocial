@@ -1,7 +1,6 @@
 package es.geoplanosocial.levels.world2.a;
 
 import es.geoplanosocial.levels.Level;
-import es.geoplanosocial.levels.world2.c.Node2C;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 

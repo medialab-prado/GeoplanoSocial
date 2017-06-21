@@ -1,4 +1,4 @@
-package es.geoplanosocial.levels.world2.c;
+package es.geoplanosocial.levels.world2.b;
 
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
@@ -8,7 +8,7 @@ import es.geoplanosocial.util.Utils;
  * Node with an energy component
  * Created by gbermejo on 14/06/17.
  */
-public class Node2C extends Node{
+public class Node2B extends Node{
     private static final float TRANSFER_COEFF = 0.25f;
     private static final float MIN_ENERGY = 2.5f;
 
@@ -16,7 +16,7 @@ public class Node2C extends Node{
     private boolean giving;//If is the one giving energy
 
 
-    public Node2C(boolean giving, int color, Player player) {
+    public Node2B(boolean giving, int color, Player player) {
 
         super(color, player);
 
@@ -26,7 +26,7 @@ public class Node2C extends Node{
 
 
     //Checks and transfers energy if needed
-    public void checkTransference(Node2C p) {
+    public void checkTransference(Node2B p) {
         if(Utils.isCircleCollision(p.getLocation(),p.energy,this.getLocation(),energy)){//Collision between nodes
             transfer();
             p.transfer();
