@@ -29,7 +29,7 @@ public class Node2A extends Node {
     public Node2A(int color, Player player) {
         super(color, player);
         this.color = color;
-        this.outerRing = this.getBoundingBox().width;
+        this.outerRing = round((float) (this.getBoundingBox().width / 1.7)); // todo esta división es a ojo; todavía no sé por qué sin la división queda un nodo grande grande
         controlValueArray[0] = -1;
         controlValueArray[1] = (float) 0.5;
         controlValueArray[2] = (float) 0.5;
@@ -54,12 +54,7 @@ public class Node2A extends Node {
 
         pg.translate(locX, locY);
 
-        if (turnTowardsObject(targetPos, coordinates, pg)) {
-            //Utils.log("faced");
-        }
-        /*else {
-            Utils.log("NO faced");
-        }*/
+        turnTowardsObject(targetPos, coordinates, pg);
 
         pg.fill(color);
         pg.noStroke();
