@@ -7,9 +7,7 @@ import es.geoplanosocial.util.Constants;
 
 import java.util.ArrayList;
 
-import static processing.core.PApplet.constrain;
-import static processing.core.PApplet.dist;
-import static processing.core.PApplet.map;
+import static processing.core.PApplet.*;
 
 /**
  * World 3
@@ -21,6 +19,9 @@ public class Level3C extends Level {
     private static final String TITLE="P3P";
     public static final int MAIN_COLOR= Color.W3_C_BG;
     private static final float STROKEWEIGHT_LEVEL3B = 10;
+    public static final int MAX_DISTANCE = (int)round((float) (Constants.LEVEL_HEIGHT * 0.8));
+
+
 
 
     private float[][] ancho;
@@ -61,7 +62,7 @@ public class Level3C extends Level {
                     float x2 = (float)players.get(j).getLocation().getX();
                     float y2 = (float)players.get(j).getLocation().getY();
                     float distancia = dist(x1, y1, x2, y2);
-                    ancho[i][j] = map(distancia, 0, Constants.LEVEL_WIDTH, 0, STROKEWEIGHT_LEVEL3B);
+                    ancho[i][j] = map(distancia, 0, MAX_DISTANCE, 0, STROKEWEIGHT_LEVEL3B);
                     ancho[i][j] = constrain(ancho[i][j], 0, STROKEWEIGHT_LEVEL3B);
                 }
     }
