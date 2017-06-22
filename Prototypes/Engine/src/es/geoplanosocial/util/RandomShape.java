@@ -24,16 +24,25 @@ public class RandomShape {
     private float DIST_TOLERANCE = 10;
     private float MIN_SHAPE_AREA = 500;
     private float MIN_DIST_VERTEX = 20;
-    private float MIN_DIST_INLINE = 10;
+    private float MIN_DIST_INLINE = 50;
 
 
     // fixme here just for debugging purposes
     public Point centroid;
 
+    // index = vertexAssigned | content = playerNumber
+    private int[] userVertexAssignment;
+
 
     public RandomShape(int vertexNumber) {
         shapeVertex = new ArrayList<>();
         this.vertexNumber = vertexNumber;
+
+        userVertexAssignment = new int[vertexNumber];
+        for (int i = 0; i < vertexNumber; i++)
+            userVertexAssignment[i] = i;
+        userVertexAssignment = Utils.shuffleArray(userVertexAssignment);
+
         updateRamdomShape();
     }
 
@@ -53,14 +62,7 @@ public class RandomShape {
         } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
                 (!checkMinDist(shapeVertex)) ||
                 !checkNoInLine(shapeVertex));
-
-//        if (Constants.DEBUG && vertexNumber == 4) {
-//            shapeVertex.clear();
-//            shapeVertex.add(new Point(0, 0));
-//            shapeVertex.add(new Point(Constants.LEVEL_WIDTH, 0));
-//            shapeVertex.add(new Point(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT));
-//            shapeVertex.add(new Point(0, Constants.LEVEL_HEIGHT));
-//        }
+        userVertexAssignment = Utils.shuffleArray(userVertexAssignment);
     }
 
     private boolean checkNoInLine(ArrayList<Point> shapeVertex) {
@@ -149,6 +151,19 @@ public class RandomShape {
             return false;
     }
 
+    public boolean playersColorMatch(ArrayList<Player> players) {
+        float[][] distanceMat = new float[players.size()][vertexNumber];
+        int[] minPoint = new int[vertexNumber];
+
+        for (int i = 0; i < vertexNumber; i++) minPoint[i] = -1;
+
+        for (int i = 0; i < vertexNumber; i++)
+            if (dist((float) players.get(userVertexAssignment[i]).getLocation().getX(), (float) players.get(userVertexAssignment[i]).getLocation().getY(), shapeVertex.get(i).x, shapeVertex.get(i).y) > DIST_TOLERANCE)
+                return false;
+
+        return true;
+    }
+
     public int getVertexNumber() {
         return vertexNumber;
     }
@@ -197,5 +212,9 @@ public class RandomShape {
             indices[index] = Arrays.binarySearch(sortedCopy, originalArray[index]);
 
         return indices;
+    }
+
+    public int[] getUserVertexAssignment() {
+        return userVertexAssignment;
     }
 }

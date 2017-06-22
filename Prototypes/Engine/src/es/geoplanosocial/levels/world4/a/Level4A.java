@@ -62,7 +62,7 @@ public class Level4A extends Level {
 
     @Override
     public void update() {
-        if (square.playersAnyMatch(players)) {
+        if (square.playersColorMatch(players)) {
             if (System.currentTimeMillis() - timerColor >= MAX_INTERVAL_COLOR) {
                 this.color = Color.BLACK;
                 // timerColor = System.currentTimeMillis();
@@ -104,7 +104,6 @@ public class Level4A extends Level {
     }
 
     private void drawVertexMiniTriangles() {
-
         for (int i = 0; i < square.getVertexNumber(); i++) {
             ArrayList<Point> trianglePoints = new ArrayList<>();
             trianglePoints.add(new Point(square.getVertex(i).x, square.getVertex(i).y));
@@ -112,7 +111,7 @@ public class Level4A extends Level {
             trianglePoints.add(pointInLineAtDistance(trianglePoints.get(0), square.getVertex((i == 0) ? square.getVertexNumber() -1 : i-1), MINI_TRIANGLE_DIST));
 
             pg.beginShape();
-            pg.fill(((Node)players.get(i)).getColor());
+            pg.fill(((Node)players.get(square.getUserVertexAssignment()[i])).getColor());
             for (int j = 0; j < 3; j++) {
                 pg.vertex(trianglePoints.get(j).x, trianglePoints.get(j).y);
             }
