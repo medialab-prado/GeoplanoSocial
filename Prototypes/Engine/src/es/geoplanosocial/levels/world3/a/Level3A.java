@@ -19,8 +19,11 @@ public class Level3A extends Level {
 
     private RandomShape triangle;
 
-    private long timer = System.currentTimeMillis();
-    private final int MAX_INTERVAL = 3000;//In milliseconds
+    private long timerColor = System.currentTimeMillis();
+    private long timerNext = System.currentTimeMillis();
+    private final int MAX_INTERVAL_COLOR = 1500;//In milliseconds
+    private final int MAX_INTERVAL_NEXT = 3000;//In milliseconds
+    private int color;
 
     public Level3A() {
         super(TITLE, MAIN_COLOR);
@@ -30,6 +33,7 @@ public class Level3A extends Level {
     protected void setupLevel() {
         triangle = new RandomShape(3);
         setDrawPlayersFront(true);
+        this.color = Color.WHITE;
     }
 
     @Override
@@ -47,13 +51,21 @@ public class Level3A extends Level {
     @Override
     public void update() {
         if (triangle.playersAnyMatch(players)) {
-            if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
-                triangle.updateRamdomShape();
-                timer = System.currentTimeMillis();
+            if (System.currentTimeMillis() - timerColor >= MAX_INTERVAL_COLOR) {
+                this.color = Color.BLACK;
+                // timerColor = System.currentTimeMillis();
+                if (System.currentTimeMillis() - timerNext >= MAX_INTERVAL_NEXT) {
+                    this.color = Color.WHITE;
+                    triangle.updateRamdomShape();
+                    timerNext = System.currentTimeMillis();
+                    timerColor = System.currentTimeMillis();
+                }
             }
         }
         else {
-            timer = System.currentTimeMillis();
+            this.color = Color.WHITE;
+            timerColor = System.currentTimeMillis();
+            timerNext = System.currentTimeMillis();
         }
     }
 
@@ -61,7 +73,7 @@ public class Level3A extends Level {
     protected void drawLevel() {
         pg.beginDraw();
         pg.noStroke();
-        pg.fill(Color.WHITE);
+        pg.fill(color);
         pg.beginShape();
         for (int i = 0; i < triangle.getVertexNumber(); i++) {
             pg.vertex(triangle.getVertex(i).x, triangle.getVertex(i).y);
