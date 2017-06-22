@@ -65,6 +65,7 @@ public class RandomShape {
         userVertexAssignment = Utils.shuffleArray(userVertexAssignment);
     }
 
+    // fixme algo pasa con esto; no sé si funciona bien :S
     private boolean checkNoInLine(ArrayList<Point> shapeVertex) {
         for (int i = 0; i < vertexNumber - 2; i++) {
 

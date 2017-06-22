@@ -22,7 +22,7 @@ public class Level5C extends Level {
 
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
-    private final int MAX_INTERVAL = 3000;//In milliseconds
+    private final int MAX_INTERVAL = 4000;//In milliseconds
     private long timer = System.currentTimeMillis();
     private int[] randomLinearPlayers;
 
