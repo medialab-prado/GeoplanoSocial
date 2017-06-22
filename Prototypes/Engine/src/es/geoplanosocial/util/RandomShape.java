@@ -40,13 +40,6 @@ public class RandomShape {
     // TODO establecer una distancia mínima entre 2 puntos
     // TODO (para >4) no controlo que la forma sea "continua" (mirar)
     public void updateRamdomShape() {
-        shapeVertex.clear();
-
-        // random thetas generation
-        // double[] theta = new Random().doubles(0, 2*PI).distinct().limit(vertexNumber).toArray();
-        // random radius generation
-        // double[] r = new Random().doubles(0, 2*PI).distinct().limit(vertexNumber).toArray();
-
         do {
             shapeVertex.clear();
             for (int i = 0; i < vertexNumber; i++) {
@@ -60,10 +53,14 @@ public class RandomShape {
         } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
                 (!checkMinDist(shapeVertex)) ||
                 !checkNoInLine(shapeVertex));
-        // todo checkNoInLine(shapeVertex)
 
-
-        // shapeVertex = sortToGetClosedShape();
+//        if (Constants.DEBUG && vertexNumber == 4) {
+//            shapeVertex.clear();
+//            shapeVertex.add(new Point(0, 0));
+//            shapeVertex.add(new Point(Constants.LEVEL_WIDTH, 0));
+//            shapeVertex.add(new Point(Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT));
+//            shapeVertex.add(new Point(0, Constants.LEVEL_HEIGHT));
+//        }
     }
 
     private boolean checkNoInLine(ArrayList<Point> shapeVertex) {
@@ -108,21 +105,6 @@ public class RandomShape {
             Utils.log(auxVertex.get(i).x + " " + auxVertex.get(i).y);
         }
         shapeVertex = auxVertex;
-    }
-
-    public void _updateRamdomShape() {
-        shapeVertex.clear();
-
-        do {
-            shapeVertex.clear();
-            for (int i = 0; i < vertexNumber; i++) {
-                shapeVertex.add(new Point(Utils.randomInt(1, Constants.LEVEL_HEIGHT), Utils.randomInt(1, Constants.LEVEL_HEIGHT)));
-            }
-        } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
-                (!checkMinDist(shapeVertex)));
-        // todo checkNoInLine(shapeVertex)
-
-        // shapeVertex = sortToGetClosedShape();
     }
 
     private boolean checkMinDist(ArrayList<Point> auxPointsArray) {
