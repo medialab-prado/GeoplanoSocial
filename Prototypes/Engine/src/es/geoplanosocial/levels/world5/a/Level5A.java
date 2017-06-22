@@ -22,8 +22,11 @@ public class Level5A extends Level {
 
     private RandomShape poli;
 
-    private long timer = System.currentTimeMillis();
-    private final int MAX_INTERVAL = 3000;//In milliseconds
+    private long timerColor = System.currentTimeMillis();
+    private long timerNext = System.currentTimeMillis();
+    private final int MAX_INTERVAL_COLOR = 1500;//In milliseconds
+    private final int MAX_INTERVAL_NEXT = 3000;//In milliseconds
+    private int color;
 
     public Level5A() {
         super(TITLE, MAIN_COLOR);
@@ -34,6 +37,7 @@ public class Level5A extends Level {
     protected void setupLevel() {
         poli = new RandomShape(5);
         setDrawPlayersFront(true);
+        this.color = Color.WHITE;
     }
 
     @Override
@@ -53,13 +57,21 @@ public class Level5A extends Level {
     @Override
     public void update() {
         if (poli.playersAnyMatch(players)) {
-            if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
-                poli.updateRamdomShape();
-                timer = System.currentTimeMillis();
+            if (System.currentTimeMillis() - timerColor >= MAX_INTERVAL_COLOR) {
+                this.color = Color.BLACK;
+                // timerColor = System.currentTimeMillis();
+                if (System.currentTimeMillis() - timerNext >= MAX_INTERVAL_NEXT) {
+                    this.color = Color.WHITE;
+                    poli.updateRamdomShape();
+                    timerNext = System.currentTimeMillis();
+                    timerColor = System.currentTimeMillis();
+                }
             }
         }
         else {
-            timer = System.currentTimeMillis();
+            this.color = Color.WHITE;
+            timerColor = System.currentTimeMillis();
+            timerNext = System.currentTimeMillis();
         }
     }
 
@@ -67,34 +79,20 @@ public class Level5A extends Level {
     protected void drawLevel() {
         pg.beginDraw();
         pg.noStroke();
-        pg.fill(Color.WHITE);
+        pg.fill(color);
         pg.beginShape();
         for (int i = 0; i < poli.getVertexNumber(); i++) {
             pg.vertex(poli.getVertex(i).x, poli.getVertex(i).y);
-        }
-        pg.endShape();
-        pg.beginShape();
-        for (int i = 0; i < poli.getVertexNumber(); i++) {
-            pg.fill(((Node)players.get(i)).getColor());
-            pg.vertex(poli.getVertex(i).x, poli.getVertex(i).y);
-            Point[] p = calculateTriangleColorIndicator(new Point(poli.getVertex(i).x, poli.getVertex(i).y));
-            pg.vertex(p[0].x, p[0].y);
-            pg.vertex(p[1].x, p[1].y);
         }
         pg.endShape();
 
-        // todo just for debugging (for drawing centroid)
+
+        // todo just for debugging (for drawing corners)
         // pg.fill(Color.LIGHT_GREY);
-        // pg.ellipse(poli.centroid.x, poli.centroid.y, 10, 10);
+        // for (int i = 0; i < poli.getVertexNumber(); i++) {
+        //     pg.ellipse(poli.getVertex(i).x, poli.getVertex(i).y, 5, 5);
+        // }
 
         pg.endDraw();
     }
-
-    private Point[] calculateTriangleColorIndicator(Point point) {
-        Point[] p = new Point[2];
-        p[0] = new Point(0,0);
-        p[1] = new Point(0,0);
-        return p;
-    }
-
 }

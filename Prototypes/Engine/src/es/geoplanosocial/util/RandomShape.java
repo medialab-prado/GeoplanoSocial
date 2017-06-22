@@ -24,7 +24,7 @@ public class RandomShape {
     private float DIST_TOLERANCE = 10;
     private float MIN_SHAPE_AREA = 500;
     private float MIN_DIST_VERTEX = 20;
-    private float MIN_DIST_INLINE = 50;
+    private float MIN_DIST_INLINE = 20;
 
 
     // fixme here just for debugging purposes
@@ -59,6 +59,7 @@ public class RandomShape {
             Utils.log("---------");
 
             sortVertexToGetClosedShape();
+
         } while ((polygonArea(shapeVertex, vertexNumber) < MIN_SHAPE_AREA) ||
                 (!checkMinDist(shapeVertex)) ||
                 !checkNoInLine(shapeVertex));
@@ -67,12 +68,21 @@ public class RandomShape {
 
     // fixme algo pasa con esto; no sé si funciona bien :S
     private boolean checkNoInLine(ArrayList<Point> shapeVertex) {
+        // evaluación de punto inicial
+        if (distanceFromPointToLine(new Point(shapeVertex.get(0).x, shapeVertex.get(0).y), new Line2D.Double(shapeVertex.get(vertexNumber-1).x, shapeVertex.get(vertexNumber-1).y, shapeVertex.get(1).x, shapeVertex.get(1).y)) < MIN_DIST_INLINE) {
+            return false;
+        }
+        // evaluación de puntos intermedios
         for (int i = 0; i < vertexNumber - 2; i++) {
 
             // Utils.log(String.valueOf(dist(shapeVertex.get(i).x, shapeVertex.get(i).y, shapeVertex.get(j).x, shapeVertex.get(j).y)));
-            if (distanceFromPointToLine(new Point(shapeVertex.get(i + 1).x, shapeVertex.get(i + 1).y), new Line2D.Double(shapeVertex.get(i).x, shapeVertex.get(i).y, shapeVertex.get(i + 1).x, shapeVertex.get(i + 2).y)) < MIN_DIST_INLINE) {
+            if (distanceFromPointToLine(new Point(shapeVertex.get(i + 1).x, shapeVertex.get(i + 1).y), new Line2D.Double(shapeVertex.get(i).x, shapeVertex.get(i).y, shapeVertex.get(i + 2).x, shapeVertex.get(i + 2).y)) < MIN_DIST_INLINE) {
                 return false;
             }
+        }
+        // evaluación de punto final
+        if (distanceFromPointToLine(new Point(shapeVertex.get(vertexNumber-1).x, shapeVertex.get(vertexNumber-1).y), new Line2D.Double(shapeVertex.get(vertexNumber-2).x, shapeVertex.get(vertexNumber-2).y, shapeVertex.get(0).x, shapeVertex.get(0).y)) < MIN_DIST_INLINE) {
+            return false;
         }
         return true;
     }
