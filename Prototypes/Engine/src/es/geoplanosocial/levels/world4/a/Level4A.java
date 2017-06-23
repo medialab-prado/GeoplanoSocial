@@ -52,10 +52,10 @@ public class Level4A extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.RED, Level.players.get(0)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.GREEN, Level.players.get(1)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLUE, Level.players.get(2)));
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.BLACK, Level.players.get(3)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLACK_NODE, Level.players.get(0)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_BLUE_NODE, Level.players.get(1)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_RED_NODE, Level.players.get(2)));
+        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W4_YELLOW_NODE, Level.players.get(3)));
 
         return players;
     }
