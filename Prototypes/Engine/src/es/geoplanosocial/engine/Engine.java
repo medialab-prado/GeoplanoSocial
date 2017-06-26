@@ -2,9 +2,8 @@ package es.geoplanosocial.engine;
 
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
-import es.geoplanosocial.simulation.MouseProvider;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
-import es.geoplanosocial.tracker.BlobsProvider;
+import es.geoplanosocial.tracker.CameraProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
 import es.geoplanosocial.util.Types;
@@ -36,7 +35,9 @@ public class Engine extends PApplet implements TrackerCallback {
     private static final ArrayList<Player> players=new ArrayList<>();
 
     //BlobsProvider
-    private static MouseSelectionProvider blobsProvider;
+    private static MouseSelectionProvider blobsProviderSimulation;
+    private static CameraProvider blobsProvider;
+
 
     //Tracker
     private static final Tracker tracker=Tracker.getInstance();
@@ -67,10 +68,15 @@ public class Engine extends PApplet implements TrackerCallback {
 
 
         if(DEBUG){
-            blobsProvider=new MouseSelectionProvider(this,1,PLAYER_SIZE);
+            blobsProviderSimulation =new MouseSelectionProvider(this,1,PLAYER_SIZE);
+            Tracker.init(players,this, blobsProviderSimulation);
+//            blobsProvider =new CameraProvider();
+//            Tracker.init(players,this, blobsProvider);
+        }else{
+            blobsProvider =new CameraProvider();
+            Tracker.init(players,this, blobsProvider);
         }
 
-        Tracker.init(players,this,blobsProvider);
 
         Level.init(players,this);
 
@@ -131,10 +137,10 @@ public class Engine extends PApplet implements TrackerCallback {
             }else{
                 switch (key) {
                     case '+':
-                        blobsProvider.setNumberOfPlayers(blobsProvider.getNumberOfPlayers()+1);
+                        blobsProviderSimulation.setNumberOfPlayers(blobsProviderSimulation.getNumberOfPlayers()+1);
                         break;
                     case '-':
-                        blobsProvider.setNumberOfPlayers(blobsProvider.getNumberOfPlayers()-1);
+                        blobsProviderSimulation.setNumberOfPlayers(blobsProviderSimulation.getNumberOfPlayers()-1);
                         break;
                     case '0':
                     case '1':
@@ -146,11 +152,11 @@ public class Engine extends PApplet implements TrackerCallback {
                     case '7':
                     case '8':
                     case '9':
-                        blobsProvider.setSelectedPlayer(Character.getNumericValue(key));
+                        blobsProviderSimulation.setSelectedPlayer(Character.getNumericValue(key));
                         break;
                     default:
                 }
-                Utils.log("Players: "+blobsProvider.getNumberOfPlayers());
+                Utils.log("Players: "+ blobsProviderSimulation.getNumberOfPlayers());
             }
         }
     }

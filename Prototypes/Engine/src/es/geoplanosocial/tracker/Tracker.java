@@ -239,6 +239,8 @@ public class Tracker {
 
 
     private void checkLevelChange(){
+        if(players.size()<1)return;
+
 
         int wantToChange=0;
 
