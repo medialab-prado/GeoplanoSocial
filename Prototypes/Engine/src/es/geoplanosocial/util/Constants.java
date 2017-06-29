@@ -52,4 +52,7 @@ public class Constants {
     //Player simulation
     public static final int PLAYER_SIZE = 15;
 
+
+    //OSC
+    public static final int OSC_PORT = 12345;
 }
