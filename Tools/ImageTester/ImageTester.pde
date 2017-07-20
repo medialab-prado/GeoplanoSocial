@@ -28,6 +28,7 @@ final int COLOR_MAGENTA=color(255, 0, 255);
 static PGraphics BG;
 static PImage img;
 
+
 static String[] fileNames;
 static int fileIndex=0;
 
@@ -38,6 +39,9 @@ static final int LEVEL_HEIGHT=125;
 static final int START_WORLD_X=40;
 static final int START_WORLD_Y=72;
 
+
+int timer;
+final int WAIT = 2*1000;
 /**********************
  *PROCESSING FUNCTIONS*
  **********************/
@@ -63,15 +67,19 @@ void setup() {
   printArray(fileNames);
   
   loadImage();
+  
+  timer = millis();
 }
 
 void draw() {
-
+  update();
   //Draw elements
   
   drawBackground(BG);
   drawImage(BG);
   drawDebug(BG);
+  drawText(BG);
+  drawText2(BG);
 
 }
 
@@ -110,6 +118,19 @@ void loadImage(){
 
 //Updates elements and properties
 void update() {
+  int currentTime = millis();
+  
+  if(currentTime-timer>=WAIT){
+    changeIndex(1);
+    loadImage();
+    if(fileIndex==fileNames.length-1){
+      changeIndex(-fileNames.length);
+    }
+    timer=currentTime;      
+  }
+
+  
+  
   
 }
 
@@ -127,6 +148,20 @@ void drawDebug(PGraphics pg) {
   textSize(32);
   textAlign(LEFT, TOP);
   text("["+fileIndex+"] "+ fileNames[fileIndex], 0, 0);
+}
+
+void drawText(PGraphics pg) {
+  textSize(8);
+  textAlign(LEFT, TOP);
+  text(fileNames[fileIndex], 79, 60);
+
+}
+
+void drawText2(PGraphics pg) {
+  textSize(10);
+  textAlign(LEFT, TOP);
+  text("["+fileIndex+"] ", 131, 40);
+
 }
 
 /*UTILITY FUNCTIONS*/
