@@ -36,11 +36,11 @@ public class Color {
     public static final int W1_WHITE_ALPHA_NODE = WHITE_ALPHA;
 
     //A
-    public static final int W1_A_BG = W1_WHITE_NODE;
+    public static final int W1_A_BG = Utils.color(71, 21, 90);
     //B
-    public static final int W1_B_BG = Utils.color(102, 102, 102);
+    public static final int W1_B_BG = Utils.color(57, 12, 71);
     //C
-    public static final int W1_C_BG = W1_BLACK_NODE;
+    public static final int W1_C_BG = Utils.color(37, 0, 43);
 
     /*********
      *World 2*
@@ -49,11 +49,11 @@ public class Color {
     public static final int W2_WHITE_NODE = W1_WHITE_NODE;
 
     //A
-    public static final int W2_A_BG = Utils.color(191, 191, 191);
+    public static final int W2_A_BG = Utils.color(29, 34, 98);
     //B
-    public static final int W2_B_BG = Utils.color(128, 128, 128);
+    public static final int W2_B_BG = Utils.color(25, 25, 77);
     //C
-    public static final int W2_C_BG = Utils.color(64, 64, 64);
+    public static final int W2_C_BG = Utils.color(13, 4, 47);
 
 
     /*********
@@ -67,11 +67,11 @@ public class Color {
     public static final int W3_GREEN_NODE = Utils.color(73, 183, 78);
     public static final int W3_BLUE_NODE = Utils.color(87, 79, 153);
     //A
-    public static final int W3_A_BG = Utils.color(184, 215, 230);
+    public static final int W3_A_BG = Utils.color(5, 108, 104);
     //B
-    public static final int W3_B_BG = Utils.color(115, 191, 230);
+    public static final int W3_B_BG = Utils.color(1, 83, 79);
     //C
-    public static final int W3_C_BG = Utils.color(4, 154, 230);
+    public static final int W3_C_BG = Utils.color(1, 53, 49);
 
 
     /*********
@@ -82,11 +82,11 @@ public class Color {
     public static final int W4_BLUE_NODE = Utils.color(49, 141, 200);
     public static final int W4_RED_NODE = Utils.color(235, 105, 107);
     //A
-    public static final int W4_A_BG = Utils.color(234, 212, 211);
+    public static final int W4_A_BG = Utils.color(1, 112, 43);
     //B
-    public static final int W4_B_BG = Utils.color(234, 161, 159);
+    public static final int W4_B_BG = Utils.color(0, 85, 30);
     //C
-    public static final int W4_C_BG = Utils.color(234, 68, 70);
+    public static final int W4_C_BG = Utils.color(0, 57, 16);
 
 
     /*********
@@ -99,9 +99,9 @@ public class Color {
     public static final int W5_GREEN_NODE = Utils.color(76, 175, 80);
 
     //A
-    public static final int W5_A_BG = Utils.color(255, 248, 204);
+    public static final int W5_A_BG = Utils.color(103, 136, 23);
     //B
-    public static final int W5_B_BG = Utils.color(255, 244, 153);
+    public static final int W5_B_BG = Utils.color(78, 104, 15);
     //C
-    public static final int W5_C_BG = Utils.color(255, 235, 59);
+    public static final int W5_C_BG = Utils.color(46, 68, 4);
 }
