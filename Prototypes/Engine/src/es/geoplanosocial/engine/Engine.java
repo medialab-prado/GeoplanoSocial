@@ -52,6 +52,8 @@ public class Engine extends PApplet implements TrackerCallback {
     public void settings() {
         size(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_RENDERER);
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
+
+        setTracking();
     }
 
     public void setup() {
@@ -64,19 +66,6 @@ public class Engine extends PApplet implements TrackerCallback {
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
 
         worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT);
-
-
-
-        if(DEBUG){
-            blobsProviderSimulation =new MouseSelectionProvider(this,1,PLAYER_SIZE);
-            Tracker.init(players,this, blobsProviderSimulation);
-//            blobsProvider =new CameraProvider();
-//            Tracker.init(players,this, blobsProvider);
-        }else{
-            blobsProvider =new CameraProvider();
-            Tracker.init(players,this, blobsProvider);
-        }
-
 
         Level.init(players,this);
 
@@ -214,6 +203,19 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     /*OTHER FUNCTIONS*/
+
+
+    private void setTracking(){
+        if(DEBUG){
+            blobsProviderSimulation =new MouseSelectionProvider(this,1,PLAYER_SIZE);
+            Tracker.init(players,this, blobsProviderSimulation);
+            //blobsProvider =new CameraProvider();
+            //Tracker.init(players,this, blobsProvider);
+        }else{
+            blobsProvider =new CameraProvider();
+            Tracker.init(players,this, blobsProvider);
+        }
+    }
 
     private void setWorld() {
 
