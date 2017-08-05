@@ -51,9 +51,12 @@ class Cube {
 
     private static final float MAIN_TRANSLATE_COEFF = 2.0f;
     private static final float MAIN_SCALE_COEFF = 2.0f;
+    private static final float MAIN_DEPTH_COEFF = 0.5f;
+
 
     private final float MAIN_TRANSLATE_X;
     private final float MAIN_TRANSLATE_Y;
+    private final float MAIN_TRANSLATE_Z;
     private final float MAIN_SCALE_X;
     private final float MAIN_SCALE_Y;
 
@@ -77,6 +80,8 @@ class Cube {
 
         MAIN_TRANSLATE_X = pg.width / MAIN_TRANSLATE_COEFF;
         MAIN_TRANSLATE_Y = pg.height / MAIN_TRANSLATE_COEFF;
+        MAIN_TRANSLATE_Z = MAIN_TRANSLATE_X * processing.constrain(MAIN_DEPTH_COEFF, 0.0f, 1.0f);
+
         MAIN_SCALE_X = pg.width / MAIN_SCALE_COEFF;
         MAIN_SCALE_Y = pg.height / MAIN_SCALE_COEFF;
 
@@ -264,7 +269,7 @@ class Cube {
     private void setTransformationCube() {
 
         //Inside magic
-        pg.translate(MAIN_TRANSLATE_X, MAIN_TRANSLATE_Y, MAIN_TRANSLATE_X);
+        pg.translate(MAIN_TRANSLATE_X, MAIN_TRANSLATE_Y, MAIN_TRANSLATE_Z);
         pg.scale(MAIN_SCALE_X, MAIN_SCALE_Y, MAIN_SCALE_X);
 
 

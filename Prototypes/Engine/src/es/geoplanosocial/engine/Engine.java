@@ -177,11 +177,13 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private void drawWorld() {
 
-        if(worldCube.isOnRotation()){
+        /*if(worldCube.isOnRotation()){
             image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
         }else{
             drawLevel();
-        }
+        }*/
+
+        image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
 
     }
 
