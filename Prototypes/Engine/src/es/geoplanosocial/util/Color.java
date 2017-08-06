@@ -28,6 +28,9 @@ public class Color {
     public static final int BLACK_ALPHA = Utils.color(0, 0, 0, 127);
 
 
+    public static final int BLACK_HOLE_COLOR = Utils.color(3, 12, 27);
+
+
     /*********
      *World 1*
      *********/

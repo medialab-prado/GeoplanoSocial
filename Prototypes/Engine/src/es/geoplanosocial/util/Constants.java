@@ -38,6 +38,13 @@ public class Constants {
     public static final int START_THUMBNAIL_X = 122;
     public static final int START_THUMBNAIL_Y = 48;
 
+    //BlackHole
+    public static final float BLACK_HOLE_SIZE_PERCENTAGE = 0.72f;
+    public static final float BLACK_HOLE_THICKNESS_RING = 5;
+    public static final float BLACK_HOLE_MOVE_PERCENTAGE = 0.33f;
+    public static final float DEGREE_IN_RAD = (float)(Math.PI/180.0);
+    public static final float  BLACK_HOLE_MOVE_STEP = DEGREE_IN_RAD*1.5f;
+
 
     //Level change
     public static final int PLAY_AREA_OFFSET = 15;

@@ -10,6 +10,7 @@ import processing.core.PShape;
 
 import static es.geoplanosocial.util.Color.BLACK;
 import static es.geoplanosocial.util.Color.MAGENTA;
+import static es.geoplanosocial.util.Constants.SCREEN_RENDERER;
 import static processing.core.PConstants.P3D;
 
 /**
@@ -73,8 +74,8 @@ class Cube {
     Cube(PApplet processing, int width, int height) {
 
         this.processing = processing;
-        this.pg = processing.createGraphics(width, height, P3D);
-        this.thumbnailPg = processing.createGraphics(Math.round(width * THUMBNAIL_SCALE), Math.round(height * THUMBNAIL_SCALE), P3D);
+        this.pg = processing.createGraphics(width, height, SCREEN_RENDERER);
+        this.thumbnailPg = processing.createGraphics(Math.round(width * THUMBNAIL_SCALE), Math.round(height * THUMBNAIL_SCALE), SCREEN_RENDERER);
 
 
 

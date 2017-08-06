@@ -71,7 +71,8 @@ public abstract class Level {
         if(doFrameClear) {
             //Set plain background
             pg.beginDraw();
-            pg.background(mainColor);
+            //pg.background(mainColor);
+            pg.clear();
             pg.endDraw();
         }
 
@@ -85,9 +86,13 @@ public abstract class Level {
             drawPlayers();
         }
 
-        processing.image(pg, START_WORLD_X, START_WORLD_Y);
+        //processing.image(pg, START_WORLD_X, START_WORLD_Y);
     }
 
+
+    public PGraphics getGraphics() {
+        return pg;
+    }
 
     private void drawPlayers(){
         for(Player p : players){
