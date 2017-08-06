@@ -53,7 +53,12 @@ public class Engine extends PApplet implements TrackerCallback {
      **********************/
 
     public void settings() {
-        size(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_RENDERER);
+        if(FULLSCREEN){
+            fullScreen(SCREEN_RENDERER);
+        }else{
+            size(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_RENDERER);
+        }
+
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
         pixelDensity(displayDensity());
         setTracking();

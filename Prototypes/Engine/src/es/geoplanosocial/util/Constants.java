@@ -12,6 +12,7 @@ public class Constants {
 
     //Customizable parameters
     public static final boolean DEBUG = true;
+    public static final boolean FULLSCREEN = true;
 
 
     //Global engine parameters
