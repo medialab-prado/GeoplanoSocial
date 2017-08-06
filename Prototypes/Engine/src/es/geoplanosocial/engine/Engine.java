@@ -60,7 +60,7 @@ public class Engine extends PApplet implements TrackerCallback {
         }
 
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
-        pixelDensity(displayDensity());
+        //pixelDensity(displayDensity());
         setTracking();
     }
 

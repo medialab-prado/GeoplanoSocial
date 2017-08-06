@@ -10,6 +10,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.Set;
 import java.util.HashSet;
 
+import static es.geoplanosocial.util.Color.DARK_GREY;
+import static es.geoplanosocial.util.Color.GREY;
+import static es.geoplanosocial.util.Color.LIGHT_GREY;
+
 
 /**
  * Utility methods
@@ -56,6 +60,10 @@ public class Utils {
                 e.printStackTrace();
                 worldColors[index++] = Color.MAGENTA;
             }
+        }
+
+        if(players==0){
+            worldColors = new int[]{LIGHT_GREY, GREY, DARK_GREY};
         }
 
         return worldColors;
