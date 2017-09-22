@@ -32,6 +32,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private static Cube worldCube;
 
     //Black Hole
+    private static final boolean DRAW_BLACKHOLE = false;
     private static BlackHole blackHole;
 
     //Players
@@ -75,7 +76,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
+        if (DRAW_BLACKHOLE) blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
 
         Level.init(players,this);
@@ -97,7 +98,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         drawWorld();//Draw the world
 
-        drawBlackHole();//Draw the black hole
+        if (DRAW_BLACKHOLE) drawBlackHole();//Draw the black hole
 
         drawLevel();//Draw current level
 
@@ -181,7 +182,7 @@ public class Engine extends PApplet implements TrackerCallback {
         worldCube.update();
 
         //Black hole animation
-        blackHole.update();
+        if (DRAW_BLACKHOLE) blackHole.update();
 
         //Update elements of the current world
         currentLevel.update();
@@ -212,7 +213,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private void drawLevel() {
         currentLevel.draw();
         PGraphics p = currentLevel.getGraphics();
-        p.mask(blackHole.getMask());
+        if (DRAW_BLACKHOLE) p.mask(blackHole.getMask());
 
         image(p, START_WORLD_X, START_WORLD_Y);
     }
