@@ -1,6 +1,7 @@
 package es.geoplanosocial.engine;
 
 import controlP5.ControlP5;
+import controlP5.RadioButton;
 import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
@@ -36,7 +37,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private static Cube worldCube;
 
     //Black Hole
-    private static final boolean DRAW_BLACKHOLE = false;
+    private static boolean DRAW_BLACKHOLE = false;
     private static BlackHole blackHole;
 
     //Players
@@ -83,7 +84,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        if (DRAW_BLACKHOLE) blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
+        blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         Level.init(players,this);
 
@@ -93,19 +94,60 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     public void writeConfigurationInfo() {
+        int hOrigin = 100;
+        final int hOrigin_offset = 70;
+
+        int vTextBox = 420;
+        final int vSubmitButtom = 650;
+
         cp5 = new ControlP5(this);
-        cp5.addTextfield("tamaño nodo").setPosition(420, 100).setSize(200, 40).setAutoClear(false);
-        cp5.addTextfield("otra cosa").setPosition(420, 170).setSize(200, 40).setAutoClear(false);
-        cp5.addBang("Submit").setPosition(640, 170).setSize(80, 40);
+
+        // text labels
+        cp5.addTextfield("tamaño nodo").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+        cp5.addBang("Submit_tNodo").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("label1").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+        cp5.addBang("Submit_label1").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        // last
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addBang("Submit_all").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        // radio buttons
+        hOrigin = 800;
+        vTextBox = 100;
+        cp5.addRadioButton("Submit_radioButton_1")
+                .setPosition(hOrigin, vTextBox)
+                .setSize(40,20)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .addItem("elipseMortal",1);
+
+        vTextBox = vTextBox + hOrigin_offset;
+        cp5.addRadioButton("Submit_radioButton_2")
+                .setPosition(hOrigin, vTextBox)
+                .setSize(40,20)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .addItem("buttom_2",1);
     }
 
+    public void Submit_radioButton_1(int i) {
+        Utils.log("botón pultsado:" + i);
+        if (i == 1) DRAW_BLACKHOLE = true;
+        else if (i == -1) DRAW_BLACKHOLE = false;
+    }
 
-    public void Submit() {
-        Utils.log("the following text was submitted :");
-        String tNodo = cp5.get(Textfield.class,"tamaño nodo").getText();
-        Utils.log(" tamaño nodo = " + tNodo);
-
+    public void Submit_tNodo() {
         Configuration.PLAYER_SIZE = Integer.parseInt(cp5.get(Textfield.class,"tamaño nodo").getText());
+        resetPlayerSizes();
+    }
+
+    public void Submit_label1() {
+
     }
 
     public void draw() {
@@ -132,7 +174,6 @@ public class Engine extends PApplet implements TrackerCallback {
         }
 
         //println("Duration\t" + (System.nanoTime() - startTime));
-
         //saveFrame("./frames/frame-######.png");//Imagemagick -> convert -delay 60,1000  -loop 0 *.png World1.gif
     }
 
