@@ -12,7 +12,7 @@ public class Constants {
 
     //Customizable parameters
     public static final boolean DEBUG = true;
-    public static final boolean FULLSCREEN = true;
+    public static final boolean FULLSCREEN = false;
 
 
     //Global engine parameters
@@ -58,7 +58,7 @@ public class Constants {
 
 
     //Player simulation
-    public static final int PLAYER_SIZE = 15;
+    //public static final int PLAYER_SIZE = 35;
 
 
     //OSC

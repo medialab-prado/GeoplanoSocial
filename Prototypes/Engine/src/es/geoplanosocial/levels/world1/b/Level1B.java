@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.LEVEL_HEIGHT;
 import static es.geoplanosocial.util.Constants.LEVEL_WIDTH;
-import static es.geoplanosocial.util.Constants.PLAYER_SIZE;
+import static es.geoplanosocial.util.Configuration.PLAYER_SIZE;
 import static es.geoplanosocial.util.Utils.randomInt;
 
 /**

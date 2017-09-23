@@ -1,11 +1,14 @@
 package es.geoplanosocial.engine;
 
+import controlP5.ControlP5;
+import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.CameraProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
+import es.geoplanosocial.util.Configuration;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Configuration.*;
 import static es.geoplanosocial.util.Utils.getWorldColors;
 
 /**
@@ -49,6 +53,9 @@ public class Engine extends PApplet implements TrackerCallback {
     //Current Level
     private static Level currentLevel;
 
+    // Configuration
+    ControlP5 cp5;
+
     /**********************
      *PROCESSING FUNCTIONS*
      **********************/
@@ -69,7 +76,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         //Set global parameters
         frameRate(FPS);
-        noCursor();//Ugly
+        // noCursor();//Ugly
 
 
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
@@ -78,11 +85,27 @@ public class Engine extends PApplet implements TrackerCallback {
 
         if (DRAW_BLACKHOLE) blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-
         Level.init(players,this);
 
         setWorld();
 
+        writeConfigurationInfo();
+    }
+
+    public void writeConfigurationInfo() {
+        cp5 = new ControlP5(this);
+        cp5.addTextfield("tamaño nodo").setPosition(420, 100).setSize(200, 40).setAutoClear(false);
+        cp5.addTextfield("otra cosa").setPosition(420, 170).setSize(200, 40).setAutoClear(false);
+        cp5.addBang("Submit").setPosition(640, 170).setSize(80, 40);
+    }
+
+
+    public void Submit() {
+        Utils.log("the following text was submitted :");
+        String tNodo = cp5.get(Textfield.class,"tamaño nodo").getText();
+        Utils.log(" tamaño nodo = " + tNodo);
+
+        Configuration.PLAYER_SIZE = Integer.parseInt(cp5.get(Textfield.class,"tamaño nodo").getText());
     }
 
     public void draw() {
@@ -112,6 +135,8 @@ public class Engine extends PApplet implements TrackerCallback {
 
         //saveFrame("./frames/frame-######.png");//Imagemagick -> convert -delay 60,1000  -loop 0 *.png World1.gif
     }
+
+
 
     //FIXME remove on release
     public void keyPressed() {
