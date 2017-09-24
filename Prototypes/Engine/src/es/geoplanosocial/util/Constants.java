@@ -11,7 +11,7 @@ import processing.core.PConstants;
 public class Constants {
 
     //Customizable parameters
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean FULLSCREEN = true;
 
 
@@ -63,4 +63,34 @@ public class Constants {
 
     //OSC
     public static final int OSC_PORT = 12345;
+
+    //MediaLabCV
+    public static final String MLCV_TEST_VIDEO = "geoplano2.mp4";
+
+    public static final  int MLCV_HISTORY = 500;
+    public static final  double MLCV_DIST_TO_THRESHOLD = 400;
+    public static final  boolean MLCV_DETECT_SHADOWS = true;
+
+    public static final  int MLCV_ERODE_SIZE = 3;
+    public static final  int MLCV_ERODE_ITERATIONS = 1;
+    public static final  int MLCV_DILATE_SIZE = 18;
+    public static final  int MLCV_DILATE_ITERATIONS = 1;
+
+    public static final  boolean MLCV_ADJACENT_MERGE = true;
+    public static final  boolean MLCV_SHADOW_REMOVAL = true;
+    public static final  double MLCV_THRESHOLD = 10;
+
+    public static final  double MLCV_BB_MIN_WIDTH_PERCENTAGE = 0.05;
+    public static final  double MLCV_BB_MAX_WIDTH_PERCENTAGE = 0.75;
+    public static final  double MLCV_BB_MIN_HEIGHT_PERCENTAGE = 0.05;
+    public static final  double MLCV_BB_MAX_HEIGHT_PERCENTAGE = 0.75;
+
+
+
+
+    //Visual Debug
+    public static final int SAFE_VISUAL_X = START_WORLD_X+LEVEL_WIDTH+START_WORLD_X;
+    public static final int SAFE_VISUAL_Y = START_WORLD_Y+LEVEL_HEIGHT+START_WORLD_Y;
+
+
 }

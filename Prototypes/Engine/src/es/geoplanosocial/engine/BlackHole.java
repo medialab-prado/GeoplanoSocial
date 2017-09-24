@@ -199,9 +199,14 @@ public class BlackHole {
         maskPg.beginDraw();
         maskPg.background(WHITE);
         maskPg.fill(BLACK);
-        maskPg.ellipse (maskPg.width/2,maskPg.height/2,
+        /*maskPg.ellipse (maskPg.width/2,maskPg.height/2,
                 maskPg.width*BLACK_HOLE_SIZE_PERCENTAGE,
-                maskPg.height*BLACK_HOLE_SIZE_PERCENTAGE);
+                maskPg.height*BLACK_HOLE_SIZE_PERCENTAGE);*/
+        maskPg.rectMode(CENTER);
+        maskPg.rect(maskPg.width/2,maskPg.height/2,
+                maskPg.width*BLACK_HOLE_SIZE_PERCENTAGE,
+                maskPg.height*BLACK_HOLE_SIZE_PERCENTAGE,
+                maskPg.width*BLACK_HOLE_SIZE_PERCENTAGE);
         maskPg.filter(INVERT);
         maskPg.endDraw();
 
@@ -286,7 +291,9 @@ public class BlackHole {
         resultPg.clear();
         for(int i=0; i<DUMMIES.length;i++){
             if(DUMMIES[i]!=null)
-                resultPg.ellipse(DUMMIES[i].x, DUMMIES[i].y, DUMMIES[i].width, DUMMIES[i].height);
+                //resultPg.ellipse(DUMMIES[i].x, DUMMIES[i].y, DUMMIES[i].width, DUMMIES[i].height);
+                resultPg.rectMode(CENTER);
+                resultPg.rect(DUMMIES[i].x, DUMMIES[i].y, DUMMIES[i].width, DUMMIES[i].height, DUMMIES[i].width);
         }
         resultPg.endDraw();
     }

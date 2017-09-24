@@ -3,13 +3,16 @@ package es.geoplanosocial.engine;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
-import es.geoplanosocial.tracker.CameraProvider;
+import es.geoplanosocial.tracker.MediaLabCVProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
+import processing.video.Capture;
+import processing.video.Movie;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
@@ -39,7 +42,9 @@ public class Engine extends PApplet implements TrackerCallback {
 
     //BlobsProvider
     private static MouseSelectionProvider blobsProviderSimulation;
-    private static CameraProvider blobsProvider;
+    //private static CameraProvider blobsProvider;
+    private static MediaLabCVProvider blobsProvider;
+
 
 
     //Tracker
@@ -61,10 +66,12 @@ public class Engine extends PApplet implements TrackerCallback {
 
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
         //pixelDensity(displayDensity());
-        setTracking();
+        //setTracking();
     }
 
     public void setup() {
+
+        setTracking();
 
         //Set global parameters
         frameRate(FPS);
@@ -174,6 +181,8 @@ public class Engine extends PApplet implements TrackerCallback {
 
     //Updates elements and properties
     private void update() {
+        //blobsProvider.spoutEvent();
+
         //Get CV info
         tracker.update();
 
@@ -212,7 +221,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private void drawLevel() {
         currentLevel.draw();
         PGraphics p = currentLevel.getGraphics();
-        p.mask(blackHole.getMask());
+        //p.mask(blackHole.getMask());
 
         image(p, START_WORLD_X, START_WORLD_Y);
     }
@@ -221,6 +230,42 @@ public class Engine extends PApplet implements TrackerCallback {
 
         //Draw thumbnail of world
         image(worldCube.getThumbnailGraphics(), START_THUMBNAIL_X, START_THUMBNAIL_Y);
+
+        //FIXME
+        if(blobsProvider.isTracking()) {
+            PImage s = blobsProvider.getSource();
+
+            int xOffset = width-s.width;
+            int yOffset = height-s.height;
+
+
+            image(blobsProvider.getMediaLabCVInputFrame(),0,yOffset);
+
+            image(blobsProvider.getMediaLabCVOutputFrame(), xOffset, yOffset);
+
+            for (Player p : players) {
+                Rectangle bb = p.getBoundingBox();
+                noStroke();
+                int color;
+                switch (p.getState()) {
+                    case PLAYING:
+                        color = GREEN;
+                        break;
+                    case GHOST:
+                        color = ORANGE;
+                        break;
+                    case MISSING:
+                    default:
+                        color = RED;
+                        break;
+                }
+                fill(color);
+                ellipse((bb.x + 0.0f) / LEVEL_WIDTH * s.width,  yOffset+(bb.y + 0.0f) / LEVEL_HEIGHT * s.height, bb.width, bb.height);
+                ellipse(xOffset+(bb.x + 0.0f) / LEVEL_WIDTH * s.width, yOffset + (bb.y + 0.0f) / LEVEL_HEIGHT * s.height, bb.width, bb.height);
+            }
+        }
+
+
     }
 
 
@@ -240,7 +285,11 @@ public class Engine extends PApplet implements TrackerCallback {
             //blobsProvider =new CameraProvider();
             //Tracker.init(players,this, blobsProvider);
         }else{
-            blobsProvider =new CameraProvider();
+            //blobsProvider =new CameraProvider();
+            blobsProvider =new MediaLabCVProvider(this);
+            blobsProvider.initVideo();
+            //blobsProvider.initCamera();
+            //blobsProvider.initSpout();
             Tracker.init(players,this, blobsProvider);
         }
     }
@@ -373,5 +422,16 @@ public class Engine extends PApplet implements TrackerCallback {
         setLevel();
     }
 
+
+    public void movieEvent(Movie m) {
+        m.read();
+        blobsProvider.sendFrame(m.get());
+
+    }
+
+    public void captureEvent(Capture c) {
+        c.read();
+        blobsProvider.sendFrame(c.get());
+    }
 
 }

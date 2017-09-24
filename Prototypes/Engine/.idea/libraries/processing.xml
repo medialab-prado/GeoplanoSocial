@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="processing">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/processing" />
+      <root url="file://$PROJECT_DIR$/libs/oscP5" />
+      <root url="jar://$PROJECT_DIR$/libs/video/video.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/video/gstreamer-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/video/jna.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/spout/spout.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/libs/oscP5" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/processing" recursive="false" />
+  </library>
+</component>

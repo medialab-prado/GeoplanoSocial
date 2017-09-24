@@ -52,7 +52,7 @@ class Cube {
 
     private static final float MAIN_TRANSLATE_COEFF = 2.0f;
     private static final float MAIN_SCALE_COEFF = 2.0f;
-    private static final float MAIN_DEPTH_COEFF = 0.5f;
+    private static final float MAIN_DEPTH_COEFF = 0.75f;
 
 
     private final float MAIN_TRANSLATE_X;
