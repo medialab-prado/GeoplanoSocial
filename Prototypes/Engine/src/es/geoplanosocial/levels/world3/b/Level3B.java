@@ -5,15 +5,13 @@ import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
-import es.geoplanosocial.util.Utils;
-import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Configuration.*;
 import static processing.core.PConstants.ADD;
 
 /**

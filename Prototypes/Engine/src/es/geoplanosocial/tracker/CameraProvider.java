@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Configuration.*;
 
 /**
  * Gets tracking info by OSC from an external program (sensor4games).

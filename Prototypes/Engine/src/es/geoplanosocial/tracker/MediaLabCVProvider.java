@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static es.geoplanosocial.util.Configuration.PLAYER_SIZE;
 import static es.geoplanosocial.util.Constants.*;
 import static processing.core.PConstants.ARGB;
 

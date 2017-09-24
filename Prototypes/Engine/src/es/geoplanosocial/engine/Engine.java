@@ -1,11 +1,15 @@
 package es.geoplanosocial.engine;
 
+import controlP5.ControlP5;
+import controlP5.RadioButton;
+import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.MediaLabCVProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
+import es.geoplanosocial.util.Configuration;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Configuration.*;
 import static es.geoplanosocial.util.Utils.getWorldColors;
 
 /**
@@ -35,6 +40,7 @@ public class Engine extends PApplet implements TrackerCallback {
     private static Cube worldCube;
 
     //Black Hole
+    private static boolean DRAW_BLACKHOLE = false;
     private static BlackHole blackHole;
 
     //Players
@@ -52,6 +58,9 @@ public class Engine extends PApplet implements TrackerCallback {
 
     //Current Level
     private static Level currentLevel;
+
+    // Configuration
+    private ControlP5 cp5;
 
     /**********************
      *PROCESSING FUNCTIONS*
@@ -75,7 +84,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         //Set global parameters
         frameRate(FPS);
-        noCursor();//Ugly
+        // noCursor();//Ugly
 
 
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
@@ -84,10 +93,67 @@ public class Engine extends PApplet implements TrackerCallback {
 
         blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-
         Level.init(players,this);
 
         setWorld();
+
+        writeConfigurationInfo();
+    }
+
+    public void writeConfigurationInfo() {
+        int hOrigin = 100;
+        final int hOrigin_offset = 70;
+
+        int vTextBox = 420;
+        final int vSubmitButtom = 650;
+
+        cp5 = new ControlP5(this);
+
+        // text labels
+        cp5.addTextfield("tamaño nodo").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+        cp5.addBang("Submit_tNodo").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("label1").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+        cp5.addBang("Submit_label1").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        // last
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addBang("Submit_all").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
+
+        // radio buttons
+        hOrigin = 800;
+        vTextBox = 100;
+        cp5.addRadioButton("Submit_radioButton_1")
+                .setPosition(hOrigin, vTextBox)
+                .setSize(40,20)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .addItem("elipseMortal",1);
+
+        vTextBox = vTextBox + hOrigin_offset;
+        cp5.addRadioButton("Submit_radioButton_2")
+                .setPosition(hOrigin, vTextBox)
+                .setSize(40,20)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .addItem("buttom_2",1);
+    }
+
+    public void Submit_radioButton_1(int i) {
+        Utils.log("botón pultsado:" + i);
+        if (i == 1) DRAW_BLACKHOLE = true;
+        else if (i == -1) DRAW_BLACKHOLE = false;
+    }
+
+    public void Submit_tNodo() {
+        Configuration.PLAYER_SIZE = Integer.parseInt(cp5.get(Textfield.class,"tamaño nodo").getText());
+        resetPlayerSizes();
+    }
+
+    public void Submit_label1() {
 
     }
 
@@ -104,7 +170,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         drawWorld();//Draw the world
 
-        drawBlackHole();//Draw the black hole
+        if (DRAW_BLACKHOLE) drawBlackHole();//Draw the black hole
 
         drawLevel();//Draw current level
 
@@ -115,9 +181,10 @@ public class Engine extends PApplet implements TrackerCallback {
         }
 
         //println("Duration\t" + (System.nanoTime() - startTime));
-
         //saveFrame("./frames/frame-######.png");//Imagemagick -> convert -delay 60,1000  -loop 0 *.png World1.gif
     }
+
+
 
     //FIXME remove on release
     public void keyPressed() {
@@ -190,7 +257,7 @@ public class Engine extends PApplet implements TrackerCallback {
         worldCube.update();
 
         //Black hole animation
-        blackHole.update();
+        if (DRAW_BLACKHOLE) blackHole.update();
 
         //Update elements of the current world
         currentLevel.update();
@@ -221,7 +288,8 @@ public class Engine extends PApplet implements TrackerCallback {
     private void drawLevel() {
         currentLevel.draw();
         PGraphics p = currentLevel.getGraphics();
-        //p.mask(blackHole.getMask());
+
+        if (DRAW_BLACKHOLE) p.mask(blackHole.getMask());
 
         image(p, START_WORLD_X, START_WORLD_Y);
     }

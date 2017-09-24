@@ -46,8 +46,6 @@ public class RandomShape {
         updateRamdomShape();
     }
 
-    // TODO establecer una distancia mínima entre 2 puntos
-    // TODO (para >4) no controlo que la forma sea "continua" (mirar)
     public void updateRamdomShape() {
         do {
             shapeVertex.clear();

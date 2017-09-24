@@ -58,7 +58,7 @@ public class Constants {
 
 
     //Player simulation
-    public static final int PLAYER_SIZE = 15;
+    //public static final int PLAYER_SIZE = 35;
 
 
     //OSC
