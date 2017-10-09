@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.LEVEL_HEIGHT;
 import static es.geoplanosocial.util.Constants.LEVEL_WIDTH;
-import static es.geoplanosocial.util.Configuration.PLAYER_SIZE;
+import static es.geoplanosocial.util.Configuration.playerSize;
 import static es.geoplanosocial.util.Utils.randomInt;
 
 /**
@@ -67,8 +67,8 @@ public class Level1B extends Level {
     private void generateDummies() {
         //Generate all dummies at random places
         DUMMIES = new Rectangle[DUMMIES_NUMBER];
-        DUMMY_SIZE_MIN = PLAYER_SIZE/DUMMY_SIZE_FACTOR;
-        DUMMY_SIZE_MAX = PLAYER_SIZE*DUMMY_SIZE_FACTOR;
+        DUMMY_SIZE_MIN = playerSize /DUMMY_SIZE_FACTOR;
+        DUMMY_SIZE_MAX = playerSize *DUMMY_SIZE_FACTOR;
         for(int i=0; i<DUMMIES.length;i++){
             DUMMIES[i] = generateDummy();
         }

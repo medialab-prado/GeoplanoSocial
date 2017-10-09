@@ -1,7 +1,6 @@
 package es.geoplanosocial.engine;
 
 import controlP5.ControlP5;
-import controlP5.RadioButton;
 import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
@@ -101,7 +100,7 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     public void writeConfigurationInfo() {
-        int hOrigin = 100;
+        int hOrigin = 10;
         final int hOrigin_offset = 70;
 
         int vTextBox = 420;
@@ -117,6 +116,17 @@ public class Engine extends PApplet implements TrackerCallback {
         cp5.addTextfield("label1").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
         cp5.addBang("Submit_label1").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
 
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("setROIx").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("setROIy").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("setROIw").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
+
+        hOrigin = hOrigin + hOrigin_offset;
+        cp5.addTextfield("setROIh").setPosition(vTextBox, hOrigin).setSize(200, 40).setAutoClear(false);
         // last
         hOrigin = hOrigin + hOrigin_offset;
         cp5.addBang("Submit_all").setPosition(vSubmitButtom, hOrigin).setSize(80, 40);
@@ -149,12 +159,23 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     public void Submit_tNodo() {
-        Configuration.PLAYER_SIZE = Integer.parseInt(cp5.get(Textfield.class,"tamaño nodo").getText());
+        Configuration.playerSize = Integer.parseInt(cp5.get(Textfield.class,"tamaño nodo").getText());
         resetPlayerSizes();
     }
 
     public void Submit_label1() {
 
+    }
+
+    public void Submit_all() {
+        Configuration.roi_originX = Integer.parseInt(cp5.get(Textfield.class,"setROIx").getText());
+        Configuration.roi_originY = Integer.parseInt(cp5.get(Textfield.class,"setROIy").getText());
+        Configuration.roi_width = Integer.parseInt(cp5.get(Textfield.class,"setROIw").getText());
+        Configuration.roi_height = Integer.parseInt(cp5.get(Textfield.class,"setROIh").getText());
+
+        System.out.println("OJO: " + Configuration.roi_originX + " - " + Configuration.roi_originX + " - " + Configuration.roi_originX + " - " + Configuration.roi_originX);
+
+        blobsProvider.initMediaLabCV();
     }
 
     public void draw() {
@@ -348,7 +369,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private void setTracking(){
         if(DEBUG){
-            blobsProviderSimulation =new MouseSelectionProvider(this,1,PLAYER_SIZE);
+            blobsProviderSimulation =new MouseSelectionProvider(this,1, playerSize);
             Tracker.init(players,this, blobsProviderSimulation);
             //blobsProvider =new CameraProvider();
             //Tracker.init(players,this, blobsProvider);
@@ -385,7 +406,7 @@ public class Engine extends PApplet implements TrackerCallback {
     //FIXME this may disappear when camera attached
     private void resetPlayerSizes() {
         for(Player p : players){
-            p.getBoundingBox().setSize(PLAYER_SIZE, PLAYER_SIZE);
+            p.getBoundingBox().setSize(playerSize, playerSize);
         }
     }
 

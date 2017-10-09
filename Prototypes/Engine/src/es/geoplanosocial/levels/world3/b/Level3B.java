@@ -50,15 +50,15 @@ public class Level3B extends Level {
 
         ArrayList<Player> players=new ArrayList<>();
         Player p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_RED_NODE, Level.players.get(0));
-        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        p.getBoundingBox().setSize((int)(playerSize *SIZE_FACTOR),(int)(playerSize *SIZE_FACTOR));
         players.add(p);
 
         p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_GREEN_NODE, Level.players.get(1));
-        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        p.getBoundingBox().setSize((int)(playerSize *SIZE_FACTOR),(int)(playerSize *SIZE_FACTOR));
         players.add(p);
 
         p = Player.Factory.getPlayer(Player.Type.NODE, Color.W3_BLUE_NODE, Level.players.get(2));
-        p.getBoundingBox().setSize((int)(PLAYER_SIZE*SIZE_FACTOR),(int)(PLAYER_SIZE*SIZE_FACTOR));
+        p.getBoundingBox().setSize((int)(playerSize *SIZE_FACTOR),(int)(playerSize *SIZE_FACTOR));
         players.add(p);
 
         return players;

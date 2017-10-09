@@ -1,5 +1,6 @@
 package es.geoplanosocial.tracker;
 
+import es.geoplanosocial.util.Configuration;
 import gbr.medialabcv.MediaLabCV;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -11,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static es.geoplanosocial.util.Configuration.PLAYER_SIZE;
+import static es.geoplanosocial.util.Configuration.playerSize;
 import static es.geoplanosocial.util.Constants.*;
 import static processing.core.PConstants.ARGB;
 
@@ -83,11 +84,19 @@ public class MediaLabCVProvider implements BlobsProvider {
 
     public void initMediaLabCV(){
         this.mediacv.init(source.width, source.height);
-        this.mediacv.disableRoi();
+        setROI();
         this.mediacv.createBackgroundSubtractorKNN(MLCV_HISTORY,MLCV_DIST_TO_THRESHOLD, MLCV_DETECT_SHADOWS);
         this.isTracking =true;
     }
 
+    public void setROI(){
+        if (this.isTracking) {
+            mediacv.enableROI(Configuration.roi_originX, Configuration.roi_originY, Configuration.roi_width, Configuration.roi_height);
+        }
+        else {
+            mediacv.disableRoi();
+        }
+    }
 
     public void sendFrame(PImage frame){
         if(frame.width>0 && frame.height>0) {
@@ -145,7 +154,7 @@ public class MediaLabCVProvider implements BlobsProvider {
 
 
     private Blob createBlob(int id, float x, float y) {
-        return new Blob(String.valueOf(id), new Rectangle(PApplet.round(x/source.width*LEVEL_WIDTH), PApplet.round(y/source.height*LEVEL_HEIGHT), PLAYER_SIZE, PLAYER_SIZE));
+        return new Blob(String.valueOf(id), new Rectangle(PApplet.round(x/source.width*LEVEL_WIDTH), PApplet.round(y/source.height*LEVEL_HEIGHT), playerSize, playerSize));
     }
 
     /*******************

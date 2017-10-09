@@ -72,6 +72,6 @@ public class CameraProvider implements BlobsProvider, OscEventListener {
 
     private Blob createBlob(int id, float x, float y) {
         //Utils.log("Player["+id+"] -> ("+x*LEVEL_WIDTH+", "+y*LEVEL_HEIGHT+")");
-        return new Blob(String.valueOf(id), new Rectangle(PApplet.round(x*LEVEL_WIDTH), PApplet.round(y*LEVEL_HEIGHT), PLAYER_SIZE, PLAYER_SIZE));
+        return new Blob(String.valueOf(id), new Rectangle(PApplet.round(x*LEVEL_WIDTH), PApplet.round(y*LEVEL_HEIGHT), playerSize, playerSize));
     }
 }

@@ -25,6 +25,10 @@ public class Constants {
     public static final int FPS = 60;
     public static final int ANTI_ALIASING_LEVEL = 8;
 
+    //Camera size and settings
+    public static final int CAMERA_WIDTH = 640;
+    public static final int CAMERA_HEIGHT = 480;
+
     //Levels settings
     public static final String LEVEL_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.levels.world%d.%s.Level%d%s";
     public static final Class DEFAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
@@ -58,7 +62,7 @@ public class Constants {
 
 
     //Player simulation
-    //public static final int PLAYER_SIZE = 35;
+    //public static final int playerSize = 35;
 
 
     //OSC
