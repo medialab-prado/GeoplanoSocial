@@ -154,7 +154,7 @@ public class MediaLabCVProvider implements BlobsProvider {
 
 
     private Blob createBlob(int id, float x, float y) {
-        return new Blob(String.valueOf(id), new Rectangle(PApplet.round(x/source.width*LEVEL_WIDTH), PApplet.round(y/source.height*LEVEL_HEIGHT), playerSize, playerSize));
+        return new Blob(String.valueOf(id), new Rectangle(PApplet.round((1.0f-(x/source.width))*LEVEL_WIDTH), PApplet.round(y/source.height*LEVEL_HEIGHT), playerSize, playerSize));
     }
 
     /*******************
