@@ -63,7 +63,7 @@ public class MouseSelectionProvider implements BlobsProvider {
     private void removePlayer(int number){
 
         for(int i=0;i<number;i++) {
-            if (players.size() > 1) {
+            if (players.size() > 0) {
                 players.remove(players.size() - 1);
             }
         }
@@ -79,10 +79,11 @@ public class MouseSelectionProvider implements BlobsProvider {
     @Override
     public Blob[] fetchPositions() {
 
-        //Update position of selected
-        players.get(selectedPlayer).getBoundingBox().x=PApplet.constrain(processing.mouseX, 0, LEVEL_WIDTH);
-        players.get(selectedPlayer).getBoundingBox().y=PApplet.constrain(processing.mouseY, 0, LEVEL_HEIGHT);
-
+        if(players.size()>0){
+            //Update position of selected
+            players.get(selectedPlayer).getBoundingBox().x = PApplet.constrain(processing.mouseX, 0, LEVEL_WIDTH);
+            players.get(selectedPlayer).getBoundingBox().y = PApplet.constrain(processing.mouseY, 0, LEVEL_HEIGHT);
+        }
         //Return array with previous positions
         return players.toArray(new Blob[players.size()]);
     }

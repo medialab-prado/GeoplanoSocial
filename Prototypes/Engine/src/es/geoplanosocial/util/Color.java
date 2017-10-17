@@ -9,6 +9,8 @@ public class Color {
     //Prevent magic numbers
     public static final int WHITE = 255;
     public static final int BLACK = 0;
+    public static final int ALPHA = Utils.color(0, 0, 0, 255);
+
 
     public static final int LIGHT_GREY = 170;// 2/3
     public static final int GREY = 127;// 1/2

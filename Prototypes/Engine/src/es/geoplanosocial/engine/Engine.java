@@ -43,6 +43,9 @@ public class Engine extends PApplet implements TrackerCallback {
     private static boolean DRAW_BLACKHOLE = false;
     private static BlackHole blackHole;
 
+    //Zero
+    private static Zero zero;
+
     //Players
     private static final ArrayList<Player> players=new ArrayList<>();
 
@@ -92,6 +95,8 @@ public class Engine extends PApplet implements TrackerCallback {
         worldCube = new Cube(this, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         blackHole = new BlackHole(this, LEVEL_WIDTH, LEVEL_HEIGHT);
+
+        zero = new Zero(this);
 
         Level.init(players,this);
 
@@ -190,13 +195,15 @@ public class Engine extends PApplet implements TrackerCallback {
 
         drawBackground(BG);//Background
 
-        drawWorld();//Draw the world
+        if(currentLevel!=null && !zero.isOnTransition()){
+            drawWorld();//Draw the world
 
-        if (DRAW_BLACKHOLE) drawBlackHole();//Draw the black hole
-
-        drawLevel();//Draw current level
-
-        drawTopInfo();
+            if (DRAW_BLACKHOLE) drawBlackHole();//Draw the black hole
+            drawLevel();//Draw current level
+            drawTopInfo();
+        }else {
+            drawZero();
+        }
 
         if (DEBUG) {
             drawDebug();
@@ -281,8 +288,11 @@ public class Engine extends PApplet implements TrackerCallback {
         //Black hole animation
         if (DRAW_BLACKHOLE) blackHole.update();
 
+        //Zero zoom
+        zero.update();
+
         //Update elements of the current world
-        currentLevel.update();
+        if(currentLevel!=null)currentLevel.update();
 
     }
 
@@ -314,6 +324,11 @@ public class Engine extends PApplet implements TrackerCallback {
         if (DRAW_BLACKHOLE) p.mask(blackHole.getMask());
 
         image(p, START_WORLD_X, START_WORLD_Y);
+    }
+
+    private  void drawZero(){
+        zero.draw();
+        image(zero.getGraphics(), START_WORLD_X, START_WORLD_Y);
     }
 
     private void drawTopInfo() {
@@ -364,7 +379,8 @@ public class Engine extends PApplet implements TrackerCallback {
     private void drawDebug() {
         textSize(32);
         textAlign(LEFT, TOP);
-        text(currentLevel.getId()+"("+currentLevel.getTitle()+")", 0, 0);
+        String text = currentLevel==null?"Zero":currentLevel.getId()+"("+currentLevel.getTitle()+")";
+        text(text, 0, 0);
     }
 
     /*OTHER FUNCTIONS*/
@@ -372,7 +388,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private void setTracking(){
         if(DEBUG){
-            blobsProviderSimulation =new MouseSelectionProvider(this,1, playerSize);
+            blobsProviderSimulation =new MouseSelectionProvider(this,0, playerSize);
             Tracker.init(players,this, blobsProviderSimulation);
             //blobsProvider =new CameraProvider();
             //Tracker.init(players,this, blobsProvider);
@@ -387,9 +403,11 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     private void setWorld() {
-
-        worldCube.setWorldColors(getWorldColors(players.size()));
-        setLevel();
+        currentLevel=null;
+        if(players.size()>0) {
+            worldCube.setWorldColors(getWorldColors(players.size()));
+            setLevel();
+        }
     }
 
     private void setLevel() {
@@ -495,7 +513,13 @@ public class Engine extends PApplet implements TrackerCallback {
 
     @Override
     public void newPlayers(ArrayList<Player> newPlayers) {
-        currentLevel.addPlayers(newPlayers);
+        if(currentLevel!=null){
+            currentLevel.addPlayers(newPlayers);
+        }else{//Zero
+            for (Player p : newPlayers){
+                players.add(Player.Factory.getPlayer(Player.Type.NODE, ALPHA, p));
+            }
+        }
     }
 
 
@@ -503,6 +527,7 @@ public class Engine extends PApplet implements TrackerCallback {
     public void changeWorld() {
         Utils.log("Change world! Players: "+players.size());
         setWorld();
+        zero.changeWord(players.size());
     }
 
 
@@ -527,4 +552,13 @@ public class Engine extends PApplet implements TrackerCallback {
     }
     */
 
+    /****************
+     *ZERO FUNCTIONS*
+     ****************/
+    public void movieEvent(Movie m) {
+        m.read();
+    }
+
+
 }
+
