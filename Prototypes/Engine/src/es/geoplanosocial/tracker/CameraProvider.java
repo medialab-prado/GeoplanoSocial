@@ -49,10 +49,13 @@ public class CameraProvider implements BlobsProvider, OscEventListener {
             //Read OSC info
             for (int i = 0; i< numberOfPlayers; i++) {
                 try{
-                    float x = oscMessage.get(1+i*4+0).floatValue(); // X position [0..1]
-                    float y = oscMessage.get(1+i*4+1).floatValue();  // Y position [0..1]
-                    int id = oscMessage.get(1+i*4+2).intValue();
-                    //int time = oscMessage.get(1+i*4+3).intValue();
+                    float x = oscMessage.get(1+i*7+0).floatValue();
+                    float y = oscMessage.get(1+i*7+1).floatValue();
+                    float w = oscMessage.get(1+i*7+2).floatValue();
+                    float h = oscMessage.get(1+i*7+3).floatValue();
+                    int id = oscMessage.get(1+i*7+4).intValue();
+                    int time = oscMessage.get(1+i*7+5).intValue();
+                    float prob = oscMessage.get(1+i*7+6).floatValue();
                     players.add(createBlob(id, x, y));
 
                 }catch (Exception e){

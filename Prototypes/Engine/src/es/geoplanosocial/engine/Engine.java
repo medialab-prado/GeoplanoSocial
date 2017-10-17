@@ -5,6 +5,7 @@ import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
+import es.geoplanosocial.tracker.CameraProvider;
 import es.geoplanosocial.tracker.MediaLabCVProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
@@ -47,8 +48,8 @@ public class Engine extends PApplet implements TrackerCallback {
 
     //BlobsProvider
     private static MouseSelectionProvider blobsProviderSimulation;
-    //private static CameraProvider blobsProvider;
-    private static MediaLabCVProvider blobsProvider;
+    private static CameraProvider blobsProvider;
+    //private static MediaLabCVProvider blobsProvider;
 
 
 
@@ -175,7 +176,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         System.out.println("OJO: " + Configuration.roi_originX + " - " + Configuration.roi_originX + " - " + Configuration.roi_originX + " - " + Configuration.roi_originX);
 
-        blobsProvider.initMediaLabCV();
+        //blobsProvider.initMediaLabCV();
     }
 
     public void draw() {
@@ -321,6 +322,7 @@ public class Engine extends PApplet implements TrackerCallback {
         image(worldCube.getThumbnailGraphics(), START_THUMBNAIL_X, START_THUMBNAIL_Y);
 
         //FIXME
+        /*
         if(blobsProvider.isTracking()) {
             PImage s = blobsProvider.getSource();
 
@@ -352,7 +354,8 @@ public class Engine extends PApplet implements TrackerCallback {
                 ellipse((bb.x + 0.0f) / LEVEL_WIDTH * s.width,  yOffset+(bb.y + 0.0f) / LEVEL_HEIGHT * s.height, bb.width, bb.height);
                 ellipse(xOffset+(bb.x + 0.0f) / LEVEL_WIDTH * s.width, yOffset + (bb.y + 0.0f) / LEVEL_HEIGHT * s.height, bb.width, bb.height);
             }
-        }
+
+        }*/
 
 
     }
@@ -374,9 +377,9 @@ public class Engine extends PApplet implements TrackerCallback {
             //blobsProvider =new CameraProvider();
             //Tracker.init(players,this, blobsProvider);
         }else{
-            //blobsProvider =new CameraProvider();
-            blobsProvider =new MediaLabCVProvider(this);
-            blobsProvider.initVideo();
+            blobsProvider =new CameraProvider();
+            //blobsProvider =new MediaLabCVProvider(this);
+            //blobsProvider.initVideo();
             //blobsProvider.initCamera();
             //blobsProvider.initSpout();
             Tracker.init(players,this, blobsProvider);
@@ -511,7 +514,7 @@ public class Engine extends PApplet implements TrackerCallback {
         setLevel();
     }
 
-
+    /*
     public void movieEvent(Movie m) {
         m.read();
         blobsProvider.sendFrame(m.get());
@@ -522,5 +525,6 @@ public class Engine extends PApplet implements TrackerCallback {
         c.read();
         blobsProvider.sendFrame(c.get());
     }
+    */
 
 }
