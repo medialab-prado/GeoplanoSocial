@@ -10,6 +10,7 @@ import java.awt.*;
 
 import static es.geoplanosocial.util.Constants.*;
 import static processing.core.PApplet.lerp;
+import static processing.core.PApplet.sqrt;
 
 /**
  * Created by guzman on 17/10/2017.
@@ -25,9 +26,9 @@ public class Zero {
     private float amount = 0.0f;
 
     private final float SCALE_MIN = 1.0f;
-    private final float SCALE_MAX = 6.0f;
+    private final float SCALE_MAX = 14.0f;
 
-    private final float ZOOM_TIME = 8.0f;//Seconds
+    private final float ZOOM_TIME = 15.0f;//Seconds
 
     private final float SCALE_FACTOR = (SCALE_MAX-SCALE_MIN)/(ZOOM_TIME*FPS);
 
@@ -43,11 +44,11 @@ public class Zero {
 
     private final Point[] zoomPoints = new Point[]{
             new Point(0,0),//World 0
-            new Point(94,34),//World 1
-            new Point(160,34),//World 2
-            new Point(160,93),//World 3
-            new Point(94,93),//World 4
-            new Point(25,60),//World 5
+            new Point(96,35),//World 1
+            new Point(160,33),//World 2
+            new Point(162,95),//World 3
+            new Point(94,97),//World 4
+            new Point(28,63),//World 5
     };
 
     public Zero(PApplet parent) {
@@ -59,7 +60,7 @@ public class Zero {
         movie.loop();
 
         setZoomed(false);
-        //changeWord(1);
+        //changeWord(5);
     }
 
     public void changeWord(int destinationWorld){
@@ -96,7 +97,12 @@ public class Zero {
     public void draw(){
         Point p = zoomPoints[targetWorld];
 
-        float s = lerp(SCALE_MIN, SCALE_MAX, amount);
+        float easeInOut = (float) (1 + Math.sin(Math.PI * amount - Math.PI / 2)) / 2;
+
+        //eInEout = amount<.5 ? 2*amount*amount : -1+(4-2*amount)*amount;
+
+        System.out.println(amount+"->"+easeInOut);
+        float s = lerp(SCALE_MIN, SCALE_MAX, easeInOut);
         float scaleChange = s - SCALE_MIN;
 
         PImage frame = movie.copy();
