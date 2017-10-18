@@ -19,7 +19,8 @@ public class Node1A extends Node {
 
     private int mouseX_prev, mouseY_prev;
 
-    static private int DEGRADE_RATE = 5;
+    private static int INCREASE_RATE = 8;
+    private static int DECREASE_RATE = 2;
 
     public Node1A(int color, Player player) {
         super(color, player);
@@ -37,7 +38,7 @@ public class Node1A extends Node {
 //            g -= DEGRADE_RATE;
 //            if (r < 0) r = 0;
 //            if (g < 0) g = 0;
-            a -= DEGRADE_RATE;
+            a -= DECREASE_RATE;
             if (a < 0) a = 0;
 
         }
@@ -47,7 +48,7 @@ public class Node1A extends Node {
 //            g += DEGRADE_RATE;
 //            if (r > 255) r = 255;
 //            if (g > 255) g = 255;
-            a += DEGRADE_RATE;
+            a += INCREASE_RATE;
             if (a > 255) a = 255;
 
         }

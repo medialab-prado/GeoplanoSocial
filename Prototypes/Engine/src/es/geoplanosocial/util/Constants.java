@@ -52,7 +52,8 @@ public class Constants {
 
 
     //Level change
-    public static final int PLAY_AREA_OFFSET = 15;
+    public static final int PLAY_AREA_OFFSET_X = 18;
+    public static final int PLAY_AREA_OFFSET_Y = 12;
     public static final int PLAY_AREA_TIMER = 5 * 1000;//In milliseconds
     public static final float PLAY_AREA_MIN_PERCENTAGE = 0.5f;
 

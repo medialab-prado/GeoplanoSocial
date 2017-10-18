@@ -381,6 +381,7 @@ public class Engine extends PApplet implements TrackerCallback {
         textAlign(LEFT, TOP);
         String text = currentLevel==null?"Zero":currentLevel.getId()+"("+currentLevel.getTitle()+")";
         text(text, 0, 0);
+
     }
 
     /*OTHER FUNCTIONS*/

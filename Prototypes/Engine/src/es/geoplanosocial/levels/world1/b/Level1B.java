@@ -32,7 +32,7 @@ public class Level1B extends Level {
     private int DUMMY_SIZE_MAX;
     private int DUMMY_SIZE_MIN;
 
-    private final float DUMMY_SPEED = 0.15f;
+    private final float DUMMY_SPEED = 0.07f;
     private final int DUMMY_POSITION_OFFSET = 50;
 
 

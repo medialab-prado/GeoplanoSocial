@@ -24,7 +24,7 @@ public class Level1C extends Level {
     public static final int MAIN_COLOR= Color.W1_C_BG;
 
 
-    private final int MAX_INTERVAL = 150;//In milliseconds
+    private final int MAX_INTERVAL = 250;//In milliseconds
     private final Line[] LINES = new Line[50];
     private final int LINE_WEIGHT_MIN = 1;
     private final int LINE_WEIGHT_MAX = 3;

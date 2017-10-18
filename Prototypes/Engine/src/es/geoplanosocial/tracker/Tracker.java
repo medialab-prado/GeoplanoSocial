@@ -3,6 +3,7 @@ package es.geoplanosocial.tracker;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
+import processing.core.PApplet;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class Tracker {
     private static BlobsProvider blobsProvider;
 
 
-    private static final Rectangle playArea = new Rectangle(PLAY_AREA_OFFSET,PLAY_AREA_OFFSET,LEVEL_WIDTH-2*PLAY_AREA_OFFSET,LEVEL_HEIGHT-2*PLAY_AREA_OFFSET);
+    private static final Rectangle playArea = new Rectangle(PLAY_AREA_OFFSET_X,PLAY_AREA_OFFSET_Y,LEVEL_WIDTH-2*PLAY_AREA_OFFSET_X,LEVEL_HEIGHT-2*PLAY_AREA_OFFSET_Y);
 
 
     public static void init(ArrayList<Player> players, TrackerCallback trackerCallback, BlobsProvider blobsProvider) {
@@ -263,8 +264,15 @@ public class Tracker {
 
         float percentageChange= wantToChange/players.size();
 
+
+        //float t = PLAY_AREA_TIMER * wantToChange
+        //float t = PLAY_AREA_TIMER+(wantToChange*1000)
+        //(2^n-1)/(2^(n-1)) aka 2-2^(1-n)
+        //The limit is 2 so at most 2 * PLAY_AREA_TIMER
+        float t = PLAY_AREA_TIMER * (2- PApplet.pow(2,1-wantToChange)) ;
+
         //Initial conditions for change of level
-        if(percentageChange>=PLAY_AREA_MIN_PERCENTAGE && maxWaiting>=PLAY_AREA_TIMER*wantToChange){
+        if(percentageChange>=PLAY_AREA_MIN_PERCENTAGE && maxWaiting>=t){
 
             int[] directionCounter=new int[Types.Direction.values().length];
 

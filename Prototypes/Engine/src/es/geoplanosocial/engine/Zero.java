@@ -101,7 +101,6 @@ public class Zero {
 
         //eInEout = amount<.5 ? 2*amount*amount : -1+(4-2*amount)*amount;
 
-        System.out.println(amount+"->"+easeInOut);
         float s = lerp(SCALE_MIN, SCALE_MAX, easeInOut);
         float scaleChange = s - SCALE_MIN;
 
