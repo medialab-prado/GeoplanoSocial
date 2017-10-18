@@ -7,6 +7,7 @@ import processing.core.PImage;
 import processing.video.Movie;
 
 import java.awt.*;
+import java.io.File;
 
 import static es.geoplanosocial.util.Constants.*;
 import static processing.core.PApplet.lerp;
@@ -56,11 +57,13 @@ public class Zero {
 
         pg = parent.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_RENDERER);
 
+
         movie = new Movie(parent, "zero.mp4");
         movie.loop();
 
         setZoomed(false);
         //changeWord(5);
+
     }
 
     public void changeWord(int destinationWorld){
@@ -95,29 +98,31 @@ public class Zero {
     }
 
     public void draw(){
-        Point p = zoomPoints[targetWorld];
+        if(movie.available()) {
+            Point p = zoomPoints[targetWorld];
 
-        float easeInOut = (float) (1 + Math.sin(Math.PI * amount - Math.PI / 2)) / 2;
+            float easeInOut = (float) (1 + Math.sin(Math.PI * amount - Math.PI / 2)) / 2;
 
-        //eInEout = amount<.5 ? 2*amount*amount : -1+(4-2*amount)*amount;
+            //eInEout = amount<.5 ? 2*amount*amount : -1+(4-2*amount)*amount;
 
-        float s = lerp(SCALE_MIN, SCALE_MAX, easeInOut);
-        float scaleChange = s - SCALE_MIN;
+            float s = lerp(SCALE_MIN, SCALE_MAX, easeInOut);
+            float scaleChange = s - SCALE_MIN;
 
-        PImage frame = movie.copy();
-        frame.resize(PApplet.round(
-                s*LEVEL_WIDTH),
-                PApplet.round(s*LEVEL_HEIGHT));
-        PImage r = frame.get(
-                PApplet.round(p.x*scaleChange),
-                PApplet.round(p.y*scaleChange),
-                LEVEL_WIDTH,
-                LEVEL_HEIGHT);
+            PImage frame = movie.copy();
+            frame.resize(PApplet.round(
+                    s * LEVEL_WIDTH),
+                    PApplet.round(s * LEVEL_HEIGHT));
+            PImage r = frame.get(
+                    PApplet.round(p.x * scaleChange),
+                    PApplet.round(p.y * scaleChange),
+                    LEVEL_WIDTH,
+                    LEVEL_HEIGHT);
 
-        pg.beginDraw();
-        pg.background(Color.BLACK);
-        pg.image(r,0,0);
-        pg.endDraw();
+            pg.beginDraw();
+            pg.background(Color.BLACK);
+            pg.image(r, 0, 0);
+            pg.endDraw();
+        }
 
     }
 
