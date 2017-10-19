@@ -141,7 +141,8 @@ public class RandomShape {
 
         for (int i = 0; i < vertexNumber; i++) minPoint[i] = -1;
 
-        for (int i = 0; i < players.size(); i++) {
+        // for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < vertexNumber; i++) {
             for (int j = 0; j < vertexNumber; j++) {
                 distanceMat[i][j] = dist((float) players.get(i).getLocation().getX(), (float) players.get(i).getLocation().getY(), shapeVertex.get(j).x, shapeVertex.get(j).y);
                 // Utils.log("Distancia de player " + i + " a punto " + j + " = " + distanceMat[i][j]);
