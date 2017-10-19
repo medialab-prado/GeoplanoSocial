@@ -10,8 +10,8 @@ import java.awt.*;
 import java.io.File;
 
 import static es.geoplanosocial.util.Constants.*;
+import static es.geoplanosocial.util.Utils.isRunningFromJar;
 import static processing.core.PApplet.lerp;
-import static processing.core.PApplet.sqrt;
 
 /**
  * Created by guzman on 17/10/2017.
@@ -57,6 +57,14 @@ public class Zero {
 
         pg = parent.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_RENDERER);
 
+
+        if(isRunningFromJar()) {
+            File root = new File(".");
+            File video = new File(root, "video");
+            File plugins = new File(video, "plugins");
+            System.setProperty("gstreamer.library.path", video.getPath());
+            System.setProperty("gstreamer.plugin.path", plugins.getPath());
+        }
 
         movie = new Movie(parent, "zero.mp4");
         movie.loop();

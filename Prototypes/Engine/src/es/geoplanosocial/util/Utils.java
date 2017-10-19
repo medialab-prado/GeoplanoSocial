@@ -136,4 +136,10 @@ public class Utils {
             return false;
         }
     }
+
+    public static boolean isRunningFromJar(){
+        String className = Utils.class.getName().replace('.', '/');
+        String classJar = Utils.class.getResource("/" + className + ".class").toString();
+        return classJar.startsWith("jar:");
+    }
 }
