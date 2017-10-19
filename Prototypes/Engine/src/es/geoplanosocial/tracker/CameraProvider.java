@@ -46,16 +46,17 @@ public class CameraProvider implements BlobsProvider, OscEventListener {
             //FIXME we do not want to be continuously clearing and recreating
             players.clear();
 
+            int items = 6;
             //Read OSC info
             for (int i = 0; i< numberOfPlayers; i++) {
                 try{
-                    float x = oscMessage.get(1+i*7+0).floatValue();
-                    float y = oscMessage.get(1+i*7+1).floatValue();
-                    float w = oscMessage.get(1+i*7+2).floatValue();
-                    float h = oscMessage.get(1+i*7+3).floatValue();
-                    int id = oscMessage.get(1+i*7+4).intValue();
-                    int time = oscMessage.get(1+i*7+5).intValue();
-                    float prob = oscMessage.get(1+i*7+6).floatValue();
+                    float x = oscMessage.get(1+i*items+0).floatValue();
+                    float y = oscMessage.get(1+i*items+1).floatValue();
+                    float w = oscMessage.get(1+i*items+2).floatValue();
+                    float h = oscMessage.get(1+i*items+3).floatValue();
+                    int id = oscMessage.get(1+i*items+4).intValue();
+                    int time = oscMessage.get(1+i*items+5).intValue();
+                    //float prob = oscMessage.get(1+i*7+6).floatValue();
                     players.add(createBlob(id, x, y));
 
                 }catch (Exception e){
