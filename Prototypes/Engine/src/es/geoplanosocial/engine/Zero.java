@@ -11,7 +11,10 @@ import java.io.File;
 
 import static es.geoplanosocial.util.Constants.*;
 import static es.geoplanosocial.util.Utils.isRunningFromJar;
+import static es.geoplanosocial.util.Utils.randomInt;
 import static processing.core.PApplet.lerp;
+import static processing.core.PConstants.ADD;
+import static processing.core.PConstants.ROUND;
 
 /**
  * Created by guzman on 17/10/2017.
@@ -23,6 +26,8 @@ public class Zero {
 
     private PGraphics pg;
 
+    private PGraphics pgTangle;
+
 
     private float amount = 0.0f;
 
@@ -33,6 +38,12 @@ public class Zero {
 
     private final float SCALE_FACTOR = (SCALE_MAX-SCALE_MIN)/(ZOOM_TIME*FPS);
 
+    private final int MAX_TANGLE_OFFSET = 5;//Pixels
+
+    private final int MIN_STROKE = 1;//Pixels
+    private final int MAX_STROKE = 3;//Pixels
+
+
 
     private boolean onTransition = false;
 
@@ -42,6 +53,7 @@ public class Zero {
     private int destinationWorld=0;
     private int targetWorld=0;
 
+    private Point lastTangle;
 
     private final Point[] zoomPoints = new Point[]{
             new Point(0,0),//World 0
@@ -58,6 +70,7 @@ public class Zero {
         pg = parent.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_RENDERER);
 
 
+
         if(isRunningFromJar()) {
             File root = new File(".");
             File video = new File(root, "video");
@@ -70,7 +83,7 @@ public class Zero {
         movie.loop();
 
         setZoomed(false);
-        //changeWord(5);
+        //changeWord(1);
 
     }
 
@@ -78,6 +91,29 @@ public class Zero {
         this.destinationWorld = destinationWorld;
         onTransition = true;
         setZoomed(isZoomed);
+        if(currentWorld>0 && destinationWorld>0){
+            if(null==pgTangle)pgTangle = parent.createGraphics(movie.width, movie.height, SCREEN_RENDERER);
+
+            pgTangle.beginDraw();
+
+            pgTangle.stroke(Color.WHITE);
+            pgTangle.strokeCap(ROUND);
+            pgTangle.strokeWeight(randomInt(MIN_STROKE, MAX_STROKE));
+
+
+            if(lastTangle==null)lastTangle=randomPoint(currentWorld);
+            Point dest = randomPoint(destinationWorld);
+
+            pgTangle.line((float)lastTangle.getX(),
+                    (float)lastTangle.getY(),
+                    (float)dest.getX(),
+                    (float)dest.getY());
+
+            lastTangle = dest;
+            pgTangle.endDraw();
+        }else{
+            lastTangle = null;
+        }
     }
 
     public void setZoomed(boolean zoomed) {
@@ -100,7 +136,12 @@ public class Zero {
             if(currentWorld==destinationWorld){
                 onTransition=false;
                 //int to = (destinationWorld % 5)+1;
-                //changeWord(to);
+                /*int to;
+                do {
+                    to = randomInt(1,5);
+                }while (to==currentWorld);
+                changeWord(to);
+                */
             }
         }
     }
@@ -117,9 +158,11 @@ public class Zero {
             float scaleChange = s - SCALE_MIN;
 
             PImage frame = movie.copy();
-            frame.resize(PApplet.round(
-                    s * LEVEL_WIDTH),
+            if(null!=pgTangle)frame.blend(pgTangle,0,0, frame.width,frame.height,0,0,frame.width,frame.height,ADD);
+            frame.resize(PApplet.round(s * LEVEL_WIDTH),
                     PApplet.round(s * LEVEL_HEIGHT));
+
+
             PImage r = frame.get(
                     PApplet.round(p.x * scaleChange),
                     PApplet.round(p.y * scaleChange),
@@ -140,5 +183,20 @@ public class Zero {
     }
     public boolean isOnTransition() {
         return onTransition;
+    }
+
+    private Point randomPoint(int world){
+
+        double widthCoeff= (pgTangle.width+0.0)/LEVEL_WIDTH;
+        double heightCoeff= (pgTangle.height+0.0)/LEVEL_HEIGHT;
+        Point p = zoomPoints[world];
+
+        int xMaxOffset = (int)(widthCoeff*MAX_TANGLE_OFFSET);
+        int yMaxOffset = (int)(heightCoeff*MAX_TANGLE_OFFSET);
+
+        int xOffset = randomInt(-xMaxOffset,xMaxOffset);
+        int yOffset = randomInt(-yMaxOffset,yMaxOffset);
+
+        return new Point((int)(p.getX()*widthCoeff+xOffset), (int)(p.getY()*heightCoeff+yOffset));
     }
 }
