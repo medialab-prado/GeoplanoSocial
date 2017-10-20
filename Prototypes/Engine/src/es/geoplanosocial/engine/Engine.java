@@ -294,8 +294,24 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
     private void drawBackground(PGraphics pg) {
-        //Draw the bg in the pg
+        //Draw the bg stored in the pg
         image(pg, 0, 0);
+
+        //Top hat bg
+        fill(BLACK);
+        noStroke();
+        beginShape();
+        vertex(40, 72);
+        vertex(75, 72);
+        vertex(75, 56);
+        vertex(111, 56);
+        vertex(111, 40);
+        vertex(159, 40);
+        vertex(159, 56);
+        vertex(195, 56);
+        vertex(195, 72);
+        vertex(231, 72);
+        endShape(CLOSE);
     }
 
     private void drawWorld() {
@@ -325,7 +341,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private  void drawZero(){
         zero.draw();
-        image(zero.getResult(), START_WORLD_X, START_WORLD_Y);
+        image(zero.getResult(), START_WORLD_X, START_WORLD_Y-HAT_OFFSET);
     }
 
     private void drawTopInfo() {
@@ -374,6 +390,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
 
     private void drawDebug() {
+        fill(MAGENTA);
         textSize(32);
         textAlign(LEFT, TOP);
         String text = currentLevel==null?"Zero":currentLevel.getId()+"("+currentLevel.getTitle()+")";

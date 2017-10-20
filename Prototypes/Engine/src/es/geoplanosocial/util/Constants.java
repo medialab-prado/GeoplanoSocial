@@ -42,6 +42,7 @@ public class Constants {
     public static final int START_WORLD_Y = 72;
     public static final int START_THUMBNAIL_X = 122;
     public static final int START_THUMBNAIL_Y = 48;
+    public static final int HAT_OFFSET=32;
 
     //BlackHole
     public static final float BLACK_HOLE_SIZE_PERCENTAGE = 0.72f;

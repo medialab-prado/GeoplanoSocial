@@ -2,6 +2,7 @@ package es.geoplanosocial.engine;
 
 import es.geoplanosocial.util.Color;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.video.Movie;
@@ -13,7 +14,7 @@ import static es.geoplanosocial.util.Constants.*;
 import static es.geoplanosocial.util.Utils.isRunningFromJar;
 import static es.geoplanosocial.util.Utils.randomInt;
 import static processing.core.PApplet.lerp;
-import static processing.core.PConstants.ADD;
+import static processing.core.PConstants.CLOSE;
 import static processing.core.PConstants.ROUND;
 
 /**
@@ -28,6 +29,7 @@ public class Zero {
     private PGraphics pgTangle;
     private PImage result;
 
+    private PGraphics maskPg;
 
     private float amount = 0.0f;
 
@@ -54,6 +56,9 @@ public class Zero {
     private int targetWorld=0;
 
     private Point lastTangle;
+
+
+
 
     private final Point[] zoomPoints = new Point[]{
             new Point(0,0),//World 0
@@ -83,6 +88,7 @@ public class Zero {
         setZoomed(false);
         //changeWord(1);
 
+        createMask();
     }
 
     public void changeWord(int destinationWorld){
@@ -159,9 +165,11 @@ public class Zero {
 
             result = r.get(
                     PApplet.round(p.x * scaleChange),
-                    PApplet.round(p.y * scaleChange),
+                    PApplet.round(p.y * scaleChange)-HAT_OFFSET,
                     LEVEL_WIDTH,
-                    LEVEL_HEIGHT);
+                    LEVEL_HEIGHT+HAT_OFFSET);
+
+            result.mask(maskPg);
         }
 
     }
@@ -208,5 +216,31 @@ public class Zero {
 
         lastTangle = dest;
         pgTangle.endDraw();
+    }
+
+
+    private void createMask(){
+        maskPg = parent.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT+HAT_OFFSET, SCREEN_RENDERER);
+        maskPg.smooth(ANTI_ALIASING_LEVEL);
+        maskPg.beginDraw();
+        maskPg.background(Color.BLACK);
+        maskPg.translate(-START_WORLD_X,-START_WORLD_X);
+        maskPg.fill(Color.WHITE);
+        maskPg.noStroke();
+        maskPg.beginShape();
+        maskPg.vertex(231, 196);
+        maskPg.vertex(40, 196);
+        maskPg.vertex(40, 72);
+        maskPg.vertex(75, 72);
+        maskPg.vertex(75, 56);
+        maskPg.vertex(111, 56);
+        maskPg.vertex(111, 40);
+        maskPg.vertex(159, 40);
+        maskPg.vertex(159, 56);
+        maskPg.vertex(195, 56);
+        maskPg.vertex(195, 72);
+        maskPg.vertex(231, 72);
+        maskPg.endShape(CLOSE);
+        maskPg.endDraw();
     }
 }
