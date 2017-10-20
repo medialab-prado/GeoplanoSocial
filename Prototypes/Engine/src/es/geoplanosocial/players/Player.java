@@ -18,6 +18,7 @@ public class Player {
 
     public enum Type {
         NODE,
+        EXTENDED_NODE,
         SQUARE,
         NODE1A,
         NODE2A,
@@ -162,6 +163,9 @@ public class Player {
             switch (type){
                 case NODE:
                     p=new Node(color,player);
+                    break;
+                case EXTENDED_NODE:
+                    p=new ExtendedNode(color,player);
                     break;
                 case SQUARE:
                     p=new Square(color,player);

@@ -1,6 +1,7 @@
 package es.geoplanosocial.levels.world1.b;
 
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.players.ExtendedNode;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
@@ -58,8 +59,11 @@ public class Level1B extends Level {
         ArrayList<Player> players=new ArrayList<>();
 
         for (Player p :Level.players){
-            players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W1_WHITE_ALPHA_NODE, p));
+            ExtendedNode pl =(ExtendedNode)Player.Factory.getPlayer(Player.Type.EXTENDED_NODE, Color.W1_WHITE_ALPHA_NODE, p);
+            pl.setAlpha(0.0f);
+            players.add(pl);
         }
+
 
         return players;
     }
@@ -82,6 +86,10 @@ public class Level1B extends Level {
         Player player = players.get(0);
 
         if(player!=null){
+
+            ExtendedNode p = ((ExtendedNode)players.get(0));
+            p.setAlpha(p.getAlpha()+0.001f);
+
             long currentTime = System.currentTimeMillis();
             long interval = currentTime -timer;
 
