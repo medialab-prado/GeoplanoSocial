@@ -25,8 +25,8 @@ public class Zero {
     private Movie movie;
 
     private PGraphics pg;
-
     private PGraphics pgTangle;
+    private PImage result;
 
 
     private float amount = 0.0f;
@@ -43,7 +43,7 @@ public class Zero {
     private final int MIN_STROKE = 1;//Pixels
     private final int MAX_STROKE = 3;//Pixels
 
-
+    private final String VIDEO_NAME = "zero.mov";
 
     private boolean onTransition = false;
 
@@ -67,9 +67,7 @@ public class Zero {
     public Zero(PApplet parent) {
         this.parent = parent;
 
-        pg = parent.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_RENDERER);
-
-
+        this.result=new PImage(1,1);
 
         if(isRunningFromJar()) {
             File root = new File(".");
@@ -79,7 +77,7 @@ public class Zero {
             System.setProperty("gstreamer.plugin.path", plugins.getPath());
         }
 
-        movie = new Movie(parent, "zero.mp4");
+        movie = new Movie(parent, VIDEO_NAME);
         movie.loop();
 
         setZoomed(false);
@@ -88,11 +86,12 @@ public class Zero {
     }
 
     public void changeWord(int destinationWorld){
+        if (destinationWorld>=zoomPoints.length)return;
+
         this.destinationWorld = destinationWorld;
         onTransition = true;
         setZoomed(isZoomed);
         if(currentWorld>0 && destinationWorld>0){
-            if(null==pgTangle)pgTangle = parent.createGraphics(movie.width, movie.height, SCREEN_RENDERER);
 
             pgTangle.beginDraw();
 
@@ -148,6 +147,13 @@ public class Zero {
 
     public void draw(){
         if(movie.available()) {
+
+            if(pg==null){
+                pg = parent.createGraphics(movie.width, movie.height, SCREEN_RENDERER);
+                pgTangle = parent.createGraphics(movie.width, movie.height, SCREEN_RENDERER);
+            }
+
+
             Point p = zoomPoints[targetWorld];
 
             float easeInOut = (float) (1 + Math.sin(Math.PI * amount - Math.PI / 2)) / 2;
@@ -157,29 +163,30 @@ public class Zero {
             float s = lerp(SCALE_MIN, SCALE_MAX, easeInOut);
             float scaleChange = s - SCALE_MIN;
 
-            PImage frame = movie.copy();
-            if(null!=pgTangle)frame.blend(pgTangle,0,0, frame.width,frame.height,0,0,frame.width,frame.height,ADD);
-            frame.resize(PApplet.round(s * LEVEL_WIDTH),
+
+            pg.beginDraw();
+            pg.background(Color.BLACK);
+            pg.image(pgTangle,0,0);
+            pg.image(movie.copy(), 0, 0);
+            pg.endDraw();
+
+            PImage r =pg.get();
+            r.resize(PApplet.round(s * LEVEL_WIDTH),
                     PApplet.round(s * LEVEL_HEIGHT));
 
 
-            PImage r = frame.get(
+            result = r.get(
                     PApplet.round(p.x * scaleChange),
                     PApplet.round(p.y * scaleChange),
                     LEVEL_WIDTH,
                     LEVEL_HEIGHT);
-
-            pg.beginDraw();
-            pg.background(Color.BLACK);
-            pg.image(r, 0, 0);
-            pg.endDraw();
         }
 
     }
 
 
-    public PGraphics getGraphics() {
-        return pg;
+    public PImage getResult() {
+        return result;
     }
     public boolean isOnTransition() {
         return onTransition;

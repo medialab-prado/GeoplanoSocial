@@ -6,17 +6,14 @@ import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.CameraProvider;
-import es.geoplanosocial.tracker.MediaLabCVProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
 import es.geoplanosocial.util.Configuration;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
-import processing.video.Capture;
 import processing.video.Movie;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
@@ -328,7 +325,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
     private  void drawZero(){
         zero.draw();
-        image(zero.getGraphics(), START_WORLD_X, START_WORLD_Y);
+        image(zero.getResult(), START_WORLD_X, START_WORLD_Y);
     }
 
     private void drawTopInfo() {
