@@ -403,7 +403,8 @@ public class Engine extends PApplet implements TrackerCallback {
     private void setWorld() {
         currentLevel=null;
         if(players.size()>0) {
-            worldCube.setWorldColors(getWorldColors(players.size()));
+            int w = players.size()<=5?players.size():5;
+            worldCube.setWorldColors(getWorldColors(w));
             setLevel();
         }
     }
@@ -411,7 +412,8 @@ public class Engine extends PApplet implements TrackerCallback {
     private void setLevel() {
         resetPlayerSizes();
 
-        Level l= Level.Factory.getLevel(players.size(), worldCube.getCurrentLevel());
+        int w = players.size()<=5?players.size():5;
+        Level l= Level.Factory.getLevel(w, worldCube.getCurrentLevel());
         if(l!=null){
             currentLevel=l;
             Utils.log("Init: "+currentLevel.getId());

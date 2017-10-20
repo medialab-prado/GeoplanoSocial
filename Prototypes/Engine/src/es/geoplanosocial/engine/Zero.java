@@ -86,30 +86,12 @@ public class Zero {
     }
 
     public void changeWord(int destinationWorld){
-        if (destinationWorld>=zoomPoints.length)return;
 
-        this.destinationWorld = destinationWorld;
+        this.destinationWorld = destinationWorld<zoomPoints.length?destinationWorld:zoomPoints.length-1;
         onTransition = true;
         setZoomed(isZoomed);
         if(currentWorld>0 && destinationWorld>0){
-
-            pgTangle.beginDraw();
-
-            pgTangle.stroke(Color.WHITE);
-            pgTangle.strokeCap(ROUND);
-            pgTangle.strokeWeight(randomInt(MIN_STROKE, MAX_STROKE));
-
-
-            if(lastTangle==null)lastTangle=randomPoint(currentWorld);
-            Point dest = randomPoint(destinationWorld);
-
-            pgTangle.line((float)lastTangle.getX(),
-                    (float)lastTangle.getY(),
-                    (float)dest.getX(),
-                    (float)dest.getY());
-
-            lastTangle = dest;
-            pgTangle.endDraw();
+            drawTangleLine();
         }else{
             lastTangle = null;
         }
@@ -205,5 +187,26 @@ public class Zero {
         int yOffset = randomInt(-yMaxOffset,yMaxOffset);
 
         return new Point((int)(p.getX()*widthCoeff+xOffset), (int)(p.getY()*heightCoeff+yOffset));
+    }
+
+
+    private void drawTangleLine(){
+        pgTangle.beginDraw();
+
+        pgTangle.stroke(Color.WHITE);
+        pgTangle.strokeCap(ROUND);
+        pgTangle.strokeWeight(randomInt(MIN_STROKE, MAX_STROKE));
+
+
+        if(lastTangle==null)lastTangle=randomPoint(currentWorld);
+        Point dest = randomPoint(destinationWorld);
+
+        pgTangle.line((float)lastTangle.getX(),
+                (float)lastTangle.getY(),
+                (float)dest.getX(),
+                (float)dest.getY());
+
+        lastTangle = dest;
+        pgTangle.endDraw();
     }
 }
