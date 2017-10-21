@@ -71,6 +71,8 @@ class Cube {
 
 
     private boolean[] levelCompleted = new boolean[]{false, false, false};//FRU
+    private boolean isWorldCompleted = false;
+
 
     //Constructor
     Cube(PApplet processing, int width, int height) {
@@ -330,10 +332,12 @@ class Cube {
         for(int i =0;i<levelCompleted.length;i++){
             levelCompleted[i]=false;
         }
+        setWorldCompleted();
     }
 
     public void setCurrentComplete(){
         levelCompleted[0]=true;
+        setWorldCompleted();
     }
 
     public boolean isCurrentComplete(){
@@ -342,5 +346,13 @@ class Cube {
 
     public boolean[] getCompletion(){
         return levelCompleted;
+    }
+
+    public boolean isWorldCompleted() {
+        return isWorldCompleted;
+    }
+
+    private void setWorldCompleted(){
+        isWorldCompleted= levelCompleted[0]&&levelCompleted[1]&&levelCompleted[2];
     }
 }

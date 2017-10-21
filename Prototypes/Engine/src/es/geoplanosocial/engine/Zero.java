@@ -13,6 +13,7 @@ import java.io.File;
 import static es.geoplanosocial.util.Constants.*;
 import static es.geoplanosocial.util.Utils.isRunningFromJar;
 import static es.geoplanosocial.util.Utils.randomInt;
+import static processing.core.PApplet.constrain;
 import static processing.core.PApplet.lerp;
 import static processing.core.PConstants.CLOSE;
 import static processing.core.PConstants.ROUND;
@@ -57,7 +58,7 @@ public class Zero {
 
     private Point lastTangle;
 
-
+    private int strokeWeight=0;
 
 
     private final Point[] zoomPoints = new Point[]{
@@ -98,6 +99,7 @@ public class Zero {
         setZoomed(isZoomed);
         if(currentWorld>0 && destinationWorld>0){
             drawTangleLine();
+            strokeWeight=0;
         }else{
             lastTangle = null;
         }
@@ -203,7 +205,7 @@ public class Zero {
 
         pgTangle.stroke(Color.WHITE);
         pgTangle.strokeCap(ROUND);
-        pgTangle.strokeWeight(randomInt(MIN_STROKE, MAX_STROKE));
+        pgTangle.strokeWeight(strokeWeight);
 
 
         if(lastTangle==null)lastTangle=randomPoint(currentWorld);
@@ -242,5 +244,9 @@ public class Zero {
         maskPg.vertex(231, 72);
         maskPg.endShape(CLOSE);
         maskPg.endDraw();
+    }
+
+    public void setStrokeWeight(int strokeWeight) {
+        this.strokeWeight = constrain(strokeWeight,MIN_STROKE,MAX_STROKE);
     }
 }
