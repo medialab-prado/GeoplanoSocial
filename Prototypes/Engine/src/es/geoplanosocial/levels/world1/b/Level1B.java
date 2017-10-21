@@ -26,20 +26,20 @@ public class Level1B extends Level {
     private static final String TITLE="Rebaño";
     public static final int MAIN_COLOR= Color.W1_B_BG;
 
-    private final int DUMMIES_NUMBER = 20;
+    private final int DUMMIES_NUMBER = 10;
     private Rectangle[] DUMMIES ;
 
     private final int DUMMY_SIZE_FACTOR = 2;
     private int DUMMY_SIZE_MAX;
     private int DUMMY_SIZE_MIN;
 
-    private final float DUMMY_SPEED = 0.07f;
+    private final float DUMMY_SPEED = 0.0001f;
     private final int DUMMY_POSITION_OFFSET = 50;
 
 
     private long timer = System.currentTimeMillis();
 
-
+    private final float TRANSFERENCE = 0.0025f;
 
 
     public Level1B() {
@@ -60,7 +60,7 @@ public class Level1B extends Level {
 
         for (Player p :Level.players){
             ExtendedNode pl =(ExtendedNode)Player.Factory.getPlayer(Player.Type.EXTENDED_NODE, Color.W1_WHITE_ALPHA_NODE, p);
-            pl.setAlpha(0.0f);
+            pl.setFullness(0.0f);
             players.add(pl);
         }
 
@@ -88,7 +88,6 @@ public class Level1B extends Level {
         if(player!=null){
 
             ExtendedNode p = ((ExtendedNode)players.get(0));
-            p.setAlpha(p.getAlpha()+0.001f);
 
             long currentTime = System.currentTimeMillis();
             long interval = currentTime -timer;
@@ -109,14 +108,34 @@ public class Level1B extends Level {
                 v.normalize();
                 v.mult(distancePerSize);
 
-                int prevX= DUMMIES[i].x;
-                int prevY= DUMMIES[i].y;
+                //int prevX= DUMMIES[i].x;
+                //int prevY= DUMMIES[i].y;
 
                 DUMMIES[i].x += v.x > 0 ? Math.ceil(v.x):Math.floor(v.x);
                 DUMMIES[i].y += v.y > 0 ? Math.ceil(v.y):Math.floor(v.y);
 
                 //if(prevX ==DUMMIES[i].x && prevY ==DUMMIES[i].y) Utils.log(""+v);
             }
+
+            Point center = new Point();
+            boolean isCollision = false;
+            //Check collisions with players
+            for(int i=0; i<DUMMIES.length;i++){
+                center.move(DUMMIES[i].x,DUMMIES[i].y);
+                if(Utils.isCircleCollision(p.getLocation(),p.getBoundingBox().width/2.0f,center,DUMMIES[i].width/2.0f)){
+                    isCollision=true;
+                    break;
+                }
+            }
+
+            if(isCollision){
+                p.setFullness(p.getFullness()-TRANSFERENCE);
+
+            }else{
+                p.setFullness(p.getFullness()+TRANSFERENCE);
+            }
+
+            if(p.getFullness()>=1.0f)System.out.println("Completed!");
 
             timer = currentTime;
         }
