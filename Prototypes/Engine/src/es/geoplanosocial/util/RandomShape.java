@@ -50,7 +50,7 @@ public class RandomShape {
         do {
             shapeVertex.clear();
             for (int i = 0; i < vertexNumber; i++) {
-                shapeVertex.add(new Point(Utils.randomInt(1, Constants.LEVEL_WIDTH), Utils.randomInt(1, Constants.LEVEL_HEIGHT)));
+                shapeVertex.add(new Point(Utils.randomInt(Constants.PLAY_AREA_OFFSET_X, Constants.LEVEL_WIDTH - Constants.PLAY_AREA_OFFSET_X), Utils.randomInt(Constants.PLAY_AREA_OFFSET_Y, Constants.LEVEL_HEIGHT - Constants.PLAY_AREA_OFFSET_Y)));
                 Utils.log(shapeVertex.get(i).x + " " + shapeVertex.get(i).y);
             }
 

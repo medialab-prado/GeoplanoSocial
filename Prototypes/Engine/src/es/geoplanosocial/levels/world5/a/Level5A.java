@@ -65,6 +65,8 @@ public class Level5A extends Level {
                     poli.updateRamdomShape();
                     timerNext = System.currentTimeMillis();
                     timerColor = System.currentTimeMillis();
+
+                    if(!isCompleted()) nextLevel();
                 }
             }
         }
