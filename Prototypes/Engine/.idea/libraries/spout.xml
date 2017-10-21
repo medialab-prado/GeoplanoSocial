@@ -1,9 +1,13 @@
 <component name="libraryTable">
   <library name="spout">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/spout/spout.jar!/" />
+      <root url="file://$PROJECT_DIR$/libs/spout" />
     </CLASSES>
     <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/libs/spout" />
+    </NATIVE>
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/spout" recursive="false" />
   </library>
 </component>

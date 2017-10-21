@@ -1,11 +1,13 @@
 <component name="libraryTable">
   <library name="MediaLabCV">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+      <root url="file://$PROJECT_DIR$/libs/MediaLabCV" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+      <root url="file://$PROJECT_DIR$/libs/MediaLabCV" />
     </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/libs/MediaLabCV" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/MediaLabCV" recursive="false" type="SOURCES" />
   </library>
 </component>

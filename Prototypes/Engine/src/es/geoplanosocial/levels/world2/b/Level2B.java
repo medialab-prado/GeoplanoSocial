@@ -1,6 +1,7 @@
 package es.geoplanosocial.levels.world2.b;
 
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.players.ExtendedNode;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Utils;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * World 2
- * Level C
+ * Level B
  * Created by gbermejo on 27/05/17.
  */
 public class Level2B extends Level {
@@ -34,20 +35,15 @@ public class Level2B extends Level {
 
         Utils.log( Level.players.get(0).getBoundingBox().width+", "+Level.players.get(1).getBoundingBox().width);
 
-
-        Node2B node1= (Node2B)Player.Factory.getPlayer(Player.Type.NODE2B, Color.W2_BLACK_NODE, Level.players.get(0));
-
-        node1.setEnergy(node1.getEnergy());
+        //Charges and gives
+        ExtendedNode node1= (ExtendedNode)Player.Factory.getPlayer(Player.Type.EXTENDED_NODE, Color.DARK_GREY, Level.players.get(0));
+        node1.setFullness(0);
         players.add(node1);
 
-        Node2B node2= (Node2B)Player.Factory.getPlayer(Player.Type.NODE2B, Color.W2_WHITE_NODE, Level.players.get(1));
-        node2.setEnergy(node2.getEnergy()*1.5f);
-        node2.setGiving(true);
+        //Receives
+        ExtendedNode node2= (ExtendedNode)Player.Factory.getPlayer(Player.Type.EXTENDED_NODE, Color.W2_WHITE_NODE, Level.players.get(1));
+        node2.setFullness(0);
         players.add(node2);
-
-
-        Utils.log(node1.getEnergy()+", "+node2.getEnergy());
-        Utils.log(node1.getBoundingBox().width+", "+node2.getBoundingBox().width);
 
         return players;
     }
@@ -56,16 +52,13 @@ public class Level2B extends Level {
 
     @Override
     public void update() {
-        //TODO Update level elements
         Player p1= Level.players.get(0);
         Player p2= Level.players.get(1);
 
-        if(p1 instanceof Node2B && p2 instanceof Node2B){
+        if(p1 instanceof ExtendedNode && p2 instanceof ExtendedNode){
 
-            Node2B node1 = (Node2B)p1;
-            Node2B node2 = (Node2B)p2;
-
-            node1.checkTransference(node2);
+            ExtendedNode node1 = (ExtendedNode)p1;
+            ExtendedNode node2 = (ExtendedNode)p2;
 
         }
 

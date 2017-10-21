@@ -63,6 +63,9 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
     // Configuration
     private ControlP5 cp5;
 
+    //More
+    private Movie moreCompleted;
+
     /**********************
      *PROCESSING FUNCTIONS*
      **********************/
@@ -101,6 +104,9 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         setWorld();
 
         writeConfigurationInfo();
+
+        moreCompleted = new Movie(this, "more.mov");
+        moreCompleted.loop();
     }
 
     public void writeConfigurationInfo() {
@@ -347,8 +353,13 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
     private void drawTopInfo() {
 
-        //Draw thumbnail of world
-        image(worldCube.getThumbnailGraphics(), START_THUMBNAIL_X, START_THUMBNAIL_Y);
+        if(worldCube.isWorldCompleted()){
+            PImage p = moreCompleted.get();
+            p.resize(moreCompleted.width/4,moreCompleted.height/4);
+            image(p, START_THUMBNAIL_X-6, START_THUMBNAIL_Y-5);
+        }
+        else
+            image(worldCube.getThumbnailGraphics(), START_THUMBNAIL_X, START_THUMBNAIL_Y);//Draw thumbnail of world
 
         //FIXME
         /*
@@ -544,7 +555,16 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
     @Override
     public void changeWorld() {
         Utils.log("Change world! Players: "+players.size());
+
+        int strokeWeight = 0;
+        boolean[] c = worldCube.getCompletion();
+        for(int i =0;i<c.length;i++){
+            if(c[i]){
+                strokeWeight++;
+            }
+        }
         setWorld();
+        zero.setStrokeWeight(strokeWeight);
         zero.changeWord(players.size());
     }
 
