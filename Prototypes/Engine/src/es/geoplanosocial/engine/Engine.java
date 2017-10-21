@@ -3,6 +3,7 @@ package es.geoplanosocial.engine;
 import controlP5.ControlP5;
 import controlP5.Textfield;
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.levels.LevelCallback;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.CameraProvider;
@@ -25,7 +26,7 @@ import static es.geoplanosocial.util.Utils.getWorldColors;
  * World engine
  * Created by gbermejo on 19/04/17.
  */
-public class Engine extends PApplet implements TrackerCallback {
+public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
     //Can be changed
     private static final boolean DRAW_FACADE_OUTLINE = true;
@@ -95,7 +96,7 @@ public class Engine extends PApplet implements TrackerCallback {
 
         zero = new Zero(this);
 
-        Level.init(players,this);
+        Level.init(players,this, this);
 
         setWorld();
 
@@ -577,5 +578,28 @@ public class Engine extends PApplet implements TrackerCallback {
     }
 
 
+
+    /*****************
+     *LEVEL FUNCTIONS*
+     *****************/
+    @Override
+    public void nextLevel() {
+        worldCube.setCurrentComplete();
+        boolean[] c = worldCube.getCompletion();
+        Types.Direction d = null;
+        for(int i =1;i<c.length;i++){
+            if(!c[i]){
+                if(i==1)d= Types.Direction.RIGHT;
+                else d=Types.Direction.UP;
+                break;
+            }
+        }
+        if(d!=null)changeLevel(d);
+    }
+
+    @Override
+    public boolean getCurrentLevelCompletion() {
+        return worldCube.isCurrentComplete();
+    }
 }
 
