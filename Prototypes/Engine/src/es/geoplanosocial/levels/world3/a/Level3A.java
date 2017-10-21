@@ -59,6 +59,8 @@ public class Level3A extends Level {
                     triangle.updateRamdomShape();
                     timerNext = System.currentTimeMillis();
                     timerColor = System.currentTimeMillis();
+
+                    if(!isCompleted()) nextLevel();
                 }
             }
         }

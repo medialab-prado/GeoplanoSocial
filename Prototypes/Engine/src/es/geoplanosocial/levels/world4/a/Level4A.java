@@ -1,6 +1,7 @@
 package es.geoplanosocial.levels.world4.a;
 
 import es.geoplanosocial.levels.Level;
+import es.geoplanosocial.players.ExtendedNode;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.players.VisiblePlayer;
@@ -71,6 +72,9 @@ public class Level4A extends Level {
                     square.updateRamdomShape();
                     timerNext = System.currentTimeMillis();
                     timerColor = System.currentTimeMillis();
+
+                    if(!isCompleted()) nextLevel();
+
                 }
             }
         }
