@@ -146,6 +146,8 @@ public class Level1C extends Level {
         mask.endDraw();
 
         acetato.mask(mask);
+
+        if(((ExtendedNode) players.get(0)).getFullness()>=1.0f && !isCompleted())nextLevel();
     }
 
     @Override
