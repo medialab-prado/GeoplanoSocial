@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="gstreamer-java">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/video/gstreamer-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/video/jna.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/video/video.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

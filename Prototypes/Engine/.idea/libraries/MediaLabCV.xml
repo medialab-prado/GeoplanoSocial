@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="MediaLabCV">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/MediaLabCV/MediaLabCV.jar!/" />
+    </SOURCES>
+  </library>
+</component>

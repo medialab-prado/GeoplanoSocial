@@ -7,7 +7,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="processing" level="project" />
+    <orderEntry type="library" name="controlP5" level="project" />
+    <orderEntry type="library" name="MediaLabCV" level="project" />
     <orderEntry type="library" name="oscP5" level="project" />
+    <orderEntry type="library" name="spout" level="project" />
+    <orderEntry type="library" name="gstreamer-java" level="project" />
+    <orderEntry type="library" name="core" level="project" />
   </component>
 </module>
