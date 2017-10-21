@@ -70,7 +70,7 @@ public class Level1A extends Level {
             d=d>=1.0?1.0f:-0.333f;
             p.setAlpha(p.getAlpha() + d*0.01f);
 
-            if(p.getAlpha()>=1.0f)System.out.println("Completed!");
+            if(p.getAlpha()>=1.0f && !isCompleted())nextLevel();
         }
 
         refreshPreviousPosition();

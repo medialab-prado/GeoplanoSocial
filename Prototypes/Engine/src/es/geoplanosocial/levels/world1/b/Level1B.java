@@ -135,7 +135,7 @@ public class Level1B extends Level {
                 p.setFullness(p.getFullness()+TRANSFERENCE);
             }
 
-            if(p.getFullness()>=1.0f)System.out.println("Completed!");
+            if(p.getFullness()>=1.0f && !isCompleted())nextLevel();
 
             timer = currentTime;
         }

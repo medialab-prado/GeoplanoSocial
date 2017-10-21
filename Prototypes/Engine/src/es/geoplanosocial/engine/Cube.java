@@ -70,6 +70,8 @@ class Cube {
     private final float THUMBNAIL_SCALE_Y;
 
 
+    private boolean[] levelCompleted = new boolean[]{false, false, false};//FRU
+
     //Constructor
     Cube(PApplet processing, int width, int height) {
 
@@ -181,16 +183,25 @@ class Cube {
     //Set variables to indicate the current level and adjacent ones
     private void computeLevel() {
         Level.Type temp;
+        boolean t;
         switch (rotationAxis) {
             case X:
                 temp = front;
                 front = top;
                 top = temp;
+
+                t = levelCompleted[0];
+                levelCompleted[0]=levelCompleted[2];
+                levelCompleted[2]=t;
                 break;
             case Y:
                 temp = front;
                 front = right;
                 right = temp;
+
+                t = levelCompleted[0];
+                levelCompleted[0]=levelCompleted[1];
+                levelCompleted[1]=t;
                 break;
             case Z:
             default:
@@ -312,5 +323,24 @@ class Cube {
 
     public boolean isOnRotation() {
         return onRotation;
+    }
+
+
+    public void resetLevelCompletion(){
+        for(int i =0;i<levelCompleted.length;i++){
+            levelCompleted[i]=false;
+        }
+    }
+
+    public void setCurrentComplete(){
+        levelCompleted[0]=true;
+    }
+
+    public boolean isCurrentComplete(){
+        return levelCompleted[0];
+    }
+
+    public boolean[] getCompletion(){
+        return levelCompleted;
     }
 }

@@ -41,6 +41,7 @@ public abstract class Level {
     protected final PGraphics pg;
     protected final long startTime;
 
+
     private boolean doFrameClear =true;
     private boolean doDrawPlayers=true;
     private boolean drawPlayersFront=false;
@@ -58,13 +59,22 @@ public abstract class Level {
 
     protected static ArrayList<Player> players;
     protected static PApplet processing;
+    protected static LevelCallback levelCallback;
 
 
-    public static void init(ArrayList<Player> players,PApplet processing){
+    public static void init(ArrayList<Player> players,PApplet processing, LevelCallback levelCallback){
         Level.players=players;
         Level.processing=processing;
+        Level.levelCallback=levelCallback;
     }
 
+    protected void nextLevel(){
+        levelCallback.nextLevel();
+    }
+
+    protected boolean isCompleted(){
+        return levelCallback.getCurrentLevelCompletion();
+    }
 
 
     public void draw(){
