@@ -313,10 +313,10 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         vertex(75, 56);
         vertex(111, 56);
         vertex(111, 40);
-        vertex(159, 40);
-        vertex(159, 56);
-        vertex(195, 56);
-        vertex(195, 72);
+        vertex(160, 40);
+        vertex(160, 56);
+        vertex(196, 56);
+        vertex(196, 72);
         vertex(231, 72);
         endShape(CLOSE);
     }

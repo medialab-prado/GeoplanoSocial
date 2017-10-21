@@ -230,18 +230,18 @@ public class Zero {
         maskPg.fill(Color.WHITE);
         maskPg.noStroke();
         maskPg.beginShape();
-        maskPg.vertex(231, 196);
-        maskPg.vertex(40, 196);
+        maskPg.vertex(232, 198);
+        maskPg.vertex(40, 198);
         maskPg.vertex(40, 72);
         maskPg.vertex(75, 72);
         maskPg.vertex(75, 56);
         maskPg.vertex(111, 56);
         maskPg.vertex(111, 40);
-        maskPg.vertex(159, 40);
-        maskPg.vertex(159, 56);
-        maskPg.vertex(195, 56);
-        maskPg.vertex(195, 72);
-        maskPg.vertex(231, 72);
+        maskPg.vertex(160, 40);
+        maskPg.vertex(160, 56);
+        maskPg.vertex(196, 56);
+        maskPg.vertex(196, 72);
+        maskPg.vertex(232, 72);
         maskPg.endShape(CLOSE);
         maskPg.endDraw();
     }
