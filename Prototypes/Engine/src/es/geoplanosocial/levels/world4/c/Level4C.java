@@ -36,6 +36,7 @@ public class Level4C extends Level {
         super(TITLE, MAIN_COLOR);
     }
 
+    private int rounds;
 
     @Override
     protected void setupLevel() {
@@ -43,6 +44,7 @@ public class Level4C extends Level {
         makeGroups();
         activeGroup = 0;
         middle =  new Point();
+        rounds=0;
     }
 
     private void makeGroups() {
@@ -99,10 +101,16 @@ public class Level4C extends Level {
             float r = Level.players.get(groups[activeGroup][i]).getBoundingBox().width/2.0f;
 
             if(Utils.isCircleCollision(p, r, middle, MIDDLE_RADIUS)){
+
                 changeActiveGroup();
+                rounds++;
+                break;
             }
         }
 
+        if(rounds>=4&&!isCompleted()){
+            nextLevel();
+        }
 
     }
 

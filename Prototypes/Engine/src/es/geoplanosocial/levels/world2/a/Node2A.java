@@ -127,6 +127,7 @@ public class Node2A extends Node {
         // delivers an angle in rad where myPVector1 is considered as a
         // point being the center of a circle and myPVector2 a point being on the
         // circumference.
+        if(myPVector1==null || myPVector2==null)return 0;
         float a = atan2(myPVector1.y-myPVector2.y, myPVector1.x-myPVector2.x) - (TWO_PI/4);
         if (a<0) {
             a+=TWO_PI;

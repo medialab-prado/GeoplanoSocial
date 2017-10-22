@@ -3,7 +3,9 @@ package es.geoplanosocial.levels.world2.a;
 import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
+import es.geoplanosocial.util.Utils;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -41,8 +43,18 @@ public class Level2A extends Level {
 
     @Override
     public void update() {
-        ((Node2A)players.get(0)).targetPos(players.get(1).getLocation());
-        ((Node2A)players.get(1)).targetPos(players.get(0).getLocation());
+        Node2A node1 =((Node2A)players.get(0));
+        node1.targetPos(players.get(1).getLocation());
+        Node2A node2=((Node2A)players.get(1));
+        node2.targetPos(players.get(0).getLocation());
+
+
+        Point point1 = new Point(node1.getBoundingBox().x, node1.getBoundingBox().y);
+        Point point2 = new Point(node2.getBoundingBox().x, node2.getBoundingBox().y);
+
+        if(Utils.isCircleCollision(point1,node1.getBoundingBox().width/2.0f, point2, node2.getBoundingBox().width/2.0f)&& !isCompleted()){
+            nextLevel();
+        }
     }
 
 

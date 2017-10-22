@@ -65,6 +65,13 @@ public class Level3C extends Level {
                     ancho[i][j] = map(distancia, 0, MAX_DISTANCE, 0, STROKEWEIGHT_LEVEL3B);
                     ancho[i][j] = constrain(ancho[i][j], 0, STROKEWEIGHT_LEVEL3B);
                 }
+        boolean c1 = ancho[0][1]>=STROKEWEIGHT_LEVEL3B?true:false;
+        boolean c2 = ancho[0][2]>=STROKEWEIGHT_LEVEL3B?true:false;
+        boolean c3 = ancho[1][2]>=STROKEWEIGHT_LEVEL3B?true:false;
+        if(c1&&c2&&c3&& !isCompleted()){
+            nextLevel();
+        }
+
     }
 
 

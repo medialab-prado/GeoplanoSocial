@@ -5,9 +5,11 @@ import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
+import es.geoplanosocial.util.Utils;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Constants.*;
@@ -69,7 +71,21 @@ public class Level3B extends Level {
     @Override
     public void update() {
         //TODO Update level elements
+        Node node1 =((Node)players.get(0));
+        Node node2 =((Node)players.get(1));
+        Node node3 =((Node)players.get(2));
 
+        Point point1 = new Point(node1.getBoundingBox().x, node1.getBoundingBox().y);
+        Point point2 = new Point(node2.getBoundingBox().x, node2.getBoundingBox().y);
+        Point point3 = new Point(node3.getBoundingBox().x, node3.getBoundingBox().y);
+
+        boolean c1 = Utils.isCircleCollision(point1,node1.getBoundingBox().width/2.0f, point2, node2.getBoundingBox().width/2.0f);
+        boolean c2 = Utils.isCircleCollision(point1,node1.getBoundingBox().width/2.0f, point3, node3.getBoundingBox().width/2.0f);
+        boolean c3 = Utils.isCircleCollision(point3,node3.getBoundingBox().width/2.0f, point2, node2.getBoundingBox().width/2.0f);
+
+        if(c1&&c2&&c3&& !isCompleted()){
+            nextLevel();
+        }
     }
 
 

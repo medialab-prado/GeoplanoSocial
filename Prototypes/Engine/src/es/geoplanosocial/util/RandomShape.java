@@ -136,7 +136,8 @@ public class RandomShape {
 
     // TODO A veces falla cuando 2 vértices están muy cerca (creo que se hace "lío" con el concepto de minPoint)
     public boolean playersAnyMatch(ArrayList<Player> players) {
-        float[][] distanceMat = new float[players.size()][vertexNumber];
+        // float[][] distanceMat = new float[players.size()][vertexNumber];
+        float[][] distanceMat = new float[vertexNumber][vertexNumber];
         int[] minPoint = new int[vertexNumber];
 
         for (int i = 0; i < vertexNumber; i++) minPoint[i] = -1;

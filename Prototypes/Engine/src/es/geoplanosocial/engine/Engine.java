@@ -88,7 +88,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
         //Set global parameters
         frameRate(FPS);
-        // noCursor();//Ugly
+        if(DEBUG)noCursor();//Ugly
 
 
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
@@ -434,6 +434,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         if(players.size()>0) {
             int w = players.size()<=5?players.size():5;
             worldCube.setWorldColors(getWorldColors(w));
+            worldCube.resetLevelCompletion();
             setLevel();
         }
     }

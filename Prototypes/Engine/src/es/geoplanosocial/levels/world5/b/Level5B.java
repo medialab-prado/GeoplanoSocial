@@ -29,6 +29,7 @@ public class Level5B extends Level {
     private final float MORPH_INTERVAL = 3000;//In milliseconds
     private long timer = System.currentTimeMillis();
 
+    private int rounds;
 
     public Level5B() {
         super(TITLE, MAIN_COLOR);
@@ -39,6 +40,7 @@ public class Level5B extends Level {
     protected void setupLevel() {
         setDrawPlayersFront(true);
         shuffleRoles();
+        rounds=0;
     }
 
     @Override
@@ -88,11 +90,16 @@ public class Level5B extends Level {
 
         }
 
+        if(rounds>=2&&!isCompleted()){
+            nextLevel();
+        }
+
     }
 
     private void shuffleRoles(){
         setPlayersRole();
         refreshPlayers();
+        rounds++;
     }
 
     private void refreshPlayers() {

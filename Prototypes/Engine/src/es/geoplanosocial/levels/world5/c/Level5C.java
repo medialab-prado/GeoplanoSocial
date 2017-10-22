@@ -26,6 +26,8 @@ public class Level5C extends Level {
     private long timer = System.currentTimeMillis();
     private int[] randomLinearPlayers;
 
+    private int rounds;
+
     private ArrayList<Point> intersectionPoints;
 
     public Level5C() {
@@ -37,6 +39,7 @@ public class Level5C extends Level {
     protected void setupLevel() {
         setDrawPlayersFront(true);
         marañaLineal();
+        rounds=0;
     }
 
 
@@ -63,10 +66,15 @@ public class Level5C extends Level {
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
                 timer = System.currentTimeMillis();
+                rounds++;
             }
         }
         else {
             timer = System.currentTimeMillis();
+        }
+
+        if(rounds>=4&&!isCompleted()){
+            nextLevel();
         }
 
     }

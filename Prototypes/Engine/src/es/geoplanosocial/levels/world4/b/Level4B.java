@@ -25,10 +25,12 @@ public class Level4B extends Level {
         super(TITLE, MAIN_COLOR);
     }
 
+    private int rounds;
 
     @Override
     protected void setupLevel() {
         setDrawPlayersFront(true);
+        rounds=0;
     }
 
     @Override
@@ -54,8 +56,12 @@ public class Level4B extends Level {
         for(Player target: players){
             if(target.isPlaying() && target.isSurrounded(players)){
                 surroundedPlayer = target;
+                rounds++;
                 break;
             }
+        }
+        if(rounds>=2&&!isCompleted()){
+            nextLevel();
         }
     }
 
