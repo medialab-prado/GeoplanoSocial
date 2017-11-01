@@ -1,8 +1,10 @@
 package es.geoplanosocial.util;
 
-import es.geoplanosocial.levels.Level;
-import es.geoplanosocial.levels.world1.a.Level1A;
+import es.geoplanosocial.games.Game;
+import es.geoplanosocial.games.Game1;
 import processing.core.PConstants;
+
+import static es.geoplanosocial.util.Color.*;
 
 /**
  * Global constants
@@ -30,9 +32,8 @@ public class Constants {
     public static final int CAMERA_HEIGHT = 480;
 
     //Levels settings
-    public static final String LEVEL_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.levels.world%d.%s.Level%d%s";
-    public static final Class DEFAULT_LEVEL_CLASS = Level1A.class;//FIXME with home screen one when done;
-    public static final Class ROOT_LEVEL_CLASS = Level.class;
+    public static final String GAME_CLASS_FULLY_QUALIFIED_FORMAT = "es.geoplanosocial.games.Game%d";
+    public static final Class DEFAULT_GAME_CLASS = Game1.class;
 
 
     //Facade sizes and positions
@@ -52,11 +53,9 @@ public class Constants {
     public static final float  BLACK_HOLE_MOVE_STEP = DEGREE_IN_RAD*1.5f;
 
 
-    //Level change
+    //Game change
     public static final int PLAY_AREA_OFFSET_X = 18;
     public static final int PLAY_AREA_OFFSET_Y = 12;
-    public static final int PLAY_AREA_TIMER = 5 * 1000;//In milliseconds
-    public static final float PLAY_AREA_MIN_PERCENTAGE = 0.5f;
 
     //World change
     public static final int WORLD_CHANGE_TIMER_IN = 5 * 1000;//In milliseconds
@@ -70,26 +69,17 @@ public class Constants {
     //OSC
     public static final int OSC_PORT = 12345;
 
-    //MediaLabCV
-    public static final String MLCV_TEST_VIDEO = "geoplano2.mp4";
 
-    public static final  int MLCV_HISTORY = 500;
-    public static final  double MLCV_DIST_TO_THRESHOLD = 400;
-    public static final  boolean MLCV_DETECT_SHADOWS = true;
+    public static int [][] WORLD_COLORS = {
+            {LIGHT_GREY, GREY, DARK_GREY},
+            {W1_A_BG, W1_B_BG, W1_C_BG},
+            {W2_A_BG, W2_B_BG, W2_C_BG},
+            {W3_A_BG, W3_B_BG, W3_C_BG},
+            {W4_A_BG, W4_B_BG, W4_C_BG},
+            {W5_A_BG, W5_B_BG, W5_C_BG},
+    };
 
-    public static final  int MLCV_ERODE_SIZE = 3;
-    public static final  int MLCV_ERODE_ITERATIONS = 1;
-    public static final  int MLCV_DILATE_SIZE = 18;
-    public static final  int MLCV_DILATE_ITERATIONS = 1;
-
-    public static final  boolean MLCV_ADJACENT_MERGE = true;
-    public static final  boolean MLCV_SHADOW_REMOVAL = true;
-    public static final  double MLCV_THRESHOLD = 10;
-
-    public static final  double MLCV_BB_MIN_WIDTH_PERCENTAGE = 0.05;
-    public static final  double MLCV_BB_MAX_WIDTH_PERCENTAGE = 0.75;
-    public static final  double MLCV_BB_MIN_HEIGHT_PERCENTAGE = 0.05;
-    public static final  double MLCV_BB_MAX_HEIGHT_PERCENTAGE = 0.75;
+    public static int WORLDS_NUMBER = WORLD_COLORS.length;
 
 
 

@@ -35,8 +35,6 @@ public class Tracker {
     private static BlobsProvider blobsProvider;
 
 
-    private static final Rectangle playArea = new Rectangle(PLAY_AREA_OFFSET_X,PLAY_AREA_OFFSET_Y,LEVEL_WIDTH-2*PLAY_AREA_OFFSET_X,LEVEL_HEIGHT-2*PLAY_AREA_OFFSET_Y);
-
 
     public static void init(ArrayList<Player> players, TrackerCallback trackerCallback, BlobsProvider blobsProvider) {
         Tracker.players = players;
@@ -54,7 +52,7 @@ public class Tracker {
         checkWorldChange();
 
         //Check if there is a change of level
-        checkLevelChange();
+        //checkLevelChange();
 
     }
 
@@ -131,15 +129,10 @@ public class Tracker {
 
     private void checkWorldChange(){
 
+        if(players.size()<1)return;
+
         //If missing one and one ghost, swap them
         swapMissingPlayers();
-
-        /*for (Player p : players){
-            System.out.print("["+p.getId()+"] "+ p.getState() +"\t|");
-        }
-        System.out.println();*/
-
-        //FIXME maybe detect additions OR not AND deletions
 
         //Check ghost timers
         checkGhostPlayers();
@@ -174,9 +167,11 @@ public class Tracker {
     private void checkGhostPlayers(){
         long minTimestamp=System.currentTimeMillis();
 
+        int ghosts = 0;
         for (int i = 0;i<players.size(); i++){
             Player p = players.get(i);
             if(p.getState()==Player.State.GHOST){
+                ghosts++;
                 long creationTime=p.getCreationTime();
                 minTimestamp=creationTime<minTimestamp?creationTime:minTimestamp;//Get longest ghost player
             }
@@ -184,7 +179,7 @@ public class Tracker {
 
         long maxWaiting=System.currentTimeMillis()-minTimestamp;//Longest waiting time
 
-        if(maxWaiting>=WORLD_CHANGE_TIMER_IN){
+        if(maxWaiting>=WORLD_CHANGE_TIMER_IN && ghosts>=players.size()){//All ghosts and time has passed
             Utils.log("More players");
             changeWorld();
         }
@@ -193,140 +188,34 @@ public class Tracker {
 
 
     private void checkMissingPlayers(){
-        long now = System.currentTimeMillis();
+        long maxTimestamp=0;
 
-        boolean shouldChange = false;
+        int missing =0;
         for (int i = 0;i<players.size(); i++){
             Player p = players.get(i);
             if(p.getState()==Player.State.MISSING){
+                missing++;
                 long outTime=p.getOutTime();
-                if(now-outTime>=WORLD_CHANGE_TIMER_OUT){
-                    //Just one player issues the change
-                    shouldChange = true;
-                    break;
-                }
+                maxTimestamp=outTime>maxTimestamp?outTime:maxTimestamp;
             }
         }
+        long minWaiting=System.currentTimeMillis()-maxTimestamp;//Shortest waiting time
 
-        if(shouldChange){
+        if(minWaiting>=WORLD_CHANGE_TIMER_OUT && missing>=players.size()){//All became missing and time has passed
             Utils.log("Less players");
             changeWorld();
         }
 
     }
 
+
     private void changeWorld(){
-
-        //Cleanup players
-        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
-            Player p = players.get(i);
-
-            //Set all ghosts as playing
-            if(p.getState()==Player.State.GHOST){
-                p.setState(Player.State.PLAYING);
-            }
-
-            //Remove all missing
-            if(p.getState()==Player.State.MISSING){
-                players.remove(p);
-            }
-        }
-
-
         trackerCallback.changeWorld();
     }
 
 
 
-
-    private void checkLevelChange(){
-        if(players.size()<1)return;
-
-
-        int wantToChange=0;
-
-        long minTimestamp=System.currentTimeMillis();
-
-        for (Player p : players){
-            if (!playArea.contains(p.getLocation())){
-                wantToChange++;
-                long boundaryTime=p.getBoundaryTime();
-                if(boundaryTime==0)p.setBoundaryTime();//Start timer
-                else minTimestamp=boundaryTime<minTimestamp?boundaryTime:minTimestamp;//Get longest waiting player
-            }else{
-                if(p.getBoundaryTime()!=0)p.resetBoundaryTime();
-            }
-        }
-
-        long maxWaiting=System.currentTimeMillis()-minTimestamp;//Longest waiting time
-
-        //Utils.log("Level swap in: "+ (PLAY_AREA_TIMER-maxWaiting));
-
-        float percentageChange= wantToChange/players.size();
-
-
-        //float t = PLAY_AREA_TIMER * wantToChange
-        //float t = PLAY_AREA_TIMER+(wantToChange*1000)
-        //(2^n-1)/(2^(n-1)) aka 2-2^(1-n)
-        //The limit is 2 so at most 2 * PLAY_AREA_TIMER
-        float t = PLAY_AREA_TIMER * (2- PApplet.pow(2,1-wantToChange)) ;
-
-        //Initial conditions for change of level
-        if(percentageChange>=PLAY_AREA_MIN_PERCENTAGE && maxWaiting>=t){
-
-            int[] directionCounter=new int[Types.Direction.values().length];
-
-            //Players aiming each direction
-            for (Player p : players){
-                directionCounter[closestDirection(p).getNumber()]++;
-            }
-
-            boolean tie = false;
-            int min =0;
-            Types.Direction changeDirection=null;
-
-            //Compute global maximum
-            for(int i=0;i<directionCounter.length;i++){
-                if(directionCounter[i]==min){
-                    tie=true;
-                }else if(directionCounter[i]>min){
-                    changeDirection=Types.Direction.values()[i];
-                    min=directionCounter[i];
-                    tie=false;//Reset
-                }
-            }
-
-            if(!tie){//There is a unique global maximum so change in that direction
-                trackerCallback.changeLevel(changeDirection);
-            }
-        }
-
-
-
-    }
-
-    private Types.Direction closestDirection(Player player){
-
-        Point location = player.getLocation();
-
-        Point[] playAreaPoints = new Point[]{
-                new Point(location.x,0),//UP
-                new Point(location.x,LEVEL_HEIGHT),//DOWN
-                new Point(0,location.y),//LEFT
-                new Point(LEVEL_WIDTH,location.y)//RIGHT
-        };
-
-        double minDistance = Double.MAX_VALUE;
-        Types.Direction direction = Types.Direction.RIGHT;
-
-        for (int i =0; i<playAreaPoints.length;i++){
-            Point reference = playAreaPoints[i];
-            double tempDistance = reference.distance(location);
-            if(tempDistance<minDistance){
-                minDistance=tempDistance;
-                direction= Types.Direction.values()[i];
-            }
-        }
-        return direction;
+    private Types.Direction randomDirection(){
+        return Types.Direction.values()[Utils.randomInt(0,Types.Direction.values().length-1)];
     }
 }

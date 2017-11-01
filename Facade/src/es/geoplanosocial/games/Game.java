@@ -1,9 +1,8 @@
-package es.geoplanosocial.levels;
+package es.geoplanosocial.games;
 
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.players.VisiblePlayer;
 import es.geoplanosocial.util.Color;
-import es.geoplanosocial.util.Types;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
@@ -15,27 +14,11 @@ import static es.geoplanosocial.util.Constants.*;
  * Abstract generic level
  * Created by gbermejo on 15/05/17.
  */
-public abstract class Level {
-
-    public enum Type {
-        A(0),
-        B(1),
-        C(2);
-        private final int number;
-
-        Type(int number) {
-            this.number = number;
-        }
-
-        public int getNumber() {
-            return number;
-        }
-    }
+public abstract class Game {
 
 
     private final String id;
     private final String title;
-    private final int mainColor;
 
 
     protected final PGraphics pg;
@@ -47,41 +30,39 @@ public abstract class Level {
     private boolean drawPlayersFront=false;
 
 
-    protected Level(String title, int mainColor) {
+    protected Game(String title) {
         this.id = getClass().getSimpleName();
         this.title = title;
-        this.mainColor = mainColor;
         this.pg = processing.createGraphics(LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_RENDERER);
         this.startTime=System.currentTimeMillis();
 
-        setup();
+        setupGame();
     }
 
     protected static ArrayList<Player> players;
     protected static PApplet processing;
-    protected static LevelCallback levelCallback;
+    protected static GameCallback gameCallback;
 
 
-    public static void init(ArrayList<Player> players,PApplet processing, LevelCallback levelCallback){
-        Level.players=players;
-        Level.processing=processing;
-        Level.levelCallback=levelCallback;
+    public static void init(ArrayList<Player> players,PApplet processing, GameCallback gameCallback){
+        Game.players=players;
+        Game.processing=processing;
+        Game.gameCallback = gameCallback;
     }
 
     protected void nextLevel(){
-        levelCallback.nextLevel();
+        gameCallback.onCompleted();
     }
 
-    protected boolean isCompleted(){
-        return levelCallback.getCurrentLevelCompletion();
+    protected int getCurrentLevel(){
+        return gameCallback.getCurrentLevel();
     }
 
 
-    public void draw(){
+    public void drawGame(){
         if(doFrameClear) {
             //Set plain background
             pg.beginDraw();
-            //pg.background(mainColor);
             pg.clear();
             pg.endDraw();
         }
@@ -90,7 +71,7 @@ public abstract class Level {
             drawPlayers();
         }
 
-        drawLevel();
+        draw();
 
         if(doDrawPlayers && drawPlayersFront) {
             drawPlayers();
@@ -110,16 +91,16 @@ public abstract class Level {
         }
     }
 
-    private void setup(){
+    private void setupGame(){
         refreshPlayers(setupPlayers());
-        setupLevel();
+        setup();
     }
 
     public abstract void update();
 
-    protected abstract void drawLevel();
+    protected abstract void draw();
 
-    protected abstract void setupLevel();
+    protected abstract void setup();
     protected abstract ArrayList<Player> setupPlayers();
 
 
@@ -143,61 +124,55 @@ public abstract class Level {
         return title;
     }
 
-    public int getMainColor() {
-        return mainColor;
-    }
-
 
     public void addPlayers(ArrayList<Player> newPlayers){
         //Default implementation
         for (Player p : newPlayers){
-            Level.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE_ALPHA, p));
+            Game.players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE_ALPHA, p));
         }
     }
 
 
     protected static void refreshPlayers(ArrayList<Player> players) {
-        Level.players.clear();
-        Level.players.addAll(players);
+        Game.players.clear();
+        Game.players.addAll(players);
     }
 
 
 
 
     /**
-     * Factory for creating levels.
+     * Factory for creating games.
      * Created by gbermejo on 20/05/17.
      */
     public static class Factory {
 
-        private static String getLevelClassName(int players, Level.Type level){
+        private static String getGameClassName(int game){
 
-            String levelName = level.name();
-
-            return String.format(LEVEL_CLASS_FULLY_QUALIFIED_FORMAT,players,levelName.toLowerCase(),players,levelName);
+            return String.format(GAME_CLASS_FULLY_QUALIFIED_FORMAT,game);
         }
 
-        public static Class getLevelClass(int players, Level.Type level){
+        public static Class getGameClass(int game){
 
-            Class levelClass;
+            Class gameClass;
 
             try {
-                levelClass = Class.forName(getLevelClassName(players, level));
+                gameClass = Class.forName(getGameClassName(game));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                levelClass = DEFAULT_LEVEL_CLASS;
+                gameClass = DEFAULT_GAME_CLASS;
             }
 
-            return levelClass;
+            return gameClass;
         }
 
-        public static Level getLevel(int players, Level.Type level){
+        public static Game getGame(int game){
 
-            Class levelClass= getLevelClass(players,level);
-            Level l=null;
+            Class gameClass= getGameClass(game);
+            Game l=null;
 
             try {
-                l=(Level)levelClass.newInstance();
+                l=(Game)gameClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

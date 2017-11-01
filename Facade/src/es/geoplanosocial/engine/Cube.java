@@ -1,6 +1,5 @@
 package es.geoplanosocial.engine;
 
-import es.geoplanosocial.levels.Level;
 import es.geoplanosocial.util.Types;
 
 import processing.core.PApplet;
@@ -11,7 +10,7 @@ import processing.core.PShape;
 import static es.geoplanosocial.util.Color.BLACK;
 import static es.geoplanosocial.util.Color.MAGENTA;
 import static es.geoplanosocial.util.Constants.SCREEN_RENDERER;
-import static processing.core.PConstants.P3D;
+import static es.geoplanosocial.util.Constants.WORLD_COLORS;
 
 /**
  * 3D cube representing the world
@@ -40,11 +39,6 @@ class Cube {
     private int rotationDirection;//clockwise -> 1  || anti-clockwise -> -1
     private float rotationCurrent;
 
-
-    private Level.Type front = Level.Type.A;//The current level
-    private Level.Type right = Level.Type.B;//Level at right and left
-    private Level.Type top = Level.Type.C;//Level at top and bottom
-
     private static final float THUMBNAIL_SCALE = 1 / 7.0f;
     private static final float ROTATION_LIMIT = PConstants.HALF_PI; //90 degrees
     private static final float ROTATION_SPEED = 2 * PConstants.PI / 180.0f;//1 degree each step
@@ -70,8 +64,9 @@ class Cube {
     private final float THUMBNAIL_SCALE_Y;
 
 
-    private boolean[] levelCompleted = new boolean[]{false, false, false};//FRU
-    private boolean isWorldCompleted = false;
+    private int game = 0;
+
+    private int level=0;
 
 
     //Constructor
@@ -178,38 +173,9 @@ class Cube {
                     onRotation = true;
                     break;
             }
-            computeLevel();
         }
     }
 
-    //Set variables to indicate the current level and adjacent ones
-    private void computeLevel() {
-        Level.Type temp;
-        boolean t;
-        switch (rotationAxis) {
-            case X:
-                temp = front;
-                front = top;
-                top = temp;
-
-                t = levelCompleted[0];
-                levelCompleted[0]=levelCompleted[2];
-                levelCompleted[2]=t;
-                break;
-            case Y:
-                temp = front;
-                front = right;
-                right = temp;
-
-                t = levelCompleted[0];
-                levelCompleted[0]=levelCompleted[1];
-                levelCompleted[1]=t;
-                break;
-            case Z:
-            default:
-                break;
-        }
-    }
 
 
     void update() {
@@ -235,7 +201,7 @@ class Cube {
 
             if (rotationCurrent >= ROTATION_LIMIT) resetRotation();
 
-            this.draw();//Just draw if needed to buffers
+            this.draw();//Just drawGame if needed to buffers
         }
     }
 
@@ -293,17 +259,12 @@ class Cube {
     }
 
 
-    public void setWorldColors(int[] worldColors) {
-        if (worldColors.length != 3)//FIXME if 6 levels per cube
+    private void setWorldColors(int gameType) {
+        int [] worldColors = WORLD_COLORS[gameType];
+        if (worldColors.length != 3)//FIXME if 6 games per cube
             worldColors = new int[]{MAGENTA, MAGENTA, MAGENTA};//MAGENTA should determine that something is not right.
 
-        //Rotate colors accordingly
-        int[]correctedColors = new int[3];
-        correctedColors[0]=worldColors[front.getNumber()];
-        correctedColors[1]=worldColors[right.getNumber()];
-        correctedColors[2]=worldColors[top.getNumber()];
-
-        this.worldColors = correctedColors;
+        this.worldColors = worldColors;
 
         //Refresh cube
         this.cube = createCube();
@@ -319,40 +280,30 @@ class Cube {
         return thumbnailPg;
     }
 
-    Level.Type getCurrentLevel() {
-        return front;
-    }
 
     public boolean isOnRotation() {
         return onRotation;
     }
 
-
-    public void resetLevelCompletion(){
-        for(int i =0;i<levelCompleted.length;i++){
-            levelCompleted[i]=false;
-        }
-        setWorldCompleted();
+    public int getGame() {
+        return game;
     }
 
-    public void setCurrentComplete(){
-        levelCompleted[0]=true;
-        setWorldCompleted();
+    public void setGame(int game) {
+        this.game = game;
+        setWorldColors(this.game);
+        resetLevel();
     }
 
-    public boolean isCurrentComplete(){
-        return levelCompleted[0];
+    private void resetLevel(){
+        this.level=0;
     }
 
-    public boolean[] getCompletion(){
-        return levelCompleted;
+    public void moreLevel() {
+        this.level++;
     }
 
-    public boolean isWorldCompleted() {
-        return isWorldCompleted;
-    }
-
-    private void setWorldCompleted(){
-        isWorldCompleted= levelCompleted[0]&&levelCompleted[1]&&levelCompleted[2];
+    public int getLevel() {
+        return level;
     }
 }

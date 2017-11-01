@@ -2,8 +2,8 @@ package es.geoplanosocial.engine;
 
 import controlP5.ControlP5;
 import controlP5.Textfield;
-import es.geoplanosocial.levels.Level;
-import es.geoplanosocial.levels.LevelCallback;
+import es.geoplanosocial.games.Game;
+import es.geoplanosocial.games.GameCallback;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.simulation.MouseSelectionProvider;
 import es.geoplanosocial.tracker.CameraProvider;
@@ -15,20 +15,19 @@ import es.geoplanosocial.util.Utils;
 import processing.core.*;
 import processing.video.Movie;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import static es.geoplanosocial.util.Color.*;
 import static es.geoplanosocial.util.Constants.*;
 import static es.geoplanosocial.util.Configuration.*;
 import static es.geoplanosocial.util.Utils.getResourcePath;
-import static es.geoplanosocial.util.Utils.getWorldColors;
+import static es.geoplanosocial.util.Utils.randomInt;
 
 /**
  * World engine
  * Created by gbermejo on 19/04/17.
  */
-public class Engine extends PApplet implements TrackerCallback, LevelCallback {
+public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
     //Can be changed
     private static final boolean DRAW_FACADE_OUTLINE = true;
@@ -58,8 +57,8 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
     //Tracker
     private static final Tracker tracker=Tracker.getInstance();
 
-    //Current Level
-    private static Level currentLevel;
+    //Current Game
+    private static Game currentGame;
 
     // Configuration
     private ControlP5 cp5;
@@ -100,9 +99,9 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
         zero = new Zero(this);
 
-        Level.init(players,this, this);
+        Game.init(players,this, this);
 
-        setWorld();
+        changeWorld();
 
         writeConfigurationInfo();
 
@@ -200,11 +199,11 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
         drawBackground(BG);//Background
 
-        if(currentLevel!=null && !zero.isOnTransition()){
+        if(currentGame !=null && !zero.isOnTransition()){
             drawWorld();//Draw the world
 
             if (DRAW_BLACKHOLE) drawBlackHole();//Draw the black hole
-            drawLevel();//Draw current level
+            drawGame();//Draw current game
             drawTopInfo();
         }else {
             drawZero();
@@ -244,8 +243,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
                         d = Types.Direction.RIGHT;
                 }
 
-                worldCube.move(d);
-                setLevel();
+                changeLevel(d);
             }else{
                 switch (key) {
                     case '+':
@@ -296,7 +294,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         zero.update();
 
         //Update elements of the current world
-        if(currentLevel!=null)currentLevel.update();
+        if(currentGame !=null && !worldCube.isOnRotation()) currentGame.update();
 
     }
 
@@ -326,7 +324,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         /*if(worldCube.isOnRotation()){
             image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
         }else{
-            drawLevel();
+            draw();
         }*/
 
         image(worldCube.getMainGraphics(), START_WORLD_X, START_WORLD_Y);
@@ -337,9 +335,9 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         image(blackHole.getGraphics(), START_WORLD_X, START_WORLD_Y);
     }
 
-    private void drawLevel() {
-        currentLevel.draw();
-        PGraphics p = currentLevel.getGraphics();
+    private void drawGame() {
+        currentGame.drawGame();
+        PGraphics p = currentGame.getGraphics();
 
         if (DRAW_BLACKHOLE) p.mask(blackHole.getMask());
 
@@ -353,7 +351,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
     private void drawTopInfo() {
 
-        if(worldCube.isWorldCompleted()){
+        if(worldCube.getLevel()>=100){
             PImage p = moreCompleted.get();
             p.resize(moreCompleted.width/4,moreCompleted.height/4);
             image(p, START_THUMBNAIL_X-6, START_THUMBNAIL_Y-5);
@@ -405,7 +403,7 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         fill(MAGENTA);
         textSize(32);
         textAlign(LEFT, TOP);
-        String text = currentLevel==null?"Zero":currentLevel.getId()+"("+currentLevel.getTitle()+")";
+        String text = currentGame ==null?"Zero": currentGame.getId()+"("+ currentGame.getTitle()+")";
         text(text, 0, 0);
 
     }
@@ -425,29 +423,45 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
         }
     }
 
-    private void setWorld() {
-        currentLevel=null;
-        if(players.size()>0) {
-            int w = players.size()<=5?players.size():5;
-            worldCube.setWorldColors(getWorldColors(w));
-            worldCube.resetLevelCompletion();
-            setLevel();
+    private void setWorld(int game) {
+        currentGame =null;
+        if(game>0) {
+            worldCube.setGame(game);
+            setGame();
         }
     }
 
-    private void setLevel() {
+    private void setGame() {
         resetPlayerSizes();
 
-        int w = players.size()<=5?players.size():5;
-        Level l= Level.Factory.getLevel(w, worldCube.getCurrentLevel());
+        Game l= Game.Factory.getGame(worldCube.getGame());
         if(l!=null){
-            currentLevel=l;
-            Utils.log("Init: "+currentLevel.getId());
+            currentGame =l;
+            //Utils.log("Init: "+ currentGame.getId());
         }else{
-            Utils.log("Error setting new level");
+            Utils.log("Error setting new game");
         }
 
 
+    }
+
+    private void sanitizePlayers() {
+        for (int i = players.size()-1;i>=0; i--){//Iterate backwards since removing elements
+            Player p = players.get(i);
+
+            switch (p.getState()){
+                case GHOST:
+                    //Set all ghosts as playing
+                    p.setState(Player.State.PLAYING);
+                    break;
+                case MISSING:
+                    //Remove all missing
+                    players.remove(p);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     //FIXME this may disappear when camera attached
@@ -539,8 +553,8 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
     @Override
     public void newPlayers(ArrayList<Player> newPlayers) {
-        if(currentLevel!=null){
-            currentLevel.addPlayers(newPlayers);
+        if(currentGame !=null){
+            currentGame.addPlayers(newPlayers);
         }else{//Zero
             for (Player p : newPlayers){
                 players.add(Player.Factory.getPlayer(Player.Type.NODE, ALPHA, p));
@@ -551,41 +565,30 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
     @Override
     public void changeWorld() {
-        Utils.log("Change world! Players: "+players.size());
+        sanitizePlayers();
 
-        int strokeWeight = 0;
-        boolean[] c = worldCube.getCompletion();
-        for(int i =0;i<c.length;i++){
-            if(c[i]){
-                strokeWeight++;
-            }
-        }
-        setWorld();
+        int game = players.size()>0?randomInt(1, /*WORLDS_NUMBER-*/1):0;
+
+        setWorld(game);
+
+        int strokeWeight = worldCube.getLevel();
         zero.setStrokeWeight(strokeWeight);
-        zero.changeWord(players.size());
+        zero.changeWord(game);
+
+        Utils.log("Change world! Game: "+game);
+
     }
 
 
 
     @Override
     public void changeLevel(Types.Direction direction) {
+        sanitizePlayers();
         resetPlayerSizes();
+        worldCube.moreLevel();
         worldCube.move(direction);
-        setLevel();
+        setGame();
     }
-
-    /*
-    public void movieEvent(Movie m) {
-        m.read();
-        blobsProvider.sendFrame(m.get());
-
-    }
-
-    public void captureEvent(Capture c) {
-        c.read();
-        blobsProvider.sendFrame(c.get());
-    }
-    */
 
     /****************
      *ZERO FUNCTIONS*
@@ -596,27 +599,19 @@ public class Engine extends PApplet implements TrackerCallback, LevelCallback {
 
 
 
-    /*****************
-     *LEVEL FUNCTIONS*
-     *****************/
+    /****************
+     *GAME FUNCTIONS*
+     ****************/
     @Override
-    public void nextLevel() {
-        worldCube.setCurrentComplete();
-        boolean[] c = worldCube.getCompletion();
-        Types.Direction d = null;
-        for(int i =1;i<c.length;i++){
-            if(!c[i]){
-                if(i==1)d= Types.Direction.RIGHT;
-                else d=Types.Direction.UP;
-                break;
-            }
-        }
+    public void onCompleted() {
+        Types.Direction d = Types.Direction.getRandom();
+
         if(d!=null)changeLevel(d);
     }
 
     @Override
-    public boolean getCurrentLevelCompletion() {
-        return worldCube.isCurrentComplete();
+    public int getCurrentLevel() {
+        return worldCube.getLevel();
     }
 }
 

@@ -96,11 +96,11 @@
 //
 //    void update(){
 //        angle+=BLACK_HOLE_MOVE_STEP;
-//        draw();
+//        drawGame();
 //    }
 //
 //
-//    private void draw() {
+//    private void drawGame() {
 //        drawRings();
 //        drawResult();
 //    }

@@ -6,6 +6,7 @@ package es.geoplanosocial.util;
  */
 public class Color {
 
+
     //Prevent magic numbers
     // public static final int WHITE = 255;
     public static final int WHITE = Utils.color(255, 255, 255);;

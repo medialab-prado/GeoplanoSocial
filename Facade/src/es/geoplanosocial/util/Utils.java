@@ -1,20 +1,14 @@
 package es.geoplanosocial.util;
 
-import es.geoplanosocial.levels.Level;
 import processing.core.PApplet;
 
 import java.awt.*;
 import java.io.File;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Set;
 import java.util.HashSet;
-
-import static es.geoplanosocial.util.Color.DARK_GREY;
-import static es.geoplanosocial.util.Color.GREY;
-import static es.geoplanosocial.util.Color.LIGHT_GREY;
 
 
 /**
@@ -49,27 +43,6 @@ public class Utils {
     }
 
 
-    public static int[] getWorldColors(int players) {
-        int[] worldColors = new int[Level.Type.values().length];
-
-        int index = 0;
-        for (Level.Type level : Level.Type.values()) {
-
-            Class l = Level.Factory.getLevelClass(players, level);
-            try {
-                worldColors[index++] = l.getDeclaredField("MAIN_COLOR").getInt(null);
-            } catch (IllegalAccessException | NoSuchFieldException e) {
-                e.printStackTrace();
-                worldColors[index++] = Color.MAGENTA;
-            }
-        }
-
-        if(players==0){
-            worldColors = new int[]{LIGHT_GREY, GREY, DARK_GREY};
-        }
-
-        return worldColors;
-    }
 
     private static Random random = new Random();
 

@@ -1,8 +1,5 @@
 package es.geoplanosocial.players;
 
-import es.geoplanosocial.levels.world1.a.Node1A;
-import es.geoplanosocial.levels.world2.a.Node2A;
-import es.geoplanosocial.levels.world2.b.Node2B;
 import es.geoplanosocial.tracker.Blob;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -19,10 +16,7 @@ public class Player {
     public enum Type {
         NODE,
         EXTENDED_NODE,
-        SQUARE,
-        NODE1A,
-        NODE2A,
-        NODE2B
+        SQUARE
     }
 
     public enum State {
@@ -169,15 +163,6 @@ public class Player {
                     break;
                 case SQUARE:
                     p=new Square(color,player);
-                    break;
-                case NODE1A:
-                    p=new Node1A(color,player);
-                    break;
-                case NODE2A:
-                    p=new Node2A(color, player);
-                    break;
-                case NODE2B:
-                    p=new Node2B(false, color, player);
                     break;
                 default:
                     p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));
