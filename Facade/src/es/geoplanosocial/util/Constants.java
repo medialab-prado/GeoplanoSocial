@@ -14,7 +14,7 @@ public class Constants {
 
     //Customizable parameters
     public static final boolean DEBUG = true;
-    public static final boolean FULLSCREEN = true;
+    public static final boolean FULLSCREEN = false;
 
 
     //Global engine parameters
@@ -81,12 +81,13 @@ public class Constants {
 
     public static int WORLDS_NUMBER = WORLD_COLORS.length;
 
-
-
-
     //Visual Debug
     public static final int SAFE_VISUAL_X = START_WORLD_X+LEVEL_WIDTH+START_WORLD_X;
     public static final int SAFE_VISUAL_Y = START_WORLD_Y+LEVEL_HEIGHT+START_WORLD_Y;
+
+    // Vertex
+    public static final int VERTEX_NORMAL_RADIO = 10;
+    public static final int VERTEX_SELECTED_RADIO = 20;
 
 
 }

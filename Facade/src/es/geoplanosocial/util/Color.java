@@ -113,4 +113,8 @@ public class Color {
     public static final int W5_B_BG = Utils.color(78, 104, 15);
     //C
     public static final int W5_C_BG = Utils.color(46, 68, 4);
+
+    // Vertex
+    public static final int VERTEXT_SELECTED = Utils.color(0, 244, 244);
+
 }
