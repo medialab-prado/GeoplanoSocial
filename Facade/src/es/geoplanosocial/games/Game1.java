@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by guzman on 01/11/2017.
  */
 public class Game1 extends Game {
-    private static final String TITLE="Maraña clásica";
+    private static final String TITLE = "Maraña clásica";
 
     private static final int N_VERTEX = 5;
     private Point[] vertex;
@@ -23,24 +23,30 @@ public class Game1 extends Game {
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
     private final int MAX_INTERVAL = 4000;//In milliseconds
+    private final int MAX_INTERVAL_2 = 4000;//In milliseconds
     private long timer = System.currentTimeMillis();
-    private int[] randomLinearVertex;
+    private long timer2 = System.currentTimeMillis();
 
     private int rounds;
-    
+
     private int n_players = 0;
 
     private ArrayList<Point> intersectionPoints;
+    private ArrayList<Integer> vertexWithIntersection;
     private int[] onVertex;
     private boolean[][] anclado;
     private int colorVariable;
+    private int randomLinearVertex_index;
+    private int[] potentialSolutionVertex;
+    private int[] randomLinearVertex;
 
     protected Game1() {
         super(TITLE);
-        anclado = new boolean[1][1];
-        for (int i = 0; i < players.size(); i++)
-            for (int j = 0; i < players.size(); i++)
+        anclado = new boolean[N_VERTEX][players.size()];
+        for (int i = 0; i < N_VERTEX; i++)
+            for (int j = 0; j < players.size(); j++)
                 this.anclado[i][j] = false;
+        randomLinearVertex_index = 0;
     }
 
     @Override
@@ -52,137 +58,111 @@ public class Game1 extends Game {
 //        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_YELLOW_NODE, Game.players.get(2)));
 //        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_RED_NODE, Game.players.get(3)));
 //        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_GREEN_NODE, Game.players.get(4)));
-        
+
         return players;
-/* PREVIOUS FROM GUZMAN       ArrayList<Player> players=new ArrayList<>();
-        for (Player p : Game.players){
-            Node pl =(Node)Player.Factory.getPlayer(Player.Type.NODE, Color.WHITE, p);
-
-            //FIXME just as showcase, act depending on level
-            Rectangle bb = pl.getBoundingBox();
-            bb.setSize(bb.width+getCurrentLevel(), bb.height+getCurrentLevel());
-            pl.setBoundingBox(bb);
-
-            players.add(pl);
-        }
-        return players;*/
     }
 
     @Override
     protected void setup() {
         setDrawPlayersFront(true);
         marañaLineal();
-        rounds=0;
+        calcularPotentialSolutionVertex();
+        potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
+        randomLinearVertex_index = 0;
+        rounds = 0;
     }
 
     @Override
     public void update() {
         // intersection??
-        intersectionPoints = calculateIntersections(vertex);
+        calculateTotalIntersections();
         if (intersectionPoints.isEmpty()) {
-            vertex[randomLinearVertex[0]].setLocation(players.get(0).getLocation());
+            vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(0).getLocation());
             colorVariable = Color.GREEN;
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
                 timer = System.currentTimeMillis();
-                anclado[0][0] = false;
+                anclado[potentialSolutionVertex[randomLinearVertex_index]][0] = false;
                 // rounds++;
             }
-        }
-        else {
+        } else {
             timer = System.currentTimeMillis();
 
-            for (int i = 0; i < players.size(); i++) {
-                for (int j = 0; i < players.size(); i++) {
-                    if (!anclado[i][j]) {
-                        Point a = vertex[randomLinearVertex[i]].getLocation();
-                        Point x = players.get(j).getLocation();
-                        if (a.distance(x) < 20) {
-                            anclado[i][j] = true;
-                            // colorVariable = Color.GREY;
+            for (int j = 0; j < players.size(); j++) {
+                if (!anclado[potentialSolutionVertex[randomLinearVertex_index]][j]) {
+                    Point a = vertex[potentialSolutionVertex[randomLinearVertex_index]].getLocation();
+                    Point x = players.get(j).getLocation();
+                    if (a.distance(x) < 20) {
+                        anclado[potentialSolutionVertex[randomLinearVertex_index]][j] = true;
+                        // colorVariable = Color.GREY;
+                    }
+                } else { // if anclado
+                    vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(j).getLocation());
+                    colorVariable = Color.GREY;
+
+                    if (!partialIntersections(potentialSolutionVertex[randomLinearVertex_index])) {
+                        if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
+                            anclado[potentialSolutionVertex[randomLinearVertex_index]][j] = false;
+                            randomLinearVertex_index++;
+                            //calcularPotentialSolutionVertex();
+                            timer2 = System.currentTimeMillis();
                         }
-                    } else { // if anclado
-                        vertex[randomLinearVertex[i]].setLocation(players.get(j).getLocation());
-                        colorVariable = Color.GREY;
+                    } else {
+                        timer2 = System.currentTimeMillis();
                     }
                 }
             }
         }
+    }
 
-        // Utils.log(Boolean.toString(anclado[0][0]));
-
-
-
-        // if(rounds>=4&&!isCompleted()){
-        //    nextLevel();
-        // }
-/* PREVIOUS FROM GUZMAN       //FIXME just as showcase, move automatically to next level
-        for(int i=0;i<players.size();i++){
-
-            Player p1 = players.get(i);
-            if(p1.getState()!= Player.State.PLAYING)continue;
-
-            for(int j=i+1;j<players.size();j++){
-
-                Player p2 = players.get(j);
-                if(p2.getState()!= Player.State.PLAYING)continue;
-
-                Point center1 = p1.getBoundingBox().getLocation();
-                float radius1 = p1.getBoundingBox().width/2.0f;
-
-                Point center2 = p2.getBoundingBox().getLocation();
-                float radius2 = p2.getBoundingBox().width/2.0f;
-
-                if(Utils.isCircleCollision(center1,radius1,center2,radius2)){
-                    nextLevel();
-                }
-            }
-        }*/
-
+    private void calcularPotentialSolutionVertex() {
+        potentialSolutionVertex = new int[vertexWithIntersection.size()];
+        for (int i = 0; i < vertexWithIntersection.size(); i++) {
+            potentialSolutionVertex[i] = vertexWithIntersection.get(i);
+        }
     }
 
     @Override
     protected void draw() {
         pg.beginDraw();
+        // pintar líneas
         for (int i = 0; i < N_VERTEX - 1; i++) {
             pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
-            if (i == 0) {
+            if ((randomLinearVertex[i] == potentialSolutionVertex[randomLinearVertex_index]) ||
+                    (randomLinearVertex[i + 1] == potentialSolutionVertex[randomLinearVertex_index])) {
                 pg.stroke(colorVariable);
             } else {
                 pg.stroke(Color.WHITE);
             }
-
             pg.line((float) vertex[randomLinearVertex[i]].getLocation().getX(),
-                (float) vertex[randomLinearVertex[i]].getLocation().getY(),
-                (float) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
-                (float) vertex[randomLinearVertex[i + 1]].getLocation().getY());
+                    (float) vertex[randomLinearVertex[i]].getLocation().getY(),
+                    (float) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
+                    (float) vertex[randomLinearVertex[i + 1]].getLocation().getY());
 
         }
+        // pintar vertex
         for (int i = 0; i < N_VERTEX; i++) {
             pg.noStroke();
             pg.fill(Color.GREY);
-            pg.ellipse((float)vertex[randomLinearVertex[i]].getLocation().getX(),
-                    (float)vertex[randomLinearVertex[i]].getLocation().getY(),
+            pg.ellipse((float) vertex[randomLinearVertex[i]].getLocation().getX(),
+                    (float) vertex[randomLinearVertex[i]].getLocation().getY(),
                     Constants.VERTEX_NORMAL_RADIO,
                     Constants.VERTEX_NORMAL_RADIO);
 
         }
         pg.noStroke();
         pg.fill(0, 0, 255);
-        // Utils.log("adios " + x + " - " + y);
+
         for (int i = 0; i < intersectionPoints.size(); i++) {
             pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
         }
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
         for (int i = 0; i < players.size(); i++) {
-            pg.ellipse(vertex[randomLinearVertex[i]].x, vertex[randomLinearVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
+            pg.ellipse(vertex[potentialSolutionVertex[randomLinearVertex_index]].x, vertex[potentialSolutionVertex[randomLinearVertex_index]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
         }
         pg.endDraw();
     }
-
-
-
 
 
     private boolean enmarañados() {
@@ -193,9 +173,9 @@ public class Game1 extends Game {
     private void marañaLineal() {
         colorVariable = Color.WHITE;
         do {
-            randomLinearVertex = Utils.shuffleArray(new int[]{0, 1, 2, 3, 4});
             vertex = randomVertex();
-            calculateIntersections(vertex);
+            randomLinearVertex = Utils.shuffleArray(new int[]{0, 1, 2, 3, 4});
+            calculateTotalIntersections();
         } while (intersectionPoints.isEmpty());
     }
 
@@ -203,13 +183,12 @@ public class Game1 extends Game {
     private Point[] randomVertex() {
         Point[] vAux = new Point[N_VERTEX];
         if (true) {
-            vAux[0] = new Point(30,50);
-            vAux[1] = new Point(96,30);
-            vAux[2] = new Point(162,40);
-            vAux[3] = new Point(150,80);
-            vAux[4] = new Point(50,100);
-        }
-        else {
+            vAux[0] = new Point(30, 50);
+            vAux[1] = new Point(96, 30);
+            vAux[2] = new Point(162, 40);
+            vAux[3] = new Point(150, 80);
+            vAux[4] = new Point(50, 100);
+        } else {
             for (int i = 0; i < this.N_VERTEX; i++) {
                 vAux[i] = new Point();
                 vAux[i].x = Utils.randomInt(0, Constants.LEVEL_WIDTH);
@@ -219,12 +198,19 @@ public class Game1 extends Game {
         return vAux;
     }
 
-    private ArrayList<Point> calculateIntersections(Point[] vertex) {
+    private boolean partialIntersections(int index) {
+        for (Integer i : vertexWithIntersection)
+            if (i.intValue() == index) return true;
+        return false;
+    }
+
+    private void calculateTotalIntersections() {
 
         intersectionPoints = new ArrayList<>();
+        vertexWithIntersection = new ArrayList<>();
 
-        for (int i = 0; i < randomLinearVertex.length - 1; i++) {
-            for (int j = i + 2; j < randomLinearVertex.length - 1; j++) {
+        for (int i = 0; i < N_VERTEX - 1; i++) {
+            for (int j = i + 2; j < N_VERTEX - 1; j++) {
                 // linea a comprar intersección 1/2
                 float x1 = (float) vertex[randomLinearVertex[i]].getLocation().getX();
                 float y1 = (float) vertex[randomLinearVertex[i]].getLocation().getY();
@@ -237,17 +223,17 @@ public class Game1 extends Game {
                 float x4 = (float) vertex[randomLinearVertex[j + 1]].getLocation().getX();
                 float y4 = (float) vertex[randomLinearVertex[j + 1]].getLocation().getY();
 
-                // Utils.log("hola " + Arrays.toString(randomLinearVertex));
-
                 Point pAux = intersect(x1, y1, x2, y2, x3, y3, x4, y4);
 
                 if (pAux != null) {
                     intersectionPoints.add(pAux);
-                    // Utils.log("intersección " + Arrays.toString(randomLinearVertex));
+                    vertexWithIntersection.add(new Integer(randomLinearVertex[i]));
+                    vertexWithIntersection.add(new Integer(randomLinearVertex[i + 1]));
+                    vertexWithIntersection.add(new Integer(randomLinearVertex[j]));
+                    vertexWithIntersection.add(new Integer(randomLinearVertex[j + 1]));
                 }
             }
         }
-        return intersectionPoints;
     }
 
     // from http://processingjs.org/learning/custom/intersect/
