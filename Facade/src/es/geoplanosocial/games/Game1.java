@@ -1,5 +1,6 @@
 package es.geoplanosocial.games;
 
+import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Constants;
@@ -29,8 +30,6 @@ public class Game1 extends Game {
 
     private int rounds;
 
-    private int n_players = 0;
-
     private ArrayList<Point> intersectionPoints;
     private ArrayList<Integer> vertexWithIntersection;
     private int[] onVertex;
@@ -39,31 +38,34 @@ public class Game1 extends Game {
     private int randomLinearVertex_index;
     private int[] potentialSolutionVertex;
     private int[] randomLinearVertex;
+    private int n_players_local;
 
     protected Game1() {
         super(TITLE);
-        anclado = new boolean[N_VERTEX][players.size()];
-        for (int i = 0; i < N_VERTEX; i++)
-            for (int j = 0; j < players.size(); j++)
-                this.anclado[i][j] = false;
-        randomLinearVertex_index = 0;
     }
 
     @Override
     protected ArrayList<Player> setupPlayers() {
-        ArrayList<Player> players = new ArrayList<>();
+        ArrayList<Player> players=new ArrayList<>();
+        for (Player p : Game.players){
+            Node pl =(Node)Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, p);
 
-        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, Game.players.get(0)));
-//        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_BLUE_NODE, Game.players.get(1)));
-//        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_YELLOW_NODE, Game.players.get(2)));
-//        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_RED_NODE, Game.players.get(3)));
-//        players.add(Player.Factory.getPlayer(Player.Type.NODE, Color.W5_GREEN_NODE, Game.players.get(4)));
+            players.add(pl);
+        }
 
+        n_players_local = Game.players.size();
         return players;
     }
 
     @Override
     protected void setup() {
+        anclado = new boolean[N_VERTEX][n_players_local];
+        for (int i = 0; i < N_VERTEX; i++)
+            for (int j = 0; j < n_players_local; j++)
+                this.anclado[i][j] = false;
+
+        randomLinearVertex_index = 0;
+
         setDrawPlayersFront(true);
         marañaLineal();
         calcularPotentialSolutionVertex();
@@ -82,13 +84,14 @@ public class Game1 extends Game {
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
                 timer = System.currentTimeMillis();
-                anclado[potentialSolutionVertex[randomLinearVertex_index]][0] = false;
+                desanclarTodo();
+                nextLevel();
                 // rounds++;
             }
         } else {
             timer = System.currentTimeMillis();
 
-            for (int j = 0; j < players.size(); j++) {
+            for (int j = 0; j < n_players_local; j++) {
                 if (!anclado[potentialSolutionVertex[randomLinearVertex_index]][j]) {
                     Point a = vertex[potentialSolutionVertex[randomLinearVertex_index]].getLocation();
                     Point x = players.get(j).getLocation();
@@ -113,6 +116,12 @@ public class Game1 extends Game {
                 }
             }
         }
+    }
+
+    private void desanclarTodo() {
+        for (int i = 0; i < anclado.length; i++)
+            for (int j = 0; j < anclado[0].length; j++)
+                anclado[i][j] = false;
     }
 
     private void calcularPotentialSolutionVertex() {
@@ -158,7 +167,7 @@ public class Game1 extends Game {
         }
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < n_players_local; i++) {
             pg.ellipse(vertex[potentialSolutionVertex[randomLinearVertex_index]].x, vertex[potentialSolutionVertex[randomLinearVertex_index]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
         }
         pg.endDraw();
