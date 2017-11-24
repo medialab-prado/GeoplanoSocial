@@ -79,7 +79,11 @@ public class Game1 extends Game {
         // intersection??
         calculateTotalIntersections();
         if (intersectionPoints.isEmpty()) {
-            vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(0).getLocation());
+            // get anclados
+            boolean[] playersAnclados = getPlayersAnclados();
+            for (int j = 0; j < playersAnclados.length; j++)
+                if (playersAnclados[j])
+                    vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(j).getLocation());
             colorVariable = Color.GREEN;
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
@@ -116,6 +120,19 @@ public class Game1 extends Game {
                 }
             }
         }
+    }
+
+    private boolean[] getPlayersAnclados() {
+        boolean[] aux = new boolean[n_players_local];
+
+        for (int i = 0; i < anclado[0].length; i++)
+            aux[i] = false;
+
+        for (int i = 0; i < anclado.length; i++)
+            for (int j = 0; j < anclado[0].length; j++)
+                aux[j] = aux[j] || anclado[i][j];
+
+        return aux;
     }
 
     private void desanclarTodo() {
@@ -165,6 +182,7 @@ public class Game1 extends Game {
         for (int i = 0; i < intersectionPoints.size(); i++) {
             pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
         }
+
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
         for (int i = 0; i < n_players_local; i++) {
