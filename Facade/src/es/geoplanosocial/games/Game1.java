@@ -35,10 +35,12 @@ public class Game1 extends Game {
     private int[] onVertex;
     private boolean[][] anclado;
     private int colorVariable;
-    private int randomLinearVertex_index;
     private int[] potentialSolutionVertex;
     private int[] randomLinearVertex;
     private int n_players_local;
+
+    private boolean nSelectedVertexEqualToPlayers = true;
+    private int nSelectedVertex;
 
     protected Game1() {
         super(TITLE);
@@ -46,14 +48,15 @@ public class Game1 extends Game {
 
     @Override
     protected ArrayList<Player> setupPlayers() {
-        ArrayList<Player> players=new ArrayList<>();
-        for (Player p : Game.players){
-            Node pl =(Node)Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, p);
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player p : Game.players) {
+            Node pl = (Node) Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, p);
 
             players.add(pl);
         }
 
         n_players_local = Game.players.size();
+
         return players;
     }
 
@@ -64,26 +67,31 @@ public class Game1 extends Game {
             for (int j = 0; j < n_players_local; j++)
                 this.anclado[i][j] = false;
 
-        randomLinearVertex_index = 0;
-
         setDrawPlayersFront(true);
         marañaLineal();
         calcularPotentialSolutionVertex();
         potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
-        randomLinearVertex_index = 0;
+        // randomLinearVertex_index = 0;
         rounds = 0;
     }
 
     @Override
     public void update() {
+
+        if (nSelectedVertexEqualToPlayers) nSelectedVertex = n_players_local;
+
         // intersection??
         calculateTotalIntersections();
         if (intersectionPoints.isEmpty()) {
             // get anclados
-            boolean[] playersAnclados = getPlayersAnclados();
-            for (int j = 0; j < playersAnclados.length; j++)
-                if (playersAnclados[j])
-                    vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(j).getLocation());
+            // boolean[] playersAnclados = getPlayersAnclados();
+            int aux = 0;
+            for (int i= 0; i < anclado.length; i++)
+                for (int j = 0; j < anclado[0].length; j++)
+                    if (anclado[i][j]) {
+                        vertex[potentialSolutionVertex[aux]].setLocation(players.get(j).getLocation());
+                        aux = aux + 1;
+                    }
             colorVariable = Color.GREEN;
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
                 marañaLineal();
@@ -96,33 +104,57 @@ public class Game1 extends Game {
             timer = System.currentTimeMillis();
 
             for (int j = 0; j < n_players_local; j++) {
-                if (!anclado[potentialSolutionVertex[randomLinearVertex_index]][j]) {
-                    Point a = vertex[potentialSolutionVertex[randomLinearVertex_index]].getLocation();
-                    Point x = players.get(j).getLocation();
-                    if (a.distance(x) < 20) {
-                        anclado[potentialSolutionVertex[randomLinearVertex_index]][j] = true;
-                        // colorVariable = Color.GREY;
-                    }
-                } else { // if anclado
-                    vertex[potentialSolutionVertex[randomLinearVertex_index]].setLocation(players.get(j).getLocation());
-                    colorVariable = Color.GREY;
+                    if (!playerAncladoAalgo(j)) {
+                        Point x = players.get(j).getLocation();
+                        for (int i = 0; i < nSelectedVertex; i++) {
+                            Point a = vertex[potentialSolutionVertex[i]].getLocation();
+                            if ((!vertexAncladoAalguien(potentialSolutionVertex[i])) && (a.distance(x) < 20)) {
+                                anclado[potentialSolutionVertex[i]][j] = true;
+                                // colorVariable = Color.GREY;
+                                break;
+                            }
+                        }
+                    } else { // if anclado
+                        vertex[ancladoAvertex(j)].setLocation(players.get(j).getLocation());
+                        colorVariable = Color.GREY;
 
-                    if (!partialIntersections(potentialSolutionVertex[randomLinearVertex_index])) {
-                        if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
-                            anclado[potentialSolutionVertex[randomLinearVertex_index]][j] = false;
-                            randomLinearVertex_index++;
-                            //calcularPotentialSolutionVertex();
+                        if (!partialIntersections(ancladoAvertex(j))) {
+                            if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
+                                anclado[ancladoAvertex(j)][j] = false;
+                                // randomLinearVertex_index++;
+                                calcularPotentialSolutionVertex();
+                                potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
+                                timer2 = System.currentTimeMillis();
+                            }
+                        } else {
                             timer2 = System.currentTimeMillis();
                         }
-                    } else {
-                        timer2 = System.currentTimeMillis();
+
                     }
                 }
             }
         }
+
+    private boolean playerAncladoAalgo(int player) {
+        for (int i = 0; i < anclado.length; i++)
+            if (anclado[i][player]) return true;
+        return false;
     }
 
-    private boolean[] getPlayersAnclados() {
+    private boolean vertexAncladoAalguien(int vertex) {
+        for (int i = 0; i < anclado[0].length; i++)
+            if (anclado[vertex][i]) return true;
+        return false;
+    }
+
+    private int ancladoAvertex(int player) {
+        for (int i = 0; i < anclado.length; i++)
+            if (anclado[i][player]) return i;
+        return -1;
+    }
+
+
+    private boolean[] KK_getPlayersAnclados() {
         boolean[] aux = new boolean[n_players_local];
 
         for (int i = 0; i < anclado[0].length; i++)
@@ -154,8 +186,8 @@ public class Game1 extends Game {
         // pintar líneas
         for (int i = 0; i < N_VERTEX - 1; i++) {
             pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
-            if ((randomLinearVertex[i] == potentialSolutionVertex[randomLinearVertex_index]) ||
-                    (randomLinearVertex[i + 1] == potentialSolutionVertex[randomLinearVertex_index])) {
+            if ((randomLinearVertex[i] == potentialSolutionVertex[0]) ||
+                    (randomLinearVertex[i + 1] == potentialSolutionVertex[0])) {
                 pg.stroke(colorVariable);
             } else {
                 pg.stroke(Color.WHITE);
@@ -185,8 +217,9 @@ public class Game1 extends Game {
 
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
-        for (int i = 0; i < n_players_local; i++) {
-            pg.ellipse(vertex[potentialSolutionVertex[randomLinearVertex_index]].x, vertex[potentialSolutionVertex[randomLinearVertex_index]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
+        // for (int i = 0; i < n_players_local; i++) {
+        for (int i = 0; i < nSelectedVertex; i++) {
+            pg.ellipse(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
         }
         pg.endDraw();
     }
