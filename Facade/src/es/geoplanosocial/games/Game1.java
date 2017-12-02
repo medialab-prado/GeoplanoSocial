@@ -24,7 +24,7 @@ public class Game1 extends Game {
     private final int MAX_INTERVAL_2 = 4000;//In milliseconds
     private Point[] vertex;
     private long timer = System.currentTimeMillis();
-    private long timer2 = System.currentTimeMillis();
+    private long[] timer2;
 
     private int rounds;
 
@@ -74,6 +74,8 @@ public class Game1 extends Game {
         potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
         // randomLinearVertex_index = 0;
         rounds = 0;
+        timer2 = new long[n_players_local];
+        for (int i = 0; i < n_players_local; i++) timer2[i] = System.currentTimeMillis();
     }
 
     @Override
@@ -129,7 +131,7 @@ public class Game1 extends Game {
                     colorVariable = Color.GREY;
 
                     if (!partialIntersections(ancladoAvertex(j))) {
-                        if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
+                        if (System.currentTimeMillis() - timer2[j] >= MAX_INTERVAL_2) {
                             if (nSelectedVertex == 1) {
                                 calcularPotentialSolutionVertex();
                                 potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
@@ -138,10 +140,10 @@ public class Game1 extends Game {
                                 actualizarPotentialSolutionVertex(j);
                             }
                             anclado[ancladoAvertex(j)][j] = false;
-                            timer2 = System.currentTimeMillis();
+                            timer2[j] = System.currentTimeMillis();
                         }
                     } else {
-                        timer2 = System.currentTimeMillis();
+                        timer2[j] = System.currentTimeMillis();
                     }
 
                 }
