@@ -15,17 +15,14 @@ import java.util.Arrays;
  * Created by guzman on 01/11/2017.
  */
 public class Game1 extends Game {
-    private static final String TITLE = "Maraña clásica";
-
-    private static final int N_VERTEX = 5;
-    private Point[] vertex;
-
     public static final int MAIN_COLOR = Color.W5_C_BG;
-
+    private static final String TITLE = "Maraña clásica";
+    private static final int N_VERTEX = 5;
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
     private final int MAX_INTERVAL = 4000;//In milliseconds
     private final int MAX_INTERVAL_2 = 4000;//In milliseconds
+    private Point[] vertex;
     private long timer = System.currentTimeMillis();
     private long timer2 = System.currentTimeMillis();
 
@@ -89,13 +86,11 @@ public class Game1 extends Game {
         if (intersectionPoints.isEmpty()) {
             // get anclados
             // boolean[] playersAnclados = getPlayersAnclados();
-            int aux = 0;
             for (int i = 0; i < anclado.length; i++)
                 for (int j = 0; j < anclado[0].length; j++)
                     if (anclado[i][j]) {
                         // vertex[potentialSolutionVertex[aux]].setLocation(players.get(j).getLocation());
                         vertex[i].setLocation(players.get(j).getLocation());
-                        aux = aux + 1;
                     }
             colorVariable = Color.GREEN;
             if (System.currentTimeMillis() - timer >= MAX_INTERVAL) {
@@ -109,36 +104,50 @@ public class Game1 extends Game {
             timer = System.currentTimeMillis();
 
             for (int j = 0; j < n_players_local; j++) {
-                    if (!playerAncladoAalgo(j)) {
-                        Point x = players.get(j).getLocation();
-                        for (int i = 0; i < nSelectedVertex; i++) {
-                            Point a = vertex[potentialSolutionVertex[i]].getLocation();
-                            if ((!vertexAncladoAalguien(potentialSolutionVertex[i])) && (a.distance(x) < 20)) {
-                                anclado[potentialSolutionVertex[i]][j] = true;
-                                // colorVariable = Color.GREY;
-                                break;
-                            }
+                //
+                // si el jugador que estoy evaluando (en el for)
+                // no está anclado a ningún nodo -->
+                // compruebo si pasa cerca de alguno para anclarlo
+                //
+                if (!playerAncladoAalgo(j)) {
+                    Point x = players.get(j).getLocation();
+                    for (int i = 0; i < nSelectedVertex; i++) {
+                        Point a = vertex[potentialSolutionVertex[i]].getLocation();
+                        if ((!vertexAncladoAalguien(potentialSolutionVertex[i])) && (a.distance(x) < 20)) {
+                            anclado[potentialSolutionVertex[i]][j] = true;
+                            // colorVariable = Color.GREY;
+                            break;
                         }
-                    } else { // if anclado
-                        vertex[ancladoAvertex(j)].setLocation(players.get(j).getLocation());
-                        colorVariable = Color.GREY;
+                    }
+                //
+                // si el jugador que estoy evaluando (en el for)
+                // está anclado a un nodo -->
+                // compruebo si semi-resuelve la maraña
+                //
+                } else { // if anclado
+                    vertex[ancladoAvertex(j)].setLocation(players.get(j).getLocation());
+                    colorVariable = Color.GREY;
 
-                        if (!partialIntersections(ancladoAvertex(j))) {
-                            if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
-                                anclado[ancladoAvertex(j)][j] = false;
-                                // randomLinearVertex_index++;
+                    if (!partialIntersections(ancladoAvertex(j))) {
+                        if (System.currentTimeMillis() - timer2 >= MAX_INTERVAL_2) {
+                            if (nSelectedVertex == 1) {
                                 calcularPotentialSolutionVertex();
                                 potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
-                                timer2 = System.currentTimeMillis();
                             }
-                        } else {
+                            else {
+                                actualizarPotentialSolutionVertex(j);
+                            }
+                            anclado[ancladoAvertex(j)][j] = false;
                             timer2 = System.currentTimeMillis();
                         }
-
+                    } else {
+                        timer2 = System.currentTimeMillis();
                     }
+
                 }
             }
         }
+    }
 
     private boolean playerAncladoAalgo(int player) {
         for (int i = 0; i < anclado.length; i++)
@@ -185,6 +194,46 @@ public class Game1 extends Game {
         }
     }
 
+    private void actualizarPotentialSolutionVertex(int playerLastMovement) {
+        // de potentialSolutionVertex, quito el vertex que se ha movido y me quedo con el resto (de los que estaban ON)
+        int[] aux = new int[nSelectedVertex - 1];
+        int auxCount = 0;
+        for (int i = 0; i < nSelectedVertex; i++) {
+            if (potentialSolutionVertex[i] != ancladoAvertex(playerLastMovement)) {
+                aux[auxCount] = potentialSolutionVertex[i];
+                auxCount++;
+            }
+        }
+
+        boolean[] indexToRemove = new boolean[vertexWithIntersection.size()];
+        for (int i = 0; i < vertexWithIntersection.size(); i++) {
+            indexToRemove[i] = false;
+            for (int j = 0; j < nSelectedVertex - 1; j++) {
+                if (vertexWithIntersection.get(i) == aux[j]) {
+                    indexToRemove[i] = true;
+                    break;
+                }
+            }
+        }
+
+        potentialSolutionVertex = new int[vertexWithIntersection.size()];
+        for (int i = 0; i < nSelectedVertex - 1; i++) {
+            potentialSolutionVertex[i] = aux[i];
+        }
+
+        // randomice???
+
+        int auxIndex = nSelectedVertex - 1;
+        for (int i = 0; i < indexToRemove.length; i++) {
+                if (!indexToRemove[i]) {
+                    potentialSolutionVertex[auxIndex] = vertexWithIntersection.get(i);
+                    auxIndex++;
+                }
+            }
+
+
+    }
+
     @Override
     protected void draw() {
         pg.beginDraw();
@@ -222,7 +271,7 @@ public class Game1 extends Game {
 
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
-        // for (int i = 0; i < n_players_local; i++) {
+
         for (int i = 0; i < nSelectedVertex; i++) {
             pg.ellipse(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
         }
@@ -292,12 +341,16 @@ public class Game1 extends Game {
 
                 boolean addPoint = true;
 
-                if ((pAux != null)){
-                        intersectionPoints.add(pAux);
-                    if (!vertexWithIntersection.contains(randomLinearVertex[i])) vertexWithIntersection.add(randomLinearVertex[i]);
-                    if (!vertexWithIntersection.contains(randomLinearVertex[i + 1])) vertexWithIntersection.add(randomLinearVertex[i + 1]);
-                    if (!vertexWithIntersection.contains(randomLinearVertex[j])) vertexWithIntersection.add(randomLinearVertex[j]);
-                    if (!vertexWithIntersection.contains(randomLinearVertex[j + 1])) vertexWithIntersection.add(randomLinearVertex[j + 1]);
+                if ((pAux != null)) {
+                    intersectionPoints.add(pAux);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[i]))
+                        vertexWithIntersection.add(randomLinearVertex[i]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[i + 1]))
+                        vertexWithIntersection.add(randomLinearVertex[i + 1]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[j]))
+                        vertexWithIntersection.add(randomLinearVertex[j]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[j + 1]))
+                        vertexWithIntersection.add(randomLinearVertex[j + 1]);
 //                        vertexWithIntersection.add(randomLinearVertex[i]);
 //                        vertexWithIntersection.add(randomLinearVertex[i + 1]);
 //                        vertexWithIntersection.add(randomLinearVertex[j]);
