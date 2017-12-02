@@ -90,10 +90,11 @@ public class Game1 extends Game {
             // get anclados
             // boolean[] playersAnclados = getPlayersAnclados();
             int aux = 0;
-            for (int i= 0; i < anclado.length; i++)
+            for (int i = 0; i < anclado.length; i++)
                 for (int j = 0; j < anclado[0].length; j++)
                     if (anclado[i][j]) {
-                        vertex[potentialSolutionVertex[aux]].setLocation(players.get(j).getLocation());
+                        // vertex[potentialSolutionVertex[aux]].setLocation(players.get(j).getLocation());
+                        vertex[i].setLocation(players.get(j).getLocation());
                         aux = aux + 1;
                     }
             colorVariable = Color.GREEN;
