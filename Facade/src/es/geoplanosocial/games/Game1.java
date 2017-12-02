@@ -8,6 +8,7 @@ import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Default game layout
@@ -41,6 +42,7 @@ public class Game1 extends Game {
 
     private boolean nSelectedVertexEqualToPlayers = true;
     private int nSelectedVertex;
+    private boolean kk;
 
     protected Game1() {
         super(TITLE);
@@ -70,6 +72,8 @@ public class Game1 extends Game {
         setDrawPlayersFront(true);
         marañaLineal();
         calcularPotentialSolutionVertex();
+        Utils.log("x " + Arrays.toString(potentialSolutionVertex));
+        Utils.log("y " + kk);
         potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
         // randomLinearVertex_index = 0;
         rounds = 0;
@@ -285,12 +289,18 @@ public class Game1 extends Game {
 
                 Point pAux = intersect(x1, y1, x2, y2, x3, y3, x4, y4);
 
-                if (pAux != null) {
-                    intersectionPoints.add(pAux);
-                    vertexWithIntersection.add(new Integer(randomLinearVertex[i]));
-                    vertexWithIntersection.add(new Integer(randomLinearVertex[i + 1]));
-                    vertexWithIntersection.add(new Integer(randomLinearVertex[j]));
-                    vertexWithIntersection.add(new Integer(randomLinearVertex[j + 1]));
+                boolean addPoint = true;
+
+                if ((pAux != null)){
+                        intersectionPoints.add(pAux);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[i])) vertexWithIntersection.add(randomLinearVertex[i]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[i + 1])) vertexWithIntersection.add(randomLinearVertex[i + 1]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[j])) vertexWithIntersection.add(randomLinearVertex[j]);
+                    if (!vertexWithIntersection.contains(randomLinearVertex[j + 1])) vertexWithIntersection.add(randomLinearVertex[j + 1]);
+//                        vertexWithIntersection.add(randomLinearVertex[i]);
+//                        vertexWithIntersection.add(randomLinearVertex[i + 1]);
+//                        vertexWithIntersection.add(randomLinearVertex[j]);
+//                        vertexWithIntersection.add(randomLinearVertex[j + 1]);
                 }
             }
         }
