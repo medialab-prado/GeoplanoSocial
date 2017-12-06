@@ -290,7 +290,10 @@ public class Game1 extends Game {
         colorVariable = Color.WHITE;
         do {
             vertex = randomVertex();
-            randomLinearVertex = Utils.shuffleArray(new int[]{0, 1, 2, 3, 4});
+            randomLinearVertex = new int[N_VERTEX];
+            for (int i = 1; i < N_VERTEX; i++)
+                randomLinearVertex[i] = i;
+            randomLinearVertex = Utils.shuffleArray(randomLinearVertex);
             calculateTotalIntersections();
         } while (intersectionPoints.isEmpty());
     }
@@ -298,7 +301,7 @@ public class Game1 extends Game {
     // todo create constraints to make the random points appear (1) quite separately and (2) not in-line
     private Point[] randomVertex() {
         Point[] vAux = new Point[N_VERTEX];
-        if (true) {
+        if (false) {
             vAux[0] = new Point(30, 50);
             vAux[1] = new Point(96, 30);
             vAux[2] = new Point(162, 40);
