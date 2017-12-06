@@ -90,4 +90,7 @@ public class Constants {
     public static final int VERTEX_SELECTED_RADIO = 20;
 
 
+    public static final int MAX_PLAYERS = 3;
+
+
 }

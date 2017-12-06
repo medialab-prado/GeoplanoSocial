@@ -10,6 +10,7 @@ import es.geoplanosocial.tracker.CameraProvider;
 import es.geoplanosocial.tracker.Tracker;
 import es.geoplanosocial.tracker.TrackerCallback;
 import es.geoplanosocial.util.Configuration;
+import es.geoplanosocial.util.Constants;
 import es.geoplanosocial.util.Types;
 import es.geoplanosocial.util.Utils;
 import processing.core.*;
@@ -553,11 +554,13 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
     @Override
     public void newPlayers(ArrayList<Player> newPlayers) {
-        if(currentGame !=null){
-            currentGame.addPlayers(newPlayers);
-        }else{//Zero
-            for (Player p : newPlayers){
-                players.add(Player.Factory.getPlayer(Player.Type.NODE, ALPHA, p));
+        if (players.size() < Constants.MAX_PLAYERS) {
+            if (currentGame != null) {
+                currentGame.addPlayers(newPlayers);
+            } else {//Zero
+                for (Player p : newPlayers) {
+                    players.add(Player.Factory.getPlayer(Player.Type.NODE, ALPHA, p));
+                }
             }
         }
     }
