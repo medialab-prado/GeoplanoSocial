@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static processing.core.PApplet.floor;
+
 /**
  * Default game layout
  * Created by guzman on 01/11/2017.
@@ -17,16 +19,17 @@ import java.util.Arrays;
 public class Game1 extends Game {
     public static final int MAIN_COLOR = Color.W5_C_BG;
     private static final String TITLE = "Maraña clásica";
-    private static final int N_VERTEX = 5;
+    private static int n_vertex;
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
+    private static final int FACTOR_AUMENTO_DIFICULTAD = 2;
     private final int MAX_INTERVAL = 4000;//In milliseconds
     private final int MAX_INTERVAL_2 = 4000;//In milliseconds
     private Point[] vertex;
     private long timer = System.currentTimeMillis();
     private long[] timer2;
-
-    private int rounds;
+    private final int MIN_VERTEX = 4;
+    private final int MAX_VERTEX = 7;
 
     private ArrayList<Point> intersectionPoints;
     private ArrayList<Integer> vertexWithIntersection;
@@ -61,8 +64,12 @@ public class Game1 extends Game {
 
     @Override
     protected void setup() {
-        anclado = new boolean[N_VERTEX][n_players_local];
-        for (int i = 0; i < N_VERTEX; i++)
+
+        calcular_n_vertex(getCurrentLevel());
+
+
+        anclado = new boolean[n_vertex][n_players_local];
+        for (int i = 0; i < n_vertex; i++)
             for (int j = 0; j < n_players_local; j++)
                 this.anclado[i][j] = false;
 
@@ -73,9 +80,15 @@ public class Game1 extends Game {
         Utils.log("y " + kk);
         potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
         // randomLinearVertex_index = 0;
-        rounds = 0;
         timer2 = new long[n_players_local];
         for (int i = 0; i < n_players_local; i++) timer2[i] = System.currentTimeMillis();
+    }
+
+    private void calcular_n_vertex(int n_level) {
+        Utils.log("LEVEL # -------------> " + n_level);
+        n_vertex = MIN_VERTEX + floor(n_level / FACTOR_AUMENTO_DIFICULTAD);
+        if (n_vertex > MAX_VERTEX) n_vertex = MAX_VERTEX;
+        Utils.log("VERTEX # ------------> " + n_vertex);
     }
 
     @Override
@@ -240,7 +253,7 @@ public class Game1 extends Game {
     protected void draw() {
         pg.beginDraw();
         // pintar líneas
-        for (int i = 0; i < N_VERTEX - 1; i++) {
+        for (int i = 0; i < n_vertex - 1; i++) {
             pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
             if ((randomLinearVertex[i] == potentialSolutionVertex[0]) ||
                     (randomLinearVertex[i + 1] == potentialSolutionVertex[0])) {
@@ -255,7 +268,7 @@ public class Game1 extends Game {
 
         }
         // pintar vertex
-        for (int i = 0; i < N_VERTEX; i++) {
+        for (int i = 0; i < n_vertex; i++) {
             pg.noStroke();
             pg.fill(Color.GREY);
             pg.ellipse((float) vertex[randomLinearVertex[i]].getLocation().getX(),
@@ -290,8 +303,8 @@ public class Game1 extends Game {
         colorVariable = Color.WHITE;
         do {
             vertex = randomVertex();
-            randomLinearVertex = new int[N_VERTEX];
-            for (int i = 1; i < N_VERTEX; i++)
+            randomLinearVertex = new int[n_vertex];
+            for (int i = 1; i < n_vertex; i++)
                 randomLinearVertex[i] = i;
             randomLinearVertex = Utils.shuffleArray(randomLinearVertex);
             calculateTotalIntersections();
@@ -300,7 +313,7 @@ public class Game1 extends Game {
 
     // todo create constraints to make the random points appear (1) quite separately and (2) not in-line
     private Point[] randomVertex() {
-        Point[] vAux = new Point[N_VERTEX];
+        Point[] vAux = new Point[n_vertex];
         if (false) {
             vAux[0] = new Point(30, 50);
             vAux[1] = new Point(96, 30);
@@ -308,7 +321,7 @@ public class Game1 extends Game {
             vAux[3] = new Point(150, 80);
             vAux[4] = new Point(50, 100);
         } else {
-            for (int i = 0; i < this.N_VERTEX; i++) {
+            for (int i = 0; i < this.n_vertex; i++) {
                 vAux[i] = new Point();
                 vAux[i].x = Utils.randomInt(0, Constants.LEVEL_WIDTH);
                 vAux[i].y = Utils.randomInt(0, Constants.LEVEL_HEIGHT);
@@ -328,8 +341,8 @@ public class Game1 extends Game {
         intersectionPoints = new ArrayList<>();
         vertexWithIntersection = new ArrayList<>();
 
-        for (int i = 0; i < N_VERTEX - 1; i++) {
-            for (int j = i + 2; j < N_VERTEX - 1; j++) {
+        for (int i = 0; i < n_vertex - 1; i++) {
+            for (int j = i + 2; j < n_vertex - 1; j++) {
                 // linea a comprar intersección 1/2
                 float x1 = (float) vertex[randomLinearVertex[i]].getLocation().getX();
                 float y1 = (float) vertex[randomLinearVertex[i]].getLocation().getY();
