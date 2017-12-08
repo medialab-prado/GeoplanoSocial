@@ -7,9 +7,15 @@ import es.geoplanosocial.util.Constants;
 import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+import static processing.core.PApplet.dist;
 import static processing.core.PApplet.floor;
 
 /**
@@ -19,6 +25,8 @@ import static processing.core.PApplet.floor;
 public class Game1 extends Game {
     public static final int MAIN_COLOR = Color.W5_C_BG;
     private static final String TITLE = "Maraña clásica";
+    private static final float MIN_DIST_VERTEX = 30;
+    private static final double MIN_DIST_INLINE = 10;
     private static int n_vertex;
     private static final float STROKEWEIGHT_LEVEL4C = 2;
     private static final float INTERSECTIONS_SIZE_LEVEL4C = 5;
@@ -308,7 +316,56 @@ public class Game1 extends Game {
                 randomLinearVertex[i] = i;
             randomLinearVertex = Utils.shuffleArray(randomLinearVertex);
             calculateTotalIntersections();
-        } while (intersectionPoints.isEmpty());
+        } while ((intersectionPoints.isEmpty())  ||
+                (!checkNoInLine(vertex)) ||
+                (!checkMinDist(vertex)));
+    }
+
+    private boolean checkMinDist(Point[] auxPointsArray) {
+        for (int i = 0; i < n_vertex; i++) {
+            for (int j = 0; j < n_vertex; j++) {
+                if (i != j) {
+                    // Utils.log(String.valueOf(dist(auxPointsArray.get(i).x, auxPointsArray.get(i).y, auxPointsArray.get(j).x, auxPointsArray.get(j).y)));
+                    if (dist(auxPointsArray[i].x, auxPointsArray[i].y, auxPointsArray[j].x, auxPointsArray[j].y) < MIN_DIST_VERTEX) {
+                        // Utils.log("sinDONE");
+                        return false;
+                    }
+                }
+            }
+        }
+        // Utils.log("conDONE");
+        return true;
+    }
+
+    private boolean checkNoInLine(Point[] shapeVertex) {
+        // i recorre lineas
+        for (int i = 0; i < n_vertex - 1; i++) {
+            // j recorre puntos
+            for (int j = 0; j < n_vertex; j++) {
+                if ((i != j) && (j != i+1)) {
+                    // Utils.log(String.valueOf(dist(auxPointsArray.get(i).x, auxPointsArray.get(i).y, auxPointsArray.get(j).x, auxPointsArray.get(j).y)));
+                    if (distanceFromPointToLine(new Point(shapeVertex[randomLinearVertex[j]].x, shapeVertex[randomLinearVertex[j]].y), new Line2D.Double(shapeVertex[randomLinearVertex[i]].x, shapeVertex[randomLinearVertex[i]].y, shapeVertex[randomLinearVertex[i+1]].x, shapeVertex[randomLinearVertex[i+1]].y)) < MIN_DIST_INLINE) {
+                        // Utils.log("sinDONE");
+                        return false;
+                    }
+                }
+            }
+        }
+        // Utils.log("conDONE");
+        return true;
+    }
+
+    // adapted from http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
+    public static double distanceFromPointToLine(Point point, Line2D line) {
+        // given a line based on two points, and a point away from the line,
+        // find the perpendicular distance from the point to the line.
+        // see http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
+        // for explanation and defination.
+        Point2D l1 = line.getP1();
+        Point2D l2 = line.getP2();
+
+        return abs((l2.getX() - l1.getX()) * (l1.getY() - point.getY()) - (l1.getX() - point.getX()) * (l2.getY() - l1.getY())) /
+                sqrt(pow(l2.getX() - l1.getX(), 2) + pow(l2.getY() - l1.getY(), 2));
     }
 
     // todo create constraints to make the random points appear (1) quite separately and (2) not in-line
@@ -323,8 +380,8 @@ public class Game1 extends Game {
         } else {
             for (int i = 0; i < this.n_vertex; i++) {
                 vAux[i] = new Point();
-                vAux[i].x = Utils.randomInt(0, Constants.LEVEL_WIDTH);
-                vAux[i].y = Utils.randomInt(0, Constants.LEVEL_HEIGHT);
+                vAux[i].x = Utils.randomInt(Constants.PLAY_AREA_OFFSET_X, Constants.LEVEL_WIDTH - Constants.PLAY_AREA_OFFSET_X);
+                vAux[i].y = Utils.randomInt(Constants.PLAY_AREA_OFFSET_Y, Constants.LEVEL_HEIGHT - Constants.PLAY_AREA_OFFSET_Y);
             }
         }
         return vAux;
