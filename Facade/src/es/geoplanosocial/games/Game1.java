@@ -73,6 +73,8 @@ public class Game1 extends Game {
     @Override
     protected void setup() {
 
+        setDrawPlayersFront(true);
+
         calcular_n_vertex(getCurrentLevel());
 
 
@@ -260,12 +262,20 @@ public class Game1 extends Game {
     @Override
     protected void draw() {
         pg.beginDraw();
+        //
         // pintar líneas
+        //
         for (int i = 0; i < n_vertex - 1; i++) {
             pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
+            //
+            // pintar líneas XXXX
+            //
             if ((randomLinearVertex[i] == potentialSolutionVertex[0]) ||
                     (randomLinearVertex[i + 1] == potentialSolutionVertex[0])) {
                 pg.stroke(colorVariable);
+            //
+            // pintar líneas cualquiera
+            //
             } else {
                 pg.stroke(Color.WHITE);
             }
@@ -273,9 +283,10 @@ public class Game1 extends Game {
                     (float) vertex[randomLinearVertex[i]].getLocation().getY(),
                     (float) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
                     (float) vertex[randomLinearVertex[i + 1]].getLocation().getY());
-
         }
+        //
         // pintar vertex
+        //
         for (int i = 0; i < n_vertex; i++) {
             pg.noStroke();
             pg.fill(Color.GREY);
@@ -288,13 +299,18 @@ public class Game1 extends Game {
         pg.noStroke();
         pg.fill(0, 0, 255);
 
+        //
+        // pintar intersection points
+        //
         for (int i = 0; i < intersectionPoints.size(); i++) {
             pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
         }
 
+        //
+        // pintar vertex_ON
+        //
         pg.noStroke();
         pg.fill(Color.VERTEXT_SELECTED);
-
         for (int i = 0; i < nSelectedVertex; i++) {
             pg.ellipse(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
         }
