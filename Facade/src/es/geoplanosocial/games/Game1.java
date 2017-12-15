@@ -1,9 +1,11 @@
 package es.geoplanosocial.games;
 
+import es.geoplanosocial.players.GlowNode;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
 import es.geoplanosocial.util.Color;
 import es.geoplanosocial.util.Constants;
+import es.geoplanosocial.util.GlowLine;
 import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
@@ -50,7 +52,7 @@ public class Game1 extends Game {
 
     private boolean nSelectedVertexEqualToPlayers = true;
     private int nSelectedVertex;
-    private boolean kk;
+    private boolean lineBrilla;
 
     protected Game1() {
         super(TITLE);
@@ -60,7 +62,9 @@ public class Game1 extends Game {
     protected ArrayList<Player> setupPlayers() {
         ArrayList<Player> players = new ArrayList<>();
         for (Player p : Game.players) {
-            Node pl = (Node) Player.Factory.getPlayer(Player.Type.NODE, Color.W5_PINK_NODE, p);
+            GlowNode pl = (GlowNode) Player.Factory.getPlayer(Player.Type.GLOW_NODE, Color.W1_ORANGE_NODE, p, processing);
+
+            pl.setGlowing(false);
 
             players.add(pl);
         }
@@ -86,12 +90,17 @@ public class Game1 extends Game {
         setDrawPlayersFront(true);
         marañaLineal();
         calcularPotentialSolutionVertex();
-        Utils.log("x " + Arrays.toString(potentialSolutionVertex));
-        Utils.log("y " + kk);
+        // Utils.log("x " + Arrays.toString(potentialSolutionVertex));
+        // Utils.log("y " + kk);
         potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
         // randomLinearVertex_index = 0;
         timer2 = new long[n_players_local];
         for (int i = 0; i < n_players_local; i++) timer2[i] = System.currentTimeMillis();
+
+        GlowLine.setPg(pg);
+        GlowLine.setProcessing(processing);
+        GlowLine.setColor(Color.W1_WHITE_NODE);
+
     }
 
     private void calcular_n_vertex(int n_level) {
@@ -109,6 +118,7 @@ public class Game1 extends Game {
         // intersection??
         calculateTotalIntersections();
         if (intersectionPoints.isEmpty()) {
+            lineBrilla = true;
             // get anclados
             // boolean[] playersAnclados = getPlayersAnclados();
             for (int i = 0; i < anclado.length; i++)
@@ -126,6 +136,7 @@ public class Game1 extends Game {
                 // rounds++;
             }
         } else {
+            lineBrilla = false;
             timer = System.currentTimeMillis();
 
             for (int j = 0; j < n_players_local; j++) {
@@ -135,6 +146,7 @@ public class Game1 extends Game {
                 // compruebo si pasa cerca de alguno para anclarlo
                 //
                 if (!playerAncladoAalgo(j)) {
+                    if(players.get(j) instanceof GlowNode) ((GlowNode)players.get(j)).setGlowing(false);
                     Point x = players.get(j).getLocation();
                     for (int i = 0; i < nSelectedVertex; i++) {
                         Point a = vertex[potentialSolutionVertex[i]].getLocation();
@@ -150,6 +162,8 @@ public class Game1 extends Game {
                 // compruebo si semi-resuelve la maraña
                 //
                 } else { // if anclado
+                    
+                    if(players.get(j) instanceof GlowNode) ((GlowNode)players.get(j)).setGlowing(true);
                     vertex[ancladoAvertex(j)].setLocation(players.get(j).getLocation());
                     colorVariable = Color.GREY;
 
@@ -261,32 +275,37 @@ public class Game1 extends Game {
 
     @Override
     protected void draw() {
-        pg.beginDraw();
+
         //
         // pintar líneas
         //
         for (int i = 0; i < n_vertex - 1; i++) {
+            pg.beginDraw();
             pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
             //
             // pintar líneas XXXX
             //
             if ((randomLinearVertex[i] == potentialSolutionVertex[0]) ||
                     (randomLinearVertex[i + 1] == potentialSolutionVertex[0])) {
-                pg.stroke(colorVariable);
+                // pg.stroke(colorVariable);
+                // lineBrilla = true;
             //
             // pintar líneas cualquiera
             //
             } else {
-                pg.stroke(Color.WHITE);
+                // pg.stroke(Color.WHITE);
+                // lineBrilla = false;
             }
-            pg.line((float) vertex[randomLinearVertex[i]].getLocation().getX(),
-                    (float) vertex[randomLinearVertex[i]].getLocation().getY(),
-                    (float) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
-                    (float) vertex[randomLinearVertex[i + 1]].getLocation().getY());
+            pg.endDraw();
+            GlowLine.lineG((int) vertex[randomLinearVertex[i]].getLocation().getX(),
+                    (int) vertex[randomLinearVertex[i]].getLocation().getY(),
+                    (int) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
+                    (int) vertex[randomLinearVertex[i + 1]].getLocation().getY(), lineBrilla);
         }
         //
         // pintar vertex
         //
+        pg.beginDraw();
         for (int i = 0; i < n_vertex; i++) {
             pg.noStroke();
             pg.fill(Color.GREY);
@@ -296,15 +315,15 @@ public class Game1 extends Game {
                     Constants.VERTEX_NORMAL_RADIO);
 
         }
-        pg.noStroke();
-        pg.fill(0, 0, 255);
+        // pg.noStroke();
+        // pg.fill(0, 0, 255);
 
         //
         // pintar intersection points
         //
-        for (int i = 0; i < intersectionPoints.size(); i++) {
-            pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
-        }
+//        for (int i = 0; i < intersectionPoints.size(); i++) {
+//            pg.ellipse(intersectionPoints.get(i).x, intersectionPoints.get(i).y, INTERSECTIONS_SIZE_LEVEL4C, INTERSECTIONS_SIZE_LEVEL4C);
+//        }
 
         //
         // pintar vertex_ON

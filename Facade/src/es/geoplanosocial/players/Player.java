@@ -1,6 +1,7 @@
 package es.geoplanosocial.players;
 
 import es.geoplanosocial.tracker.Blob;
+import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
@@ -16,7 +17,8 @@ public class Player {
     public enum Type {
         NODE,
         EXTENDED_NODE,
-        SQUARE
+        SQUARE,
+        GLOW_NODE
     }
 
     public enum State {
@@ -150,7 +152,11 @@ public class Player {
             return new Player(blob.getId(), blob.getBoundingBox());
         }
 
-        public static Player getPlayer(Player.Type type, int color, Player player){
+        public static Player getPlayer(Type type, int color, Player player) {
+            return getPlayer(type,color,player,null);
+        }
+
+        public static Player getPlayer(Type type, int color, Player player, PApplet processing){
 
             Player p;
 
@@ -163,6 +169,9 @@ public class Player {
                     break;
                 case SQUARE:
                     p=new Square(color,player);
+                    break;
+                case GLOW_NODE:
+                    p= new GlowNode(color, player, processing);
                     break;
                 default:
                     p=getPlayer(new Blob(player.getId(), player.getBoundingBox()));

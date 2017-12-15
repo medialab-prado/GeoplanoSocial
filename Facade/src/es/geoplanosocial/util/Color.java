@@ -36,6 +36,8 @@ public class Color {
 
     public static final int BLACK_HOLE_COLOR = Utils.color(3, 12, 27);
 
+    public static final int W1_ORANGE_NODE = Utils.color(249, 221, 40);
+
 
     /*********
      *World 1*
@@ -45,11 +47,11 @@ public class Color {
     public static final int W1_WHITE_ALPHA_NODE = WHITE_ALPHA;
 
     //A
-    public static final int W1_A_BG = Utils.color(71, 21, 90);
+    public static final int W1_A_BG = Utils.color(5, 108, 104);
     //B
-    public static final int W1_B_BG = Utils.color(57, 12, 71);
+    public static final int W1_B_BG = Utils.color(1, 83, 79);
     //C
-    public static final int W1_C_BG = Utils.color(37, 0, 43);
+    public static final int W1_C_BG = Utils.color(1, 53, 49);
 
     /*********
      *World 2*
@@ -115,6 +117,6 @@ public class Color {
     public static final int W5_C_BG = Utils.color(46, 68, 4);
 
     // Vertex
-    public static final int VERTEXT_SELECTED = Utils.color(0, 244, 244);
+    public static final int VERTEXT_SELECTED = WHITE;
 
 }
