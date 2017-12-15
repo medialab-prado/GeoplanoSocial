@@ -295,7 +295,14 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         zero.update();
 
         //Update elements of the current world
-        if(currentGame !=null && !worldCube.isOnRotation()) currentGame.update();
+        if(currentGame !=null && !worldCube.isOnRotation()) {
+            try {
+                currentGame.update();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

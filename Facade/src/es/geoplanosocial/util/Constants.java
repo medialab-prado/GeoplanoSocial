@@ -13,8 +13,8 @@ import static es.geoplanosocial.util.Color.*;
 public class Constants {
 
     //Customizable parameters
-    public static final boolean DEBUG = true;
-    public static final boolean FULLSCREEN = false;
+    public static final boolean DEBUG = false;
+    public static final boolean FULLSCREEN = true;
 
 
     //Global engine parameters

@@ -149,6 +149,8 @@ public class Game1 extends Game {
                     if(players.get(j) instanceof GlowNode) ((GlowNode)players.get(j)).setGlowing(false);
                     Point x = players.get(j).getLocation();
                     for (int i = 0; i < nSelectedVertex; i++) {
+                        Utils.log("vertex = " + Arrays.toString(vertex));
+                        Utils.log("potentialSolutionVertex = " + Arrays.toString(potentialSolutionVertex));
                         Point a = vertex[potentialSolutionVertex[i]].getLocation();
                         if ((!vertexAncladoAalguien(potentialSolutionVertex[i])) && (a.distance(x) < 20)) {
                             anclado[potentialSolutionVertex[i]][j] = true;
@@ -162,7 +164,7 @@ public class Game1 extends Game {
                 // compruebo si semi-resuelve la maraña
                 //
                 } else { // if anclado
-                    
+
                     if(players.get(j) instanceof GlowNode) ((GlowNode)players.get(j)).setGlowing(true);
                     vertex[ancladoAvertex(j)].setLocation(players.get(j).getLocation());
                     colorVariable = Color.GREY;
