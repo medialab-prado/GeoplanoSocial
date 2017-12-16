@@ -583,7 +583,10 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
         int strokeWeight = worldCube.getLevel();
         zero.setStrokeWeight(strokeWeight);
-        zero.changeWord(game);
+
+        //FIXME could change if random worlds
+        int fakeGame = players.size()>0?3:0;
+        zero.changeWord(fakeGame);
 
         Utils.log("Change world! Game: "+game);
 
