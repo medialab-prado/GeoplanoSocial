@@ -58,8 +58,8 @@ public class Constants {
     public static final int PLAY_AREA_OFFSET_Y = 12;
 
     //World change
-    public static final int WORLD_CHANGE_TIMER_IN = 3 * 1000;//In milliseconds
-    public static final int WORLD_CHANGE_TIMER_OUT = 8 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_IN = 2 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_OUT = 7 * 1000;//In milliseconds
 
 
     //Player simulation
