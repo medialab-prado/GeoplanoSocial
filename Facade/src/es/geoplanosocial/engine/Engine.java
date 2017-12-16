@@ -304,7 +304,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
             try {
                 currentGame.update();
             }
-            catch (Exception e) {
+            catch (Exception | Error e) {
                 e.printStackTrace();
             }
 

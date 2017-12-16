@@ -87,7 +87,7 @@ public class Constants {
 
     // Vertex
     public static final int VERTEX_NORMAL_RADIO = 10;
-    public static final int VERTEX_SELECTED_RADIO = 13;
+    public static final int VERTEX_SELECTED_RADIO = VERTEX_NORMAL_RADIO;
 
 
     public static final int MAX_PLAYERS = 7;

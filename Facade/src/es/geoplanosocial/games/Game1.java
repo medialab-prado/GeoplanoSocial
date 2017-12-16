@@ -3,10 +3,8 @@ package es.geoplanosocial.games;
 import es.geoplanosocial.players.GlowNode;
 import es.geoplanosocial.players.Node;
 import es.geoplanosocial.players.Player;
+import es.geoplanosocial.util.*;
 import es.geoplanosocial.util.Color;
-import es.geoplanosocial.util.Constants;
-import es.geoplanosocial.util.GlowLine;
-import es.geoplanosocial.util.Utils;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -100,6 +98,9 @@ public class Game1 extends Game {
         GlowLine.setPg(pg);
         GlowLine.setProcessing(processing);
         GlowLine.setColor(Color.W1_WHITE_NODE);
+
+        GlowEllipse.setPg(pg);
+        GlowEllipse.setProcessing(processing);
 
     }
 
@@ -282,8 +283,8 @@ public class Game1 extends Game {
         // pintar líneas
         //
         for (int i = 0; i < n_vertex - 1; i++) {
-            pg.beginDraw();
-            pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
+            //pg.beginDraw();
+            //pg.strokeWeight(STROKEWEIGHT_LEVEL4C);
             //
             // pintar líneas XXXX
             //
@@ -298,7 +299,7 @@ public class Game1 extends Game {
                 // pg.stroke(Color.WHITE);
                 // lineBrilla = false;
             }
-            pg.endDraw();
+            //pg.endDraw();
             GlowLine.lineG((int) vertex[randomLinearVertex[i]].getLocation().getX(),
                     (int) vertex[randomLinearVertex[i]].getLocation().getY(),
                     (int) vertex[randomLinearVertex[i + 1]].getLocation().getX(),
@@ -307,16 +308,21 @@ public class Game1 extends Game {
         //
         // pintar vertex
         //
-        pg.beginDraw();
+        //pg.beginDraw();
+
+        GlowEllipse.setColor(lineBrilla?Color.VERTEXT_SELECTED:Color.GREY);
         for (int i = 0; i < n_vertex; i++) {
-            pg.noStroke();
-            pg.fill(Color.GREY);
-            pg.ellipse((float) vertex[randomLinearVertex[i]].getLocation().getX(),
-                    (float) vertex[randomLinearVertex[i]].getLocation().getY(),
-                    Constants.VERTEX_NORMAL_RADIO,
-                    Constants.VERTEX_NORMAL_RADIO);
+            //pg.noStroke();
+            //pg.fill(Color.GREY);
+//            pg.ellipse((float) vertex[randomLinearVertex[i]].getLocation().getX(),
+//                    (float) vertex[randomLinearVertex[i]].getLocation().getY(),
+//                    Constants.VERTEX_NORMAL_RADIO,
+//                    Constants.VERTEX_NORMAL_RADIO);
+
+            GlowEllipse.ellipseG((int)vertex[randomLinearVertex[i]].getLocation().getX(), (int)vertex[randomLinearVertex[i]].getLocation().getY(), Constants.VERTEX_NORMAL_RADIO,lineBrilla);
 
         }
+        //pg.endDraw();
         // pg.noStroke();
         // pg.fill(0, 0, 255);
 
@@ -330,12 +336,15 @@ public class Game1 extends Game {
         //
         // pintar vertex_ON
         //
-        pg.noStroke();
-        pg.fill(Color.VERTEXT_SELECTED);
-        for (int i = 0; i < nSelectedVertex; i++) {
-            pg.ellipse(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
+
+        if(!lineBrilla) {
+            GlowEllipse.setColor(Color.VERTEXT_SELECTED);
+            for (int i = 0; i < nSelectedVertex; i++) {
+                //pg.ellipse(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, Constants.VERTEX_SELECTED_RADIO);
+                GlowEllipse.ellipseG(vertex[potentialSolutionVertex[i]].x, vertex[potentialSolutionVertex[i]].y, Constants.VERTEX_SELECTED_RADIO, true);
+            }
         }
-        pg.endDraw();
+
     }
 
 
