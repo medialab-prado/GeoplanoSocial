@@ -12,9 +12,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 import static processing.core.PApplet.dist;
 import static processing.core.PApplet.floor;
 
@@ -48,7 +46,7 @@ public class Game1 extends Game {
     private int[] randomLinearVertex;
     private int n_players_local;
 
-    private boolean nSelectedVertexEqualToPlayers = true;
+    // private boolean nSelectedVertexEqualToPlayers = true;
     private int nSelectedVertex;
     private boolean lineBrilla;
 
@@ -86,7 +84,9 @@ public class Game1 extends Game {
                 this.anclado[i][j] = false;
 
         setDrawPlayersFront(true);
+
         marañaLineal();
+
         calcularPotentialSolutionVertex();
         // Utils.log("x " + Arrays.toString(potentialSolutionVertex));
         // Utils.log("y " + kk);
@@ -105,16 +105,16 @@ public class Game1 extends Game {
     }
 
     private void calcular_n_vertex(int n_level) {
-        Utils.log("LEVEL # -------------> " + n_level);
+        // Utils.log("LEVEL # -------------> " + n_level);
         n_vertex = MIN_VERTEX + floor(n_level / FACTOR_AUMENTO_DIFICULTAD);
         if (n_vertex > MAX_VERTEX) n_vertex = MAX_VERTEX;
-        Utils.log("VERTEX # ------------> " + n_vertex);
+        if (n_vertex < n_players_local) n_vertex = n_players_local;
+        // Utils.log("VERTEX # ------------> " + n_vertex);
     }
 
     @Override
     public void update() {
 
-        if (nSelectedVertexEqualToPlayers) nSelectedVertex = n_players_local;
 
         // intersection??
         calculateTotalIntersections();
@@ -150,8 +150,8 @@ public class Game1 extends Game {
                     if(players.get(j) instanceof GlowNode) ((GlowNode)players.get(j)).setGlowing(false);
                     Point x = players.get(j).getLocation();
                     for (int i = 0; i < nSelectedVertex; i++) {
-                        Utils.log("vertex = " + Arrays.toString(vertex));
-                        Utils.log("potentialSolutionVertex = " + Arrays.toString(potentialSolutionVertex));
+                        //Utils.log("vertex = " + Arrays.toString(vertex));
+                        //Utils.log("potentialSolutionVertex = " + Arrays.toString(potentialSolutionVertex));
                         Point a = vertex[potentialSolutionVertex[i]].getLocation();
                         if ((!vertexAncladoAalguien(potentialSolutionVertex[i])) && (a.distance(x) < 20)) {
                             anclado[potentialSolutionVertex[i]][j] = true;
@@ -177,7 +177,7 @@ public class Game1 extends Game {
                                 potentialSolutionVertex = Utils.shuffleArray(potentialSolutionVertex);
                             }
                             else {
-                                actualizarPotentialSolutionVertex(j);
+                                actualizarPotentialSolutionVertex();
                             }
                             anclado[ancladoAvertex(j)][j] = false;
                             timer2[j] = System.currentTimeMillis();
@@ -234,9 +234,11 @@ public class Game1 extends Game {
         for (int i = 0; i < vertexWithIntersection.size(); i++) {
             potentialSolutionVertex[i] = vertexWithIntersection.get(i);
         }
+
+        nSelectedVertex = min(n_players_local, potentialSolutionVertex.length);
     }
 
-    private void actualizarPotentialSolutionVertex(int playerLastMovement) {
+    /* private void actualizarPotentialSolutionVertex(int playerLastMovement) {
         // de potentialSolutionVertex, quito el vertex que se ha movido y me quedo con el resto (de los que estaban ON)
         int[] aux = new int[nSelectedVertex - 1];
         int auxCount = 0;
@@ -273,6 +275,35 @@ public class Game1 extends Game {
                 }
             }
 
+
+    } */
+
+    private void actualizarPotentialSolutionVertex() {
+        // de potentialSolutionVertex, quito el vertex que se ha movido y me quedo con el resto (de los que estaban ON)
+
+        boolean[] indexToMaintain = new boolean[potentialSolutionVertex.length];
+        for (int j = 0; j < potentialSolutionVertex.length; j++) {
+            indexToMaintain[j] = false;
+            for (int i = 0; i < vertexWithIntersection.size(); i++) {
+                if (vertexWithIntersection.get(i) == potentialSolutionVertex[j]) {
+                    indexToMaintain[j] = true;
+                    break;
+                }
+            }
+        }
+
+        int[] new_potentialSolutionVertex = new int[vertexWithIntersection.size()];
+        int auxIndex = 0;
+        for (int i = 0; i < indexToMaintain.length; i++) {
+            if (indexToMaintain[i]) {
+                new_potentialSolutionVertex[auxIndex] = potentialSolutionVertex[i];
+                auxIndex++;
+            }
+        }
+
+        potentialSolutionVertex = new_potentialSolutionVertex;
+
+        nSelectedVertex = min(n_players_local, potentialSolutionVertex.length);
 
     }
 

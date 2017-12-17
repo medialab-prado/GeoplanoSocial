@@ -84,7 +84,8 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
         //pixelDensity(displayDensity());
         //setTracking();
-        disposeHandler = new DisposeHandler(this);
+
+        // disposeHandler = new DisposeHandler(this);
     }
 
     public void setup() {
@@ -633,14 +634,14 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         return worldCube.getLevel();
     }
 
-    @Override
-    public void handleDraw() {
-        try {
-            super.handleDraw();
-        }catch(Exception | Error e){
-            System.err.println("Something went terribly wrong, relaunching processing.");
-            stop();
-            dispose();
-        }
-    }
+//    @Override
+//    public void handleDraw() {
+//        try {
+//            super.handleDraw();
+//        }catch(Exception | Error e){
+//            System.err.println("Something went terribly wrong, relaunching processing.");
+//            stop();
+//            dispose();
+//        }
+//    }
 }
