@@ -58,8 +58,8 @@ public class Constants {
     public static final int PLAY_AREA_OFFSET_Y = 12;
 
     //World change
-    public static final int WORLD_CHANGE_TIMER_IN = 5 * 1000;//In milliseconds
-    public static final int WORLD_CHANGE_TIMER_OUT = 5 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_IN = 2 * 1000;//In milliseconds
+    public static final int WORLD_CHANGE_TIMER_OUT = 7 * 1000;//In milliseconds
 
 
     //Player simulation
@@ -87,7 +87,7 @@ public class Constants {
 
     // Vertex
     public static final int VERTEX_NORMAL_RADIO = 10;
-    public static final int VERTEX_SELECTED_RADIO = 13;
+    public static final int VERTEX_SELECTED_RADIO = VERTEX_NORMAL_RADIO;
 
 
     public static final int MAX_PLAYERS = 7;

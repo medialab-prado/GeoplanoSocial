@@ -2,6 +2,7 @@ package es.geoplanosocial.engine;
 
 import controlP5.ControlP5;
 import controlP5.Textfield;
+import es.geoplanosocial.DisposeHandler;
 import es.geoplanosocial.games.Game;
 import es.geoplanosocial.games.GameCallback;
 import es.geoplanosocial.players.Player;
@@ -67,6 +68,8 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
     //More
     private Movie moreCompleted;
 
+    private static DisposeHandler disposeHandler;
+
     /**********************
      *PROCESSING FUNCTIONS*
      **********************/
@@ -81,6 +84,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
         //pixelDensity(displayDensity());
         //setTracking();
+        disposeHandler = new DisposeHandler(this);
     }
 
     public void setup() {
@@ -296,12 +300,14 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
         //Update elements of the current world
         if(currentGame !=null && !worldCube.isOnRotation()) {
+
             try {
                 currentGame.update();
             }
-            catch (Exception e) {
+            catch (Exception | Error e) {
                 e.printStackTrace();
             }
+
         }
 
     }
@@ -583,7 +589,10 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
         int strokeWeight = worldCube.getLevel();
         zero.setStrokeWeight(strokeWeight);
-        zero.changeWord(game);
+
+        //FIXME could change if random worlds
+        int fakeGame = players.size()>0?3:0;
+        zero.changeWord(fakeGame);
 
         Utils.log("Change world! Game: "+game);
 
@@ -623,5 +632,15 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
     public int getCurrentLevel() {
         return worldCube.getLevel();
     }
-}
 
+    @Override
+    public void handleDraw() {
+        try {
+            super.handleDraw();
+        }catch(Exception | Error e){
+            System.err.println("Something went terribly wrong, relaunching processing.");
+            stop();
+            dispose();
+        }
+    }
+}

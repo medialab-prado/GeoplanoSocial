@@ -40,9 +40,13 @@ public class Zero {
     private final float SCALE_MIN = 1.0f;
     private final float SCALE_MAX = 14.0f;
 
-    private final float ZOOM_TIME = 15.0f;//Seconds
+    private final float ZOOM_TIME_IN = 10.0f;//Seconds
+    private final float ZOOM_TIME_OUT = 14.0f;//Seconds
 
-    private final float SCALE_FACTOR = (SCALE_MAX-SCALE_MIN)/(ZOOM_TIME*FPS);
+
+    private final float SCALE_FACTOR_IN = (SCALE_MAX-SCALE_MIN)/(ZOOM_TIME_IN*FPS);
+    private final float SCALE_FACTOR_OUT = (SCALE_MAX-SCALE_MIN)/(ZOOM_TIME_OUT*FPS);
+
 
     private final int MAX_TANGLE_OFFSET = 5;//Pixels
 
@@ -124,7 +128,7 @@ public class Zero {
 
     public void update(){
         if(onTransition) {
-            amount += isZoomed ? -SCALE_FACTOR : SCALE_FACTOR;
+            amount += isZoomed ? -SCALE_FACTOR_OUT : SCALE_FACTOR_IN;
             amount = parent.constrain(amount, 0.0f, 1.0f);
 
             if(amount<=0){

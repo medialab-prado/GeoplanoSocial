@@ -1,13 +1,28 @@
 package es.geoplanosocial;
 
-import org.gstreamer.Bus;
 import processing.core.PApplet;
 
-class Main {
+public class Main {
+
+    public static final Object lock = new Object();
 
     public static void main(String[] args) {
 
-                PApplet.main("es.geoplanosocial.engine.Engine");
+        boolean running = true;
+
+                while(running){
+                    System.out.println("Launching GeoPlano Social");
+                    PApplet.main("es.geoplanosocial.engine.Engine");
+                    try{
+                        synchronized (lock) {
+                            lock.wait();
+                        }
+                    }catch(InterruptedException e){
+                        System.err.println("Killing GeoPlano Social, we'll see you next time");
+                        running=false;
+                    }
+                }
+
 
     }
 }
