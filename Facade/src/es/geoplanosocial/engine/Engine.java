@@ -84,7 +84,8 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         smooth(ANTI_ALIASING_LEVEL);//No more aliasing
         //pixelDensity(displayDensity());
         //setTracking();
-        disposeHandler = new DisposeHandler(this);
+
+        // disposeHandler = new DisposeHandler(this);
     }
 
     public void setup() {
