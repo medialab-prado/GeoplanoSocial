@@ -60,6 +60,10 @@ public class Player {
         return boundingBox;
     }
 
+    public Rectangle getCenteredBoundingBox() {
+        return new Rectangle((int)(boundingBox.getCenterX()-boundingBox.width),(int)(boundingBox.getCenterY()-boundingBox.height),boundingBox.width,boundingBox.height);
+    }
+
     public void setBoundingBox(Rectangle boundingBox) {
         this.boundingBox = boundingBox;
     }

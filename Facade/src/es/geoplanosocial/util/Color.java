@@ -9,14 +9,14 @@ public class Color {
 
     //Prevent magic numbers
     // public static final int WHITE = 255;
-    public static final int WHITE = Utils.color(255, 255, 255);;
-    public static final int BLACK = 0;
+    public static final int WHITE = Utils.color(255, 255, 255);
+    public static final int BLACK = Utils.color(0, 0, 0);
     public static final int ALPHA = Utils.color(0, 0, 0, 0);
 
 
-    public static final int LIGHT_GREY = 170;// 2/3
-    public static final int GREY = 127;// 1/2
-    public static final int DARK_GREY = 85;// 1/3
+    public static final int LIGHT_GREY = Utils.color(170, 170, 170);// 2/3
+    public static final int GREY = Utils.color(127, 127, 127);// 1/2
+    public static final int DARK_GREY = Utils.color(85, 85, 85);// 1/3
 
     public static final int RED = Utils.color(255, 0, 0);
     public static final int GREEN = Utils.color(0, 255, 0);
@@ -37,6 +37,8 @@ public class Color {
     public static final int BLACK_HOLE_COLOR = Utils.color(3, 12, 27);
 
     public static final int W1_ORANGE_NODE = Utils.color(249, 221, 40);
+    public static final int W1_ORANGE_NODE_ALPHA = Utils.color(249, 221, 40, 85);
+
 
 
     /*********

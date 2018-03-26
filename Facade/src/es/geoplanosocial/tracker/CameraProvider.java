@@ -30,12 +30,12 @@ public class CameraProvider implements BlobsProvider, OscEventListener {
     }
 
     @Override
-    public Blob[] fetchPositions() {
+    public synchronized Blob[] fetchPositions() {
         return players.toArray(new Blob[players.size()]);
     }
 
     @Override
-    public void oscEvent(OscMessage oscMessage) {
+    public synchronized void oscEvent(OscMessage oscMessage) {
         //Utils.log("oscEvent: "+oscMessage);
 
         if (oscMessage.checkAddrPattern("/GameBlobAllIn")) {

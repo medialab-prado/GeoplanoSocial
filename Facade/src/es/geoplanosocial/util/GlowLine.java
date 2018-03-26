@@ -40,13 +40,13 @@ public class GlowLine {
         GlowLine.colorAlpha = Utils.color(c.getRed(), c.getGreen(), c.getBlue(), ALPHA);
     }
 
-    public static void lineG(int x1, int y1, int x2, int y2, boolean isGlowing) {
+    public static void lineG(float x1, float y1, float x2, float y2, boolean isGlowing) {
 
         if(processing==null || pg==null) return;
 
 
-        int w = Math.abs(x1-x2);
-        int h = Math.abs(y1-y2);
+        float w = Math.abs(x1-x2);
+        float h = Math.abs(y1-y2);
 
         Direction direction;
 

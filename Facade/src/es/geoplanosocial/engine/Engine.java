@@ -93,7 +93,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
         //Set global parameters
         frameRate(FPS);
-        if(DEBUG)noCursor();//Ugly
+        //if(DEBUG)noCursor();//Ugly
 
 
         BG = generateFacadeBackground(width, height, SCREEN_RENDERER, DRAW_FACADE_OUTLINE);
@@ -229,7 +229,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
 
         if(DEBUG) {
             if (key == CODED) {
-                Types.Direction d;
+                Types.Direction d=null;
 
                 switch (keyCode) {
                     case UP:
@@ -245,10 +245,10 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
                         d = Types.Direction.RIGHT;
                         break;
                     default:
-                        d = Types.Direction.RIGHT;
+                        //d = Types.Direction.RIGHT;
                 }
 
-                changeLevel(d);
+                if(d!=null)changeLevel(d);
             }else{
                 switch (key) {
                     case '+':
@@ -583,7 +583,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
     public void changeWorld() {
         sanitizePlayers();
 
-        int game = players.size()>0?randomInt(1, /*WORLDS_NUMBER-*/1):0;
+        int game = players.size()>0?randomInt(2, /*WORLDS_NUMBER-*/2):0;
 
         setWorld(game);
 
@@ -591,7 +591,7 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         zero.setStrokeWeight(strokeWeight);
 
         //FIXME could change if random worlds
-        int fakeGame = players.size()>0?3:0;
+        int fakeGame = players.size()>0?2:0;
         zero.changeWord(fakeGame);
 
         Utils.log("Change world! Game: "+game);
@@ -633,14 +633,18 @@ public class Engine extends PApplet implements TrackerCallback, GameCallback {
         return worldCube.getLevel();
     }
 
+
+    /*
     @Override
     public void handleDraw() {
         try {
             super.handleDraw();
+        }catch(RuntimeException re){
         }catch(Exception | Error e){
             System.err.println("Something went terribly wrong, relaunching processing.");
             stop();
             dispose();
         }
     }
+    */
 }

@@ -14,8 +14,10 @@ import static processing.core.PConstants.RGB;
  */
 public class GlowEllipse {
 
+    public static final float DEFAULT_GLOW_EXTENSION = 1.7f;
 
-    private static float glowExtension = 1.7f;
+
+    private static float glowExtension = DEFAULT_GLOW_EXTENSION;
 
 
     private static PApplet processing;
@@ -32,20 +34,19 @@ public class GlowEllipse {
 
     public static void setColor(int color) {
         GlowEllipse.color = color;
-        java.awt.Color c = new java.awt.Color(color);
     }
 
-    public static void ellipseG(int xCircle, int yCircle, int r, boolean isGlowing) {
+    public static void setGlowExtension(float glowExtension) {
+        GlowEllipse.glowExtension = glowExtension;
+    }
+
+    public static void ellipseG(float xCircle, float yCircle, int r, boolean isGlowing) {
 
         if(processing==null || pg==null) return;
 
         if(isGlowing) {
 
-            PGraphics circlePG = processing.createGraphics(ceil(r * glowExtension), ceil(r * glowExtension));
-
-            circlePG.beginDraw();
-            circlePG.clear();
-            circlePG.endDraw();
+            PGraphics circlePG = processing.createGraphics(round(r * glowExtension), round(r * glowExtension));
 
             int startColor = color;
             java.awt.Color cc = new Color(startColor);
@@ -57,14 +58,18 @@ public class GlowEllipse {
             float innerRadius = r / 2.0f;
             float outerRadius = r * glowExtension / 2.0f;
 
+            circlePG.beginDraw();
+            circlePG.clear();
+            circlePG.endDraw();
+
 
             circlePG.loadPixels();
             for (int x = 0; x < circlePG.width; x++) {
                 for (int y = 0; y < circlePG.height; y++) {
                     float d = dist(x, y, centerX, centerY);
-                    int c = lerpColor(startColor, endColor, (d - innerRadius) / (outerRadius - innerRadius), RGB);
+                        int c = lerpColor(startColor, endColor, (d - innerRadius) / (outerRadius - innerRadius), RGB);
 
-                    circlePG.pixels[x + y * circlePG.width] = c;
+                        circlePG.pixels[x + y * circlePG.width] = c;
                 }
             }
             circlePG.updatePixels();
@@ -73,6 +78,8 @@ public class GlowEllipse {
             pg.imageMode(CENTER);
             pg.image(circlePG, xCircle, yCircle);
             pg.endDraw();
+
+
         }else {
             pg.beginDraw();
             //pg.stroke(color);
